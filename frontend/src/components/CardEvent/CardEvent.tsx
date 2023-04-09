@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const CardEvent = () => {
   return (
@@ -19,7 +20,7 @@ const CardEvent = () => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button variant="outlined" size="small">
+        <Button component={Link} to={'/full_event/' + 'id'} variant="outlined" size="small">
           Подробнее
         </Button>
       </CardActions>
