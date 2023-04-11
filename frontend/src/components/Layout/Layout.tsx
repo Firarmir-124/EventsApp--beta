@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppBar, Grid, Toolbar, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import AnonymousMenu from './AnonymousMenu/AnonymousMenu';
+import UserMenu from './UserMenu/UserMenu';
 
 interface Props {
   children: React.ReactNode;
@@ -27,7 +27,7 @@ const Layout: React.FC<Props> = ({ children }) => {
             Сайт
           </Typography>
           <Grid item>
-            <AnonymousMenu />
+            <UserMenu />
           </Grid>
         </Toolbar>
       </AppBar>
