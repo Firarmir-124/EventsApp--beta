@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import config from './config';
 import usersRouter from './routers/users';
+import hashtagsRoutes from './routers/hashtags';
+import eventsRouter from './routers/events';
 
 const app = express();
 const port = 8000;
@@ -11,6 +13,8 @@ app.use(express.static('public'));
 app.use(express.json());
 
 app.use('/users', usersRouter);
+app.use('/hashtag', hashtagsRoutes);
+app.use('/eventPlan', eventsRouter);
 
 const run = async () => {
   mongoose.set('strictQuery', false);
