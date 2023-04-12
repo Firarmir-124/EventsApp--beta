@@ -8,17 +8,26 @@ import PersonAdd from '@mui/icons-material/PersonAdd';
 import Logout from '@mui/icons-material/Logout';
 import { IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { User } from '../../../types';
+import { logout } from '../../../Fiuters/User/usersThunk';
+import { useAppDispatch } from '../../../app/hooks';
 
-const UserMenu = () => {
+interface Props {
+  user: User;
+}
+
+const UserMenu: React.FC<Props> = ({ user }) => {
+  const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleLogout = () => {
+    dispatch(logout());
+    setAnchorEl(null);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
   };
 
   return (
@@ -31,14 +40,14 @@ const UserMenu = () => {
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
       >
-        <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+        <Avatar sx={{ width: 32, height: 32 }}>{user.displayName[0].toUpperCase()}</Avatar>
       </IconButton>
       <Menu
         anchorEl={anchorEl}
         id="account-menu"
         open={open}
-        onClose={handleClose}
-        onClick={handleClose}
+        onClose={() => setAnchorEl(null)}
+        onClick={() => setAnchorEl(null)}
         PaperProps={{
           elevation: 0,
           sx: {
@@ -68,17 +77,17 @@ const UserMenu = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={() => setAnchorEl(null)}>
           <Avatar /> Мой профиль
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={() => setAnchorEl(null)}>
           <ListItemIcon>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
           <Link to="event">Управление мероприятем</Link>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
