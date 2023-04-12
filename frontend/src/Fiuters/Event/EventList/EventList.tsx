@@ -41,6 +41,7 @@ const EventList = () => {
           <TableHead>
             <TableRow>
               <StyledTableCell>Список</StyledTableCell>
+              <StyledTableCell align="right">Навание</StyledTableCell>
               <StyledTableCell align="right">Место</StyledTableCell>
               <StyledTableCell align="right">Время</StyledTableCell>
               <StyledTableCell align="right">Гости</StyledTableCell>
@@ -53,6 +54,7 @@ const EventList = () => {
               <StyledTableCell component="th" scope="row">
                 1
               </StyledTableCell>
+              <StyledTableCell align="right">test</StyledTableCell>
               <StyledTableCell align="right">test</StyledTableCell>
               <StyledTableCell align="right">test</StyledTableCell>
               <StyledTableCell align="right">test</StyledTableCell>
