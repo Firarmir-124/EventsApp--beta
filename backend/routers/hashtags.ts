@@ -31,4 +31,26 @@ hashtagsRoutes.post('/', auth, permit('organizer'), async (req, res, next) => {
   }
 });
 
+hashtagsRoutes.get('/:id', auth, permit('organizer'), async (req, res) => {
+  try {
+    const hashtag = await Hashtag.findOne({ _id: req.params.id });
+    return res.send(hashtag);
+  } catch {
+    return res.sendStatus(500);
+  }
+});
+
+hashtagsRoutes.put('/:id', auth, permit('organizer'), async (req, res, next) => {
+  try {
+    await Hashtag.updateOne({ _id: req.params.id }, { name: req.body.name });
+    return res.send({ edit: req.params.id });
+  } catch (e) {
+    if (e instanceof mongoose.Error.ValidationError) {
+      return res.status(400).send(e);
+    } else {
+      return next(e);
+    }
+  }
+});
+
 export default hashtagsRoutes;
