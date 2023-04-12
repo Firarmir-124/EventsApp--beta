@@ -5,7 +5,7 @@ import FullEvent from './Fiuters/Event/FullEvent/FullEvent';
 import Event from './Fiuters/Event/Event';
 import EventList from './Fiuters/Event/EventList/EventList';
 import CreateEvent from './Fiuters/Event/CreateEvent/CreateEvent';
-import HashtagCreate from './Fiuters/Event/HashtagCreate/HashtagCreate';
+import HashtagCreate from './Fiuters/Hashtag/HashtagCreate/HashtagCreate';
 
 function App() {
   return (
