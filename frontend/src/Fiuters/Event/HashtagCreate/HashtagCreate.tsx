@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Avatar, Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
+import { Link } from 'react-router-dom';
+import HashtagList from '../HashtagList/HashtagList';
 
 const HashtagCreate = () => {
   const [value, setValue] = useState('');
@@ -36,15 +38,17 @@ const HashtagCreate = () => {
                 />
               </Grid>
               <Grid display="flex" justifyContent="space-between" item>
-                <Button type="submit" variant="contained">
-                  Создать
-                </Button>
+                <Button variant="contained">Создать</Button>
 
-                <Button variant="contained">Список</Button>
+                <Button component={Link} to={'hashtag_list'} variant="contained">
+                  Список
+                </Button>
               </Grid>
             </Grid>
           </Box>
         </Box>
+
+        <HashtagList />
       </Container>
     </Container>
   );
