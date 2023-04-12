@@ -16,7 +16,8 @@ eventsRouter.get('/', authAnonymous, async (req, res) => {
 
     const eventPlanList = await EventPlan.find()
       .skip((page - 1) * perPage)
-      .limit(perPage);
+      .limit(perPage)
+      .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user']);
 
     return res.send({ eventPlanListLength: eventPlanListFull.length, eventPlanList });
   } catch {
@@ -45,6 +46,15 @@ eventsRouter.post('/', auth, permit('organizer'), async (req, res, next) => {
     } else {
       return next(e);
     }
+  }
+});
+
+eventsRouter.get('/:id', async (req, res) => {
+  try {
+    const eventPlan = await EventPlan.findOne({ _id: req.params.id });
+    return res.send(eventPlan);
+  } catch {
+    return res.sendStatus(500);
   }
 });
 
