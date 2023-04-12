@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import config from './config';
 import User from './models/Users';
-import { randomUUID } from 'crypto';
+import EventPlan from './models/EventPlan';
+import crypto from 'crypto';
 
 const run = async () => {
   mongoose.set('strictQuery', false);
@@ -14,13 +15,30 @@ const run = async () => {
     console.log('Collections were not present, skipping drop...');
   }
 
+  const user = await User.create({
+    email: `admin@mail.com`,
+    displayName: 'admin',
+    password: '123',
+    token: crypto.randomUUID(),
+    role: 'organizer',
+  });
+
   for (let i = 0; i <= 50; i++) {
-    await User.create({
-      displayName: `Admin${i}`,
-      email: `test${i}@test.com`,
-      role: 'admin',
-      password: '@esdpjs17',
-      token: randomUUID(),
+    await EventPlan.create({
+      title: `test${i}`,
+      description: `test${i}`,
+      speaker: [
+        {
+          name: `Roma`,
+        },
+        {
+          name: `Dima`,
+        },
+      ],
+      time: `test${i}`,
+      image: null,
+      hashtag: `test${i}`,
+      user: user._id,
     });
   }
 
