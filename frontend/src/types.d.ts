@@ -36,3 +36,45 @@ export interface ValidationError {
 export interface GlobalError {
   error: string;
 }
+
+export interface EventListType {
+  _id: string;
+  title: string;
+  speaker: [
+    {
+      name: string;
+    },
+  ];
+  time: string;
+  image: string;
+  hashtag: string;
+  user: string;
+}
+
+export interface EventOne {
+  _id: string;
+  title: string;
+  description: string;
+  speaker: [
+    {
+      name: string;
+    },
+  ];
+  time: string;
+  image: string;
+  hashtag: string;
+  user: string;
+}
+
+export interface EventMutation {
+  title: string;
+  description: string;
+  speaker: [
+    {
+      name: string;
+    },
+  ];
+  time: string;
+  image: string;
+  hashtag: string;
+}
