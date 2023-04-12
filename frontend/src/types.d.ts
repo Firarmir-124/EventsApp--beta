@@ -38,17 +38,20 @@ export interface GlobalError {
 }
 
 export interface EventListType {
-  _id: string;
-  title: string;
-  speaker: [
-    {
-      name: string;
-    },
-  ];
-  time: string;
-  image: string;
-  hashtag: string;
-  user: string;
+  eventPlanListLength: number;
+  eventPlanList: {
+    _id: string;
+    title: string;
+    speaker: [
+      {
+        name: string;
+      },
+    ];
+    time: string;
+    image: string;
+    hashtag: string;
+    user: string;
+  }[];
 }
 
 export interface EventOne {
@@ -69,11 +72,6 @@ export interface EventOne {
 export interface EventMutation {
   title: string;
   description: string;
-  speaker: [
-    {
-      name: string;
-    },
-  ];
   time: string;
   image: string;
   hashtag: string;
