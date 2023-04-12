@@ -7,6 +7,7 @@ import EventList from './Fiuters/Event/EventList/EventList';
 import CreateEvent from './Fiuters/Event/CreateEvent/CreateEvent';
 import HashtagCreate from './Fiuters/Hashtag/HashtagCreate/HashtagCreate';
 import Register from './Fiuters/User/Register/Register';
+import Login from './Fiuters/User/Login/Login';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/full_event/:id" element={<FullEvent />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/event" element={<Event />}>
         <Route path="event_list" element={<EventList />} />
         <Route path="event_create" element={<CreateEvent />} />
