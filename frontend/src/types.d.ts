@@ -5,6 +5,18 @@ export interface User {
   token: string;
   role: string;
 }
+
+export interface RegisterMutation {
+  email: string;
+  password: string;
+  displayName: string;
+}
+
+export interface RegisterResponse {
+  message: string;
+  user: User;
+}
+
 export interface LoginMutation {
   email: string;
   password: string;
@@ -13,11 +25,10 @@ export interface LoginMutation {
 export interface ValidationError {
   errors: {
     [key: string]: {
-      message: string;
       name: string;
+      message: string;
     };
   };
-  message: string;
   name: string;
   _name: string;
 }
