@@ -18,10 +18,7 @@ const EventSchema = new Schema<EventType>({
     type: String,
     required: true,
   },
-  image: {
-    type: String,
-    required: true,
-  },
+  image: String,
   hashtag: {
     type: String,
     required: true,
