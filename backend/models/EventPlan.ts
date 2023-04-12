@@ -33,5 +33,5 @@ const EventSchema = new Schema<EventType>({
   },
 });
 
-const Event = model('Event', EventSchema);
-export default Event;
+const EventPlan = model('EventPlan', EventSchema);
+export default EventPlan;
