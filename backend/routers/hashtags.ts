@@ -53,4 +53,13 @@ hashtagsRoutes.put('/:id', auth, permit('organizer'), async (req, res, next) => 
   }
 });
 
+hashtagsRoutes.delete('/:id', auth, permit('organizer'), async (req, res, next) => {
+  try {
+    await Hashtag.deleteOne({ _id: req.params.id });
+    return res.send({ remove: req.params.id });
+  } catch (e) {
+    return next(e);
+  }
+});
+
 export default hashtagsRoutes;
