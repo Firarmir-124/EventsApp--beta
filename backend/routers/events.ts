@@ -4,6 +4,7 @@ import EventPlan from '../models/EventPlan';
 import auth from '../middleware/auth';
 import permit from '../middleware/permit';
 import mongoose from 'mongoose';
+import { EventType } from '../types';
 
 const eventsRouter = express.Router();
 
@@ -55,6 +56,40 @@ eventsRouter.get('/:id', async (req, res) => {
     return res.send(eventPlan);
   } catch {
     return res.sendStatus(500);
+  }
+});
+
+eventsRouter.put('/:id', auth, permit('organizer'), async (req, res, next) => {
+  try {
+    const eventPlan = (await EventPlan.findOne({ _id: req.params.id })) as EventType;
+
+    const newEventPlan = {
+      title: req.body.title,
+      description: req.body.description,
+      speaker: req.body.speaker,
+      time: req.body.time,
+      hashtag: req.body.hashtag,
+    };
+
+    if (eventPlan.title !== newEventPlan.title) {
+      await EventPlan.updateOne({ _id: req.params.id }, { $set: newEventPlan.title });
+      res.send({ _id: req.params.id });
+    } else if (eventPlan.description !== newEventPlan.description) {
+      await EventPlan.updateOne({ _id: req.params.id }, { $set: newEventPlan.description });
+      res.send({ _id: req.params.id });
+    } else if (eventPlan.speaker !== newEventPlan.speaker) {
+      await EventPlan.updateOne({ _id: req.params.id }, { $set: newEventPlan.speaker });
+      res.send({ _id: req.params.id });
+    } else if (eventPlan.time !== newEventPlan.time) {
+      await EventPlan.updateOne({ _id: req.params.id }, { $set: newEventPlan.time });
+      res.send({ _id: req.params.id });
+    }
+  } catch (e) {
+    if (e instanceof mongoose.Error.ValidationError) {
+      return res.status(400).send(e);
+    } else {
+      return next(e);
+    }
   }
 });
 
