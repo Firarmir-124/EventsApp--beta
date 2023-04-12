@@ -5,6 +5,7 @@ import FullEvent from './Fiuters/Event/FullEvent/FullEvent';
 import Event from './Fiuters/Event/Event';
 import EventList from './Fiuters/Event/EventList/EventList';
 import CreateEvent from './Fiuters/Event/CreateEvent/CreateEvent';
+import HashtagCreate from './Fiuters/Event/HashtagCreate/HashtagCreate';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route path="/event" element={<Event />}>
         <Route path="event_list" element={<EventList />} />
         <Route path="event_create" element={<CreateEvent />} />
+        <Route path="hashtag_create" element={<HashtagCreate />} />
       </Route>
     </Routes>
   );

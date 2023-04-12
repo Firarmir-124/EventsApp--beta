@@ -8,4 +8,8 @@ export const functionListEventUser = [
     name: 'Создать',
     link: 'event_create',
   },
+  {
+    name: 'Создать хэштег',
+    link: 'hashtag_create',
+  },
 ];
