@@ -3,7 +3,7 @@ import Layout from '../../components/Layout/Layout';
 import { Container, Grid, Pagination, Paper } from '@mui/material';
 import CardEvent from '../../Fiuters/Event/components/CardEvent/CardEvent';
 import ControlPanel from '../../components/ControlPanel/ControlPanel';
-import HashtagList from '../../Fiuters/Hashtag/HashtagList/HashtagList';
+import HashtagList from '../../Fiuters/Hashtag/HashtagList';
 
 const Home = () => {
   return (

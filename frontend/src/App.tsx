@@ -5,7 +5,7 @@ import FullEvent from './Fiuters/Event/FullEvent/FullEvent';
 import Event from './Fiuters/Event/Event';
 import EventList from './Fiuters/Event/EventList/EventList';
 import CreateEvent from './Fiuters/Event/CreateEvent/CreateEvent';
-import HashtagCreate from './Fiuters/Hashtag/HashtagCreate/HashtagCreate';
+import HashtagCreate from './Fiuters/Hashtag/HashtagCreate';
 import Register from './Fiuters/User/Register/Register';
 import Login from './Fiuters/User/Login/Login';
 

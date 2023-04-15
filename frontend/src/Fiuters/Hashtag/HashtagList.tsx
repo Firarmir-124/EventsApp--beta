@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { Alert, CircularProgress } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectHashtagList, selectHashtagListLoading } from '../hashtagSlice';
-import { fetchHashtagList } from '../hashtagThunk';
-import CardHashtag from '../components/CardHashtag/CardHashtag';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectHashtagList, selectHashtagListLoading } from './hashtagSlice';
+import { fetchHashtagList } from './hashtagThunk';
+import CardHashtag from './components/CardHashtag/CardHashtag';
 
 const HashtagList = () => {
   const dispatch = useAppDispatch();
