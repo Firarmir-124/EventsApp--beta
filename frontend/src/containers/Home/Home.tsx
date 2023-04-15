@@ -1,8 +1,8 @@
 import React from 'react';
 import Layout from '../../components/Layout/Layout';
 import { Container, Grid, List, Pagination, Paper } from '@mui/material';
-import CardEvent from '../../components/CardEvent/CardEvent';
-import CardHashtag from '../../components/CardHashtag/CardHashtag';
+import CardEvent from '../../Fiuters/Event/components/CardEvent/CardEvent';
+import CardHashtag from '../../Fiuters/Hashtag/components/CardHashtag/CardHashtag';
 import ControlPanel from '../../components/ControlPanel/ControlPanel';
 
 const Home = () => {

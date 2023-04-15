@@ -3,8 +3,8 @@ import axiosApi from '../../axios';
 import { EventListType, EventMutation, ValidationError } from '../../types';
 import { isAxiosError } from 'axios';
 
-export const fetchEventList = createAsyncThunk<EventListType[]>('event/fetch_eventList', async () => {
-  const response = await axiosApi.get<EventListType[]>('/eventPlan');
+export const fetchEventList = createAsyncThunk<EventListType[], number>('event/fetch_eventList', async (page) => {
+  const response = await axiosApi.get<EventListType[]>('/eventPlan?page=' + page);
   return response.data;
 });
 

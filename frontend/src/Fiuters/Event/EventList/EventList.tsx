@@ -66,6 +66,23 @@ const EventList = () => {
                 </ButtonGroup>
               </StyledTableCell>
             </StyledTableRow>
+
+            <StyledTableRow>
+              <StyledTableCell component="th" scope="row">
+                1
+              </StyledTableCell>
+              <StyledTableCell align="right">test</StyledTableCell>
+              <StyledTableCell align="right">test</StyledTableCell>
+              <StyledTableCell align="right">test</StyledTableCell>
+              <StyledTableCell align="right">test</StyledTableCell>
+              <StyledTableCell align="right">test</StyledTableCell>
+              <StyledTableCell align="right">
+                <ButtonGroup disableElevation variant="contained" aria-label="Disabled elevation buttons">
+                  <Button>Редактировать</Button>
+                  <Button>Удалить</Button>
+                </ButtonGroup>
+              </StyledTableCell>
+            </StyledTableRow>
           </TableBody>
         </Table>
       </TableContainer>
