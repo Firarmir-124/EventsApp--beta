@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
-import { Avatar, Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
+import React from 'react';
+import { Avatar, Box, Container, Typography } from '@mui/material';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-import { Link } from 'react-router-dom';
 import HashtagList from '../HashtagList/HashtagList';
+import FormHashtag from '../components/FormHashtag/FormHashtag';
+import { useAppDispatch } from '../../../app/hooks';
+import { createHashtag, fetchHashtagList } from '../hashtagThunk';
+import { HashtagMutation } from '../../../types';
 
 const HashtagCreate = () => {
-  const [value, setValue] = useState('');
+  const dispatch = useAppDispatch();
+
+  const onSubmit = async (hashtag: HashtagMutation) => {
+    await dispatch(createHashtag(hashtag)).unwrap();
+    await dispatch(fetchHashtagList()).unwrap();
+  };
 
   return (
     <Container>
@@ -24,28 +32,7 @@ const HashtagCreate = () => {
           <Typography component="h1" variant="h5">
             Создать хэштег
           </Typography>
-          <Box component="form" sx={{ mt: 3, width: '50%' }}>
-            <Grid container sx={{ flexDirection: 'column' }} spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  label="Название хэштега"
-                  name="hashtag"
-                  type="text"
-                  autoComplete="current-password"
-                  fullWidth
-                  value={value}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
-                />
-              </Grid>
-              <Grid display="flex" justifyContent="space-between" item>
-                <Button variant="contained">Создать</Button>
-
-                <Button component={Link} to={'hashtag_list'} variant="contained">
-                  Список
-                </Button>
-              </Grid>
-            </Grid>
-          </Box>
+          <FormHashtag onSubmit={onSubmit} />
         </Box>
 
         <HashtagList />
