@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from 'redux-persist/es/constants';
 import { usersReducer } from '../Fiuters/User/usersSlice';
 import { eventReducer } from '../Fiuters/Event/eventSlice';
+import { hashtagReducer } from '../Fiuters/Hashtag/hashtagSlice';
 
 const usersPersistConfig = {
   key: 'petProject:users',
@@ -14,6 +15,7 @@ const usersPersistConfig = {
 const rootReducer = combineReducers({
   users: persistReducer(usersPersistConfig, usersReducer),
   eventReducer: eventReducer,
+  hashtagReducer: hashtagReducer,
 });
 
 export const store = configureStore({

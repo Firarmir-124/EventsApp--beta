@@ -76,3 +76,12 @@ export interface EventMutation {
   image: string;
   hashtag: string;
 }
+
+export interface HashtagListType {
+  _id: string;
+  name: string;
+}
+
+export interface HashtagMutation {
+  name: string;
+}
