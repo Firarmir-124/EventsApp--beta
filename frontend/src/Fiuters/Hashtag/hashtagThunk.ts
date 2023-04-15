@@ -21,6 +21,28 @@ export const createHashtag = createAsyncThunk<void, HashtagMutation, { rejectVal
   },
 );
 
+export const fetchOneHashtag = createAsyncThunk<HashtagListType | null, string>(
+  'hashtag/fetch_hashtagOne',
+  async (id) => {
+    const response = await axiosApi.get<HashtagListType | null>('/hashtag/' + id);
+
+    if (!response.data) {
+      throw new Error('not found');
+    }
+
+    return response.data;
+  },
+);
+
+interface EditType {
+  id: string;
+  hashtag: HashtagMutation;
+}
+
+export const editHashtag = createAsyncThunk<void, EditType>('hashtag/edit_hashtag', async (arg) => {
+  await axiosApi.put('/hashtag/' + arg.id, arg.hashtag);
+});
+
 export const deleteHashtag = createAsyncThunk<void, string>('hashtag/delete_hashtag', async (id) => {
   await axiosApi.delete('/hashtag/' + id);
 });

@@ -1,7 +1,7 @@
-import { EventOne, HashtagListType, ValidationError } from '../../types';
+import { HashtagListType, ValidationError } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { deleteHashtag, fetchHashtagList } from './hashtagThunk';
+import { deleteHashtag, editHashtag, fetchHashtagList, fetchOneHashtag } from './hashtagThunk';
 
 interface HashtagType {
   hashtagList: HashtagListType[];
@@ -9,7 +9,7 @@ interface HashtagType {
   hashtagCreateLoading: boolean;
   hashtagEditLoading: boolean;
   hashtagRemoveLoading: boolean;
-  hashtagOne: EventOne | null;
+  hashtagOne: HashtagListType | null;
   hashtagOneLoading: boolean;
   hashtagError: ValidationError | null;
 }
@@ -49,6 +49,27 @@ const hashtagSlice = createSlice({
     });
     builder.addCase(deleteHashtag.rejected, (state) => {
       state.hashtagRemoveLoading = false;
+    });
+
+    builder.addCase(fetchOneHashtag.pending, (state) => {
+      state.hashtagOneLoading = true;
+    });
+    builder.addCase(fetchOneHashtag.fulfilled, (state, { payload: hashtag }) => {
+      state.hashtagOneLoading = false;
+      state.hashtagOne = hashtag;
+    });
+    builder.addCase(fetchOneHashtag.rejected, (state) => {
+      state.hashtagOneLoading = false;
+    });
+
+    builder.addCase(editHashtag.pending, (state) => {
+      state.hashtagEditLoading = true;
+    });
+    builder.addCase(editHashtag.fulfilled, (state) => {
+      state.hashtagEditLoading = false;
+    });
+    builder.addCase(editHashtag.rejected, (state) => {
+      state.hashtagEditLoading = false;
     });
   },
 });
