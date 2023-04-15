@@ -20,3 +20,7 @@ export const createHashtag = createAsyncThunk<void, HashtagMutation, { rejectVal
     }
   },
 );
+
+export const deleteHashtag = createAsyncThunk<void, string>('hashtag/delete_hashtag', async (id) => {
+  await axiosApi.delete('/hashtag/' + id);
+});

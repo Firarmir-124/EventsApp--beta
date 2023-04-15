@@ -1,7 +1,7 @@
 import { EventOne, HashtagListType, ValidationError } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { fetchHashtagList } from './hashtagThunk';
+import { deleteHashtag, fetchHashtagList } from './hashtagThunk';
 
 interface HashtagType {
   hashtagList: HashtagListType[];
@@ -39,6 +39,16 @@ const hashtagSlice = createSlice({
     });
     builder.addCase(fetchHashtagList.rejected, (state) => {
       state.hashtagListLoading = false;
+    });
+
+    builder.addCase(deleteHashtag.pending, (state) => {
+      state.hashtagRemoveLoading = true;
+    });
+    builder.addCase(deleteHashtag.fulfilled, (state) => {
+      state.hashtagRemoveLoading = false;
+    });
+    builder.addCase(deleteHashtag.rejected, (state) => {
+      state.hashtagRemoveLoading = false;
     });
   },
 });
