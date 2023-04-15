@@ -1,9 +1,9 @@
 import React from 'react';
 import Layout from '../../components/Layout/Layout';
-import { Container, Grid, List, Pagination, Paper } from '@mui/material';
+import { Container, Grid, Pagination, Paper } from '@mui/material';
 import CardEvent from '../../Fiuters/Event/components/CardEvent/CardEvent';
-import CardHashtag from '../../Fiuters/Hashtag/components/CardHashtag/CardHashtag';
 import ControlPanel from '../../components/ControlPanel/ControlPanel';
+import HashtagList from '../../Fiuters/Hashtag/HashtagList/HashtagList';
 
 const Home = () => {
   return (
@@ -22,11 +22,7 @@ const Home = () => {
           </Grid>
           <Grid marginLeft={5} xs={3} item>
             <Paper>
-              <List component="nav">
-                <CardHashtag />
-                <CardHashtag />
-                <CardHashtag />
-              </List>
+              <HashtagList />
             </Paper>
           </Grid>
         </Grid>

@@ -15,6 +15,7 @@ const FormHashtag: React.FC<Props> = ({ onSubmit }) => {
   const onFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit({ name: value });
+    setValue('');
   };
 
   return (

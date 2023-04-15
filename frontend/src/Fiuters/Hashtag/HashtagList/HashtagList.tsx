@@ -1,65 +1,31 @@
-import React from 'react';
-import { ButtonGroup, Container, Grid, IconButton, Paper, Typography } from '@mui/material';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import EditIcon from '@mui/icons-material/Edit';
+import React, { useEffect } from 'react';
+import { Alert, CircularProgress } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectHashtagList, selectHashtagListLoading } from '../hashtagSlice';
+import { fetchHashtagList } from '../hashtagThunk';
+import CardHashtag from '../components/CardHashtag/CardHashtag';
 
 const HashtagList = () => {
+  const dispatch = useAppDispatch();
+  const listHashtag = useAppSelector(selectHashtagList);
+  const loadingListHashtag = useAppSelector(selectHashtagListLoading);
+
+  useEffect(() => {
+    dispatch(fetchHashtagList());
+  }, [dispatch]);
+
   return (
-    <Container sx={{ width: '50%', mt: '50px' }}>
-      <Paper sx={{ p: 2 }} elevation={3}>
-        <Paper sx={{ mb: 1, p: 1 }} elevation={2}>
-          <Grid display="flex" justifyContent="space-between" alignItems="center" container>
-            <Grid item>
-              <Typography component="p">Название хэштега 3</Typography>
-            </Grid>
-            <Grid item>
-              <ButtonGroup disableElevation variant="contained" aria-label="Disabled elevation buttons">
-                <IconButton aria-label="delete">
-                  <RemoveCircleIcon />
-                </IconButton>
-                <IconButton aria-label="edit">
-                  <EditIcon />
-                </IconButton>
-              </ButtonGroup>
-            </Grid>
-          </Grid>
-        </Paper>
-        <Paper sx={{ mb: 1, p: 1 }} elevation={2}>
-          <Grid display="flex" justifyContent="space-between" alignItems="center" container>
-            <Grid item>
-              <Typography component="p">Название хэштега 3</Typography>
-            </Grid>
-            <Grid item>
-              <ButtonGroup disableElevation variant="contained" aria-label="Disabled elevation buttons">
-                <IconButton aria-label="delete">
-                  <RemoveCircleIcon />
-                </IconButton>
-                <IconButton aria-label="edit">
-                  <EditIcon />
-                </IconButton>
-              </ButtonGroup>
-            </Grid>
-          </Grid>
-        </Paper>
-        <Paper sx={{ mb: 1, p: 1 }} elevation={2}>
-          <Grid display="flex" justifyContent="space-between" alignItems="center" container>
-            <Grid item>
-              <Typography component="p">Название хэштега 3</Typography>
-            </Grid>
-            <Grid item>
-              <ButtonGroup disableElevation variant="contained" aria-label="Disabled elevation buttons">
-                <IconButton aria-label="delete">
-                  <RemoveCircleIcon />
-                </IconButton>
-                <IconButton aria-label="edit">
-                  <EditIcon />
-                </IconButton>
-              </ButtonGroup>
-            </Grid>
-          </Grid>
-        </Paper>
-      </Paper>
-    </Container>
+    <>
+      {!loadingListHashtag ? (
+        listHashtag.length !== 0 ? (
+          listHashtag.map((hashtag) => <CardHashtag key={hashtag._id} hashtag={hashtag} />)
+        ) : (
+          <Alert severity="info">В данный момент хэштегов нет</Alert>
+        )
+      ) : (
+        <CircularProgress />
+      )}
+    </>
   );
 };
 
