@@ -53,6 +53,7 @@ const hashtagSlice = createSlice({
 
     builder.addCase(fetchOneHashtag.pending, (state) => {
       state.hashtagOneLoading = true;
+      state.hashtagOne = null;
     });
     builder.addCase(fetchOneHashtag.fulfilled, (state, { payload: hashtag }) => {
       state.hashtagOneLoading = false;

@@ -6,10 +6,11 @@ import { selectCreateHashtagLoading } from '../../hashtagSlice';
 
 interface Props {
   onSubmit: (hashtag: HashtagMutation) => void;
+  hashtag?: HashtagMutation;
 }
 
-const FormHashtag: React.FC<Props> = ({ onSubmit }) => {
-  const [value, setValue] = useState('');
+const FormHashtag: React.FC<Props> = ({ onSubmit, hashtag }) => {
+  const [value, setValue] = useState(hashtag ? hashtag.name : '');
   const createLoading = useAppSelector(selectCreateHashtagLoading);
 
   const onFormSubmit = (e: React.FormEvent) => {
@@ -19,7 +20,7 @@ const FormHashtag: React.FC<Props> = ({ onSubmit }) => {
   };
 
   return (
-    <Box component="form" sx={{ mt: 3, width: '50%' }} onSubmit={onFormSubmit}>
+    <Box component="form" sx={{ mt: 3 }} onSubmit={onFormSubmit}>
       <Grid container sx={{ flexDirection: 'column' }} spacing={2}>
         <Grid item xs={12}>
           <TextField

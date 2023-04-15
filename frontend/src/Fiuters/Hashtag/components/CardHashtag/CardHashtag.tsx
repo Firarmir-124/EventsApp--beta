@@ -11,9 +11,10 @@ import { selectRemoveLoading } from '../../../Event/eventSlice';
 interface Props {
   hashtag: HashtagListType;
   removeHashtagCard: React.MouseEventHandler;
+  setOpenModal: React.MouseEventHandler;
 }
 
-const CardHashtag: React.FC<Props> = ({ hashtag, removeHashtagCard }) => {
+const CardHashtag: React.FC<Props> = ({ hashtag, removeHashtagCard, setOpenModal }) => {
   const user = useAppSelector(selectUser);
   const removeLoading = useAppSelector(selectRemoveLoading);
   return (
@@ -29,7 +30,7 @@ const CardHashtag: React.FC<Props> = ({ hashtag, removeHashtagCard }) => {
             <IconButton disabled={removeLoading} onClick={removeHashtagCard} aria-label="delete">
               {!removeLoading ? <RemoveCircleIcon /> : <CircularProgress />}
             </IconButton>
-            <IconButton aria-label="edit">
+            <IconButton onClick={setOpenModal} aria-label="edit">
               <EditIcon />
             </IconButton>
           </ButtonGroup>
