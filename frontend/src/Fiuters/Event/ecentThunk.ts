@@ -60,3 +60,7 @@ export const updateEvent = createAsyncThunk<void, updateType, { rejectValue: Val
     }
   },
 );
+
+export const removeEvent = createAsyncThunk<void, string>('event/remove_event', async (id) => {
+  await axiosApi.delete('/eventPlan/' + id);
+});
