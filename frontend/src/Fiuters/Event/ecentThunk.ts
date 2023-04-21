@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axios';
-import { EventListType, EventMutation, ValidationError } from '../../types';
+import { EventListFull, EventMutation, ValidationError } from '../../types';
 import { isAxiosError } from 'axios';
 
-export const fetchEventList = createAsyncThunk<EventListType, number>('event/fetch_eventList', async (page) => {
-  const response = await axiosApi.get<EventListType>('/eventPlan?page=' + page);
+export const fetchEventList = createAsyncThunk<EventListFull, number>('event/fetch_eventList', async (page) => {
+  const response = await axiosApi.get<EventListFull>('/eventPlan?page=' + page);
   return response.data;
 });
 

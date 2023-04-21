@@ -1,10 +1,10 @@
-import { EventListType, EventOne, ValidationError } from '../../types';
+import { EventListFull, EventOne, ValidationError } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { createEvent, fetchEventList } from './ecentThunk';
 
 interface EventType {
-  eventList: EventListType;
+  eventList: EventListFull;
   eventListLoading: boolean;
   eventCreateLoading: boolean;
   eventEditLoading: boolean;

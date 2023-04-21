@@ -1,22 +1,30 @@
 import React from 'react';
 import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { EventList } from '../../../../types';
+import { apiURL } from '../../../../constants';
+import eventImage from '../../../../assest/images/event.png';
 
-const CardEvent = () => {
+interface Props {
+  event: EventList;
+}
+
+const CardEvent: React.FC<Props> = ({ event }) => {
+  let image = eventImage;
+
+  if (event.image) {
+    image = apiURL + '/' + event.image;
+  }
+
   return (
     <Card sx={{ mb: 1 }}>
-      <CardMedia
-        sx={{ height: 140 }}
-        image="https://www.goodnewsfinland.com/dam/jcr:21869ba0-942b-4be5-81fc-e5b663a32027/event-management_2000x1125-1076535.jpeg"
-        title="green iguana"
-      />
+      <CardMedia sx={{ height: 140 }} image={image} title="green iguana" />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Lizard
+          {event.title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents
-          except Antarctica
+          Дата начала: {event.time}
         </Typography>
       </CardContent>
       <CardActions>

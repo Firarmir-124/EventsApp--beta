@@ -37,21 +37,23 @@ export interface GlobalError {
   error: string;
 }
 
-export interface EventListType {
+export interface EventList {
+  _id: string;
+  title: string;
+  speaker: [
+    {
+      name: string;
+    },
+  ];
+  time: string;
+  image: string;
+  hashtag: string;
+  user: string;
+}
+
+export interface EventListFull {
   eventPlanListLength: number;
-  eventPlanList: {
-    _id: string;
-    title: string;
-    speaker: [
-      {
-        name: string;
-      },
-    ];
-    time: string;
-    image: string;
-    hashtag: string;
-    user: string;
-  }[];
+  eventPlanList: EventList[];
 }
 
 export interface EventOne {

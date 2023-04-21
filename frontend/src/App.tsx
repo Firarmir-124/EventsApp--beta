@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Home from './containers/Home/Home';
-import FullEvent from './Fiuters/Event/FullEvent/FullEvent';
+import FullEvent from './Fiuters/Event/FullEvent';
 import Event from './Fiuters/Event/Event';
-import EventList from './Fiuters/Event/EventList/EventList';
-import CreateEvent from './Fiuters/Event/CreateEvent/CreateEvent';
+import EventList from './Fiuters/Event/EventList';
+import CreateEvent from './Fiuters/Event/CreateEvent';
 import HashtagCreate from './Fiuters/Hashtag/HashtagCreate';
 import Register from './Fiuters/User/Register/Register';
 import Login from './Fiuters/User/Login/Login';

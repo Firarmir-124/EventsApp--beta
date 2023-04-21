@@ -1,11 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../../components/Layout/Layout';
-import { Container, Grid, Pagination, Paper } from '@mui/material';
-import CardEvent from '../../Fiuters/Event/components/CardEvent/CardEvent';
+import { Alert, CircularProgress, Container, Grid, Pagination, Paper } from '@mui/material';
 import ControlPanel from '../../components/ControlPanel/ControlPanel';
 import HashtagList from '../../Fiuters/Hashtag/HashtagList';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectEventList, selectEventLoading } from '../../Fiuters/Event/eventSlice';
+import { fetchEventList } from '../../Fiuters/Event/ecentThunk';
+import CardEvent from '../../Fiuters/Event/components/CardEvent/CardEvent';
 
 const Home = () => {
+  const [page, setPage] = useState(1);
+  const dispatch = useAppDispatch();
+  const events = useAppSelector(selectEventList);
+  const loadingEventList = useAppSelector(selectEventLoading);
+
+  useEffect(() => {
+    if (page) {
+      dispatch(fetchEventList(page));
+    }
+  }, [dispatch, page]);
+
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
   return (
     <Layout>
       <Container style={{ marginTop: '10px', position: 'relative' }}>
@@ -15,9 +33,15 @@ const Home = () => {
               <ControlPanel />
             </Paper>
             <Paper sx={{ p: 1 }}>
-              <CardEvent />
-              <CardEvent />
-              <CardEvent />
+              {!loadingEventList ? (
+                events.eventPlanList.length !== 0 ? (
+                  events.eventPlanList.map((event) => <CardEvent key={event._id} event={event} />)
+                ) : (
+                  <Alert severity="info">Списка нет</Alert>
+                )
+              ) : (
+                <CircularProgress />
+              )}
             </Paper>
           </Grid>
           <Grid marginLeft={5} xs={3} item>
@@ -26,7 +50,7 @@ const Home = () => {
             </Paper>
           </Grid>
         </Grid>
-        <Pagination sx={{ my: '20px' }} count={10} color="primary" />
+        <Pagination count={Math.ceil(events.eventPlanListLength / 15)} page={page} onChange={handleChange} />
       </Container>
     </Layout>
   );
