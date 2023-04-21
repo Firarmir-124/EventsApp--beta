@@ -1,31 +1,46 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, Box, Button, Grid, IconButton, Paper, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  IconButton,
+  MenuItem,
+  Paper,
+  TextField,
+  Typography,
+} from '@mui/material';
 import SimpleMdeReact from 'react-simplemde-editor';
-import { LocalizationProvider, StaticDateTimePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs, { Dayjs } from 'dayjs';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import FileInput from '../../../../components/FileInput/FileInput';
+import { EventMutation } from '../../../../types';
+import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
+import { fetchHashtagList } from '../../../Hashtag/hashtagThunk';
+import { selectHashtagList, selectHashtagListLoading } from '../../../Hashtag/hashtagSlice';
+import Divider from '@mui/material/Divider';
 
-const FormEvent = () => {
+interface Props {
+  onSubmit: (event: EventMutation) => void;
+}
+
+const FormEvent: React.FC<Props> = ({ onSubmit }) => {
+  const dispatch = useAppDispatch();
   const [speaker, setSpeaker] = useState([{ name: '' }]);
-  const [time, setTime] = React.useState<Dayjs | null>(null);
   const [eventType, setEventType] = useState({
     title: '',
     description: '',
     image: null,
+    hashtag: '',
+    time: '',
   });
-  const [fileDataURL, setFileDataURL] = useState<string | null>(null);
+  const hashtags = useAppSelector(selectHashtagList);
+  const loadingHashtag = useAppSelector(selectHashtagListLoading);
 
   useEffect(() => {
-    if (!eventType.image) return;
-    const reader = new FileReader();
-    reader.readAsDataURL(eventType.image);
-    reader.onload = () => {
-      setFileDataURL(reader.result as string);
-    };
-  }, [eventType.image]);
+    dispatch(fetchHashtagList());
+  }, [dispatch]);
 
   const addIngredient = () => {
     setSpeaker((prev) => [...prev, { name: '' }]);
@@ -50,11 +65,10 @@ const FormEvent = () => {
 
     const obj = {
       ...eventType,
-      time: dayjs(time).format('MMMM D, YYYY h:mm A'),
-      speaker,
+      speaker: JSON.stringify(speaker),
     };
 
-    console.log(obj);
+    onSubmit(obj);
   };
 
   const fileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +77,7 @@ const FormEvent = () => {
   };
 
   return (
-    <Box component="form" sx={{ mt: 3, width: '50%' }} onSubmit={onFormSubmit}>
+    <Box component="form" sx={{ mt: 3, width: '100%' }} onSubmit={onFormSubmit}>
       <Grid container sx={{ flexDirection: 'column' }} spacing={2}>
         <Grid item xs={12}>
           <TextField
@@ -76,26 +90,16 @@ const FormEvent = () => {
             onChange={onChange}
           />
         </Grid>
-        <Grid item xs={12}>
-          <SimpleMdeReact value={eventType.description} onChange={onChangeDescription} />
-        </Grid>
-        <Grid item xs={12}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <StaticDateTimePicker
-              value={time}
-              onChange={(newValue) => setTime(newValue)}
-              defaultValue={dayjs('2022-04-17T15:30')}
-            />
-          </LocalizationProvider>
-        </Grid>
-        <Grid item xs={12}>
-          <IconButton onClick={addIngredient} aria-label="delete">
-            <AddCircleIcon color="warning" sx={{ fontSize: '40px' }} />
-            <Typography sx={{ ml: '10px' }} component="p">
-              Добавить спикера
-            </Typography>
-          </IconButton>
-          <Paper sx={{ p: 1 }} elevation={3}>
+        <Grid item xs={12} display="flex">
+          <SimpleMdeReact style={{ width: '100%' }} value={eventType.description} onChange={onChangeDescription} />
+          <Paper sx={{ p: 1, width: '40%' }} elevation={3}>
+            <IconButton onClick={addIngredient} aria-label="delete">
+              <AddCircleIcon color="warning" sx={{ fontSize: '40px' }} />
+              <Typography sx={{ ml: '10px' }} component="p">
+                Добавить спикера
+              </Typography>
+            </IconButton>
+
             {speaker.length !== 0 ? (
               speaker.map((item, index) => (
                 <Paper key={index} sx={{ p: 1, mb: 2 }} elevation={3}>
@@ -123,15 +127,53 @@ const FormEvent = () => {
             )}
           </Paper>
         </Grid>
-        <Grid item xs={12}>
-          <FileInput onChange={fileInputChange} name="image" label="Выбрать шаблон" />
 
-          <Paper sx={{ p: 1 }} elevation={3}>
-            <img width="500px" height="auto" src={fileDataURL || ''} alt="" />
-          </Paper>
+        <Grid item xs={12} display="flex" marginBottom="20px">
+          <TextField
+            name="time"
+            value={eventType.time}
+            onChange={onChange}
+            id="datetime-local"
+            label="Выбрать дату и время"
+            type="datetime-local"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            sx={{ mr: '10px' }}
+          />
+
+          <TextField
+            name="hashtag"
+            value={eventType.hashtag}
+            onChange={onChange}
+            select
+            label="Выбрать хэштег"
+            required
+            sx={{ width: '200px', mr: '10px' }}
+          >
+            <MenuItem value="" disabled>
+              Выберите хэштег:
+            </MenuItem>
+            {!loadingHashtag ? (
+              hashtags.length !== 0 ? (
+                hashtags.map((hashtag) => (
+                  <MenuItem key={hashtag._id} value={hashtag._id}>
+                    {hashtag.name}
+                  </MenuItem>
+                ))
+              ) : (
+                <Alert severity="info">Список пуст</Alert>
+              )
+            ) : (
+              <CircularProgress />
+            )}
+          </TextField>
+
+          <FileInput onChange={fileInputChange} name="image" label="Выбрать шаблон" />
         </Grid>
       </Grid>
-      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+      <Divider />
+      <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
         Создать
       </Button>
     </Box>

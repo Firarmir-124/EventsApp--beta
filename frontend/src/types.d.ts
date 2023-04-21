@@ -75,7 +75,7 @@ export interface EventMutation {
   title: string;
   description: string;
   time: string;
-  image: string;
+  image: File | null;
   hashtag: string;
 }
 

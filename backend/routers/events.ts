@@ -5,6 +5,7 @@ import auth from '../middleware/auth';
 import permit from '../middleware/permit';
 import mongoose from 'mongoose';
 import { EventType } from '../types';
+import { imagesUpload } from '../multer';
 
 const eventsRouter = express.Router();
 
@@ -26,14 +27,14 @@ eventsRouter.get('/', authAnonymous, async (req, res) => {
   }
 });
 
-eventsRouter.post('/', auth, permit('organizer'), async (req, res, next) => {
+eventsRouter.post('/', imagesUpload.single('image'), auth, permit('organizer'), async (req, res, next) => {
   try {
     const user = (req as RequestWitUser).user;
 
     const newEventPlan = await EventPlan.create({
       title: req.body.title,
       description: req.body.description,
-      speaker: req.body.speaker,
+      speaker: JSON.parse(req.body.speaker),
       time: req.body.time,
       image: req.file && req.file.filename,
       hashtag: req.body.hashtag,
