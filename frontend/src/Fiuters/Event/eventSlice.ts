@@ -1,7 +1,7 @@
 import { EventListFull, EventOne, ValidationError } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { createEvent, fetchEventList } from './ecentThunk';
+import { createEvent, fetchEventList } from './eventThunk';
 
 interface EventType {
   eventList: EventListFull;

@@ -5,7 +5,7 @@ import ControlPanel from '../../components/ControlPanel/ControlPanel';
 import HashtagList from '../../Fiuters/Hashtag/HashtagList';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectEventList, selectEventLoading } from '../../Fiuters/Event/eventSlice';
-import { fetchEventList } from '../../Fiuters/Event/ecentThunk';
+import { fetchEventList } from '../../Fiuters/Event/eventThunk';
 import CardEvent from '../../Fiuters/Event/components/CardEvent/CardEvent';
 
 const Home = () => {

@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectEventList, selectEventLoading } from './eventSlice';
-import { fetchEventList } from './ecentThunk';
+import { fetchEventList } from './eventThunk';
 import { StyledTableCell, StyledTableRow } from '../../constants';
 
 const EventList = () => {
