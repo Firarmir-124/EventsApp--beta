@@ -1,9 +1,11 @@
 import { EventListType, EventOne, ValidationError } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
+import { createEvent, fetchEventList } from './ecentThunk';
 
 interface EventType {
-  eventList: EventListType[];
+  eventList: EventListType;
+  eventListLoading: boolean;
   eventCreateLoading: boolean;
   eventEditLoading: boolean;
   eventRemoveLoading: boolean;
@@ -13,7 +15,11 @@ interface EventType {
 }
 
 const initialState: EventType = {
-  eventList: [],
+  eventList: {
+    eventPlanListLength: 0,
+    eventPlanList: [],
+  },
+  eventListLoading: false,
   eventCreateLoading: false,
   eventEditLoading: false,
   eventRemoveLoading: false,
@@ -26,6 +32,28 @@ const eventSlice = createSlice({
   name: 'event',
   initialState,
   reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(fetchEventList.pending, (state) => {
+      state.eventListLoading = true;
+    });
+    builder.addCase(fetchEventList.fulfilled, (state, { payload: eventList }) => {
+      state.eventListLoading = false;
+      state.eventList = eventList;
+    });
+    builder.addCase(fetchEventList.rejected, (state) => {
+      state.eventListLoading = false;
+    });
+
+    builder.addCase(createEvent.pending, (state) => {
+      state.eventCreateLoading = true;
+    });
+    builder.addCase(createEvent.fulfilled, (state) => {
+      state.eventCreateLoading = false;
+    });
+    builder.addCase(createEvent.rejected, (state) => {
+      state.eventCreateLoading = false;
+    });
+  },
 });
 
 export const eventReducer = eventSlice.reducer;
@@ -37,3 +65,4 @@ export const selectRemoveLoading = (state: RootState) => state.eventReducer.even
 export const selectEventOne = (state: RootState) => state.eventReducer.eventOne;
 export const selectEventOneLoading = (state: RootState) => state.eventReducer.eventOneLoading;
 export const selectEventError = (state: RootState) => state.eventReducer.eventError;
+export const selectEventLoading = (state: RootState) => state.eventReducer.eventListLoading;
