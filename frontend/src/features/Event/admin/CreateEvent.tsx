@@ -13,7 +13,7 @@ const CreateEvent = () => {
   const dispatch = useAppDispatch();
 
   const onSubmit = async (event: EventMutation) => {
-    await dispatch(createEvent(event));
+    await dispatch(createEvent(event)).unwrap();
     navigate('/');
   };
   return (

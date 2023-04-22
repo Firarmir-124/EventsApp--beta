@@ -20,6 +20,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { fetchHashtagList } from '../../Hashtag/hashtagThunk';
 import { selectHashtagList, selectHashtagListLoading } from '../../Hashtag/hashtagSlice';
 import Divider from '@mui/material/Divider';
+import { selectEventError } from '../eventSlice';
 
 interface Props {
   onSubmit: (event: EventMutation) => void;
@@ -37,6 +38,7 @@ const FormEvent: React.FC<Props> = ({ onSubmit }) => {
   });
   const hashtags = useAppSelector(selectHashtagList);
   const loadingHashtag = useAppSelector(selectHashtagListLoading);
+  const error = useAppSelector(selectEventError);
 
   useEffect(() => {
     dispatch(fetchHashtagList());
@@ -76,6 +78,14 @@ const FormEvent: React.FC<Props> = ({ onSubmit }) => {
     setEventType((prev) => ({ ...prev, [name]: files && files[0] ? files[0] : null }));
   };
 
+  const getFieldError = (fieldName: string) => {
+    try {
+      return error?.errors[fieldName].message;
+    } catch {
+      return undefined;
+    }
+  };
+
   return (
     <Box component="form" sx={{ mt: 3, width: '100%' }} onSubmit={onFormSubmit}>
       <Grid container sx={{ flexDirection: 'column' }} spacing={2}>
@@ -88,6 +98,9 @@ const FormEvent: React.FC<Props> = ({ onSubmit }) => {
             fullWidth
             value={eventType.title}
             onChange={onChange}
+            required
+            error={Boolean(getFieldError('title'))}
+            helperText={getFieldError('title')}
           />
         </Grid>
         <Grid item xs={12} display="flex">
@@ -116,6 +129,9 @@ const FormEvent: React.FC<Props> = ({ onSubmit }) => {
                         return result;
                       });
                     }}
+                    required
+                    error={Boolean(getFieldError('name'))}
+                    helperText={getFieldError('name')}
                   />
                   <IconButton onClick={() => removeIngredient(index)} aria-label="delete">
                     <RemoveCircleIcon color="warning" sx={{ fontSize: '40px' }} />
@@ -140,6 +156,9 @@ const FormEvent: React.FC<Props> = ({ onSubmit }) => {
               shrink: true,
             }}
             sx={{ mr: '10px' }}
+            required
+            error={Boolean(getFieldError('time'))}
+            helperText={getFieldError('time')}
           />
 
           <TextField
@@ -150,6 +169,8 @@ const FormEvent: React.FC<Props> = ({ onSubmit }) => {
             label="Выбрать хэштег"
             required
             sx={{ width: '200px', mr: '10px' }}
+            error={Boolean(getFieldError('hashtag'))}
+            helperText={getFieldError('hashtag')}
           >
             <MenuItem value="" disabled>
               Выберите хэштег:
