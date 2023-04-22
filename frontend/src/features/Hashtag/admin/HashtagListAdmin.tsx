@@ -6,6 +6,7 @@ import { deleteHashtag, editHashtag, fetchHashtagList, fetchOneHashtag } from '.
 import CardHashtagAdmin from '../components/CardHashtagAdmin';
 import { HashtagMutation } from '../../../types';
 import FormHashtag from '../components/FormHashtag';
+import SnackbarCard from '../../../components/SnackbarCard';
 
 const HashtagListAdmin = () => {
   const [id, setId] = useState('');
@@ -87,6 +88,7 @@ const HashtagListAdmin = () => {
           <Button onClick={closeModal}>Закрыть</Button>
         </DialogActions>
       </Dialog>
+      <SnackbarCard />
     </>
   );
 };

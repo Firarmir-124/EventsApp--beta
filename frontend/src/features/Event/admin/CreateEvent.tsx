@@ -16,7 +16,7 @@ const CreateEvent = () => {
 
   const onSubmit = async (event: EventMutation) => {
     await dispatch(createEvent(event)).unwrap();
-    navigate('/');
+    navigate('/event');
   };
 
   if (user?.role !== 'organizer') {

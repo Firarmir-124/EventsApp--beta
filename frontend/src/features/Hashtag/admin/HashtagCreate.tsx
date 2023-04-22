@@ -1,20 +1,20 @@
 import React from 'react';
-import { Alert, Avatar, Box, Container, Snackbar, Typography } from '@mui/material';
+import { Avatar, Box, Container, Typography } from '@mui/material';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import HashtagListAdmin from './HashtagListAdmin';
 import FormHashtag from '../components/FormHashtag';
 import { useAppDispatch } from '../../../app/hooks';
 import { createHashtag, fetchHashtagList } from '../hashtagThunk';
 import { HashtagMutation } from '../../../types';
+import { openSnackbar } from '../../Event/eventSlice';
 
 const HashtagCreate = () => {
-  const [open, setOpen] = React.useState(false);
   const dispatch = useAppDispatch();
 
   const onSubmit = async (hashtag: HashtagMutation) => {
     await dispatch(createHashtag(hashtag)).unwrap();
-    setOpen(true);
     await dispatch(fetchHashtagList()).unwrap();
+    dispatch(openSnackbar({ status: true, parameter: 'create_hashtag' }));
   };
 
   return (
@@ -39,12 +39,6 @@ const HashtagCreate = () => {
 
         <HashtagListAdmin />
       </Container>
-
-      <Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)}>
-        <Alert onClose={() => setOpen(false)} severity="success" sx={{ width: '100%' }}>
-          Хэштег успешно создан !
-        </Alert>
-      </Snackbar>
     </Container>
   );
 };

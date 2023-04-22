@@ -1,5 +1,5 @@
 import { EventListFull, EventOne, ValidationError } from '../../types';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { createEvent, fetchEventList } from './eventThunk';
 
@@ -12,6 +12,10 @@ interface EventType {
   eventOne: EventOne | null;
   eventOneLoading: boolean;
   eventError: ValidationError | null;
+  snackbar: {
+    status: boolean;
+    parameter: string;
+  };
 }
 
 const initialState: EventType = {
@@ -26,12 +30,20 @@ const initialState: EventType = {
   eventOne: null,
   eventOneLoading: false,
   eventError: null,
+  snackbar: {
+    status: false,
+    parameter: '',
+  },
 };
 
 const eventSlice = createSlice({
   name: 'event',
   initialState,
-  reducers: {},
+  reducers: {
+    openSnackbar: (state, { payload: obj }: PayloadAction<{ status: boolean; parameter: string }>) => {
+      state.snackbar = obj;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchEventList.pending, (state) => {
       state.eventListLoading = true;
@@ -57,6 +69,7 @@ const eventSlice = createSlice({
 });
 
 export const eventReducer = eventSlice.reducer;
+export const { openSnackbar } = eventSlice.actions;
 
 export const selectEventList = (state: RootState) => state.eventReducer.eventList;
 export const selectCreateLoading = (state: RootState) => state.eventReducer.eventCreateLoading;
@@ -66,3 +79,4 @@ export const selectEventOne = (state: RootState) => state.eventReducer.eventOne;
 export const selectEventOneLoading = (state: RootState) => state.eventReducer.eventOneLoading;
 export const selectEventError = (state: RootState) => state.eventReducer.eventError;
 export const selectEventLoading = (state: RootState) => state.eventReducer.eventListLoading;
+export const selectSnackbarState = (state: RootState) => state.eventReducer.snackbar;
