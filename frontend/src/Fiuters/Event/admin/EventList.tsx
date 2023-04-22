@@ -13,10 +13,10 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectEventList, selectEventLoading } from './eventSlice';
-import { fetchEventList } from './eventThunk';
-import { StyledTableCell, StyledTableRow } from '../../constants';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectEventList, selectEventLoading } from '../eventSlice';
+import { fetchEventList } from '../eventThunk';
+import { StyledTableCell, StyledTableRow } from '../../../constants';
 
 const EventList = () => {
   const [page, setPage] = React.useState(1);
@@ -73,7 +73,7 @@ const EventList = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Pagination count={Math.ceil(eventList.eventPlanListLength / 15)} page={page} onChange={handleChange} />
+      <Pagination count={Math.ceil(eventList.eventPlanListLength / 5)} page={page} onChange={handleChange} />
     </Container>
   );
 };

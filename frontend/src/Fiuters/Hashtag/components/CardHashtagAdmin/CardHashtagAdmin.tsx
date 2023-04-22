@@ -14,7 +14,7 @@ interface Props {
   setOpenModal: React.MouseEventHandler;
 }
 
-const CardHashtag: React.FC<Props> = ({ hashtag, removeHashtagCard, setOpenModal }) => {
+const CardHashtagAdmin: React.FC<Props> = ({ hashtag, removeHashtagCard, setOpenModal }) => {
   const user = useAppSelector(selectUser);
   const removeLoading = useAppSelector(selectRemoveLoading);
   return (
@@ -41,4 +41,4 @@ const CardHashtag: React.FC<Props> = ({ hashtag, removeHashtagCard, setOpenModal
   );
 };
 
-export default CardHashtag;
+export default CardHashtagAdmin;

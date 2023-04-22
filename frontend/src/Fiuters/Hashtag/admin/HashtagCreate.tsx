@@ -1,11 +1,11 @@
 import React from 'react';
 import { Alert, Avatar, Box, Container, Snackbar, Typography } from '@mui/material';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-import HashtagList from './HashtagList';
-import FormHashtag from './components/FormHashtag/FormHashtag';
-import { useAppDispatch } from '../../app/hooks';
-import { createHashtag, fetchHashtagList } from './hashtagThunk';
-import { HashtagMutation } from '../../types';
+import HashtagListAdmin from './HashtagListAdmin';
+import FormHashtag from '../components/FormHashtag/FormHashtag';
+import { useAppDispatch } from '../../../app/hooks';
+import { createHashtag, fetchHashtagList } from '../hashtagThunk';
+import { HashtagMutation } from '../../../types';
 
 const HashtagCreate = () => {
   const [open, setOpen] = React.useState(false);
@@ -37,7 +37,7 @@ const HashtagCreate = () => {
           <FormHashtag onSubmit={onSubmit} />
         </Box>
 
-        <HashtagList />
+        <HashtagListAdmin />
       </Container>
 
       <Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)}>

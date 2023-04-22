@@ -2,10 +2,10 @@ import React from 'react';
 import { Avatar, Box, Container, Typography } from '@mui/material';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import 'easymde/dist/easymde.min.css';
-import FormEvent from './components/FormEvent/FormEvent';
-import { EventMutation } from '../../types';
-import { useAppDispatch } from '../../app/hooks';
-import { createEvent } from './eventThunk';
+import FormEvent from '../components/FormEvent/FormEvent';
+import { EventMutation } from '../../../types';
+import { useAppDispatch } from '../../../app/hooks';
+import { createEvent } from '../eventThunk';
 import { useNavigate } from 'react-router-dom';
 
 const CreateEvent = () => {

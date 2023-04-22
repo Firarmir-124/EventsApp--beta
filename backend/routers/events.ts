@@ -12,7 +12,7 @@ const eventsRouter = express.Router();
 eventsRouter.get('/', authAnonymous, async (req, res) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
-    const perPage = 15;
+    const perPage = 8;
 
     const eventPlanListFull = await EventPlan.find();
 

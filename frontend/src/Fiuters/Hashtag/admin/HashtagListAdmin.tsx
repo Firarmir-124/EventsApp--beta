@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, CircularProgress, Dialog, DialogActions, DialogContent, Snackbar } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectHashtagList, selectHashtagListLoading, selectHashtagOne } from './hashtagSlice';
-import { deleteHashtag, editHashtag, fetchHashtagList, fetchOneHashtag } from './hashtagThunk';
-import CardHashtag from './components/CardHashtag/CardHashtag';
-import { HashtagMutation } from '../../types';
-import FormHashtag from './components/FormHashtag/FormHashtag';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectHashtagList, selectHashtagListLoading, selectHashtagOne } from '../hashtagSlice';
+import { deleteHashtag, editHashtag, fetchHashtagList, fetchOneHashtag } from '../hashtagThunk';
+import CardHashtagAdmin from '../components/CardHashtagAdmin/CardHashtagAdmin';
+import { HashtagMutation } from '../../../types';
+import FormHashtag from '../components/FormHashtag/FormHashtag';
 
-const HashtagList = () => {
+const HashtagListAdmin = () => {
   const [id, setId] = useState('');
   const [open, setOpen] = useState(false);
   const [modal, setModal] = useState(false);
@@ -56,7 +56,7 @@ const HashtagList = () => {
       {!loadingListHashtag ? (
         listHashtag.length !== 0 ? (
           listHashtag.map((hashtag) => (
-            <CardHashtag
+            <CardHashtagAdmin
               setOpenModal={() => setOpenModal(hashtag._id)}
               removeHashtagCard={() => removeHashtagCard(hashtag._id)}
               key={hashtag._id}
@@ -91,4 +91,4 @@ const HashtagList = () => {
   );
 };
 
-export default HashtagList;
+export default HashtagListAdmin;
