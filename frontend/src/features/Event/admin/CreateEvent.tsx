@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { createEvent } from '../eventThunk';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { selectUser } from '../../User/usersSlice';
+import { openSnackbar } from '../eventSlice';
 
 const CreateEvent = () => {
   const user = useAppSelector(selectUser);
@@ -16,6 +17,7 @@ const CreateEvent = () => {
 
   const onSubmit = async (event: EventMutation) => {
     await dispatch(createEvent(event)).unwrap();
+    dispatch(openSnackbar({ status: true, parameter: 'create_event' }));
     navigate('/event');
   };
 

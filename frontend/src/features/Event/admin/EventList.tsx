@@ -19,6 +19,7 @@ import { StyledTableCell } from '../../../constants';
 import CardEventAdmin from '../components/CardEventAdmin';
 import { Navigate } from 'react-router-dom';
 import { selectUser } from '../../User/usersSlice';
+import SnackbarCard from '../../../components/SnackbarCard';
 
 const EventList = () => {
   const user = useAppSelector(selectUser);
@@ -83,6 +84,7 @@ const EventList = () => {
         page={page}
         onChange={handleChange}
       />
+      <SnackbarCard />
     </Container>
   );
 };
