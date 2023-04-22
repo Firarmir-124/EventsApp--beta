@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Button, Card, CardActions, CardContent, Container, Paper, Typography, Avatar, Chip } from '@mui/material';
 import Layout from '../../../components/Layout/Layout';
 import GoogleMapReact from 'google-map-react';
-import ContactUs from '../../../components/ContactUs/ContactUs';
+import ContactUs from '../components/ContactUs';
 
 const FullEvent = () => {
   const defaultProps = {

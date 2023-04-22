@@ -85,7 +85,9 @@ const UserMenu: React.FC<Props> = ({ user }) => {
           <ListItemIcon>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
-          <Link to="event">Управление мероприятем</Link>
+          <Link style={{ textDecoration: 'none', color: '#000' }} to="/event">
+            Управление мероприятем
+          </Link>
         </MenuItem>
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
