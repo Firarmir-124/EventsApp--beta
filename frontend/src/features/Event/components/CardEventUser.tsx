@@ -1,15 +1,15 @@
 import React from 'react';
 import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { EventList } from '../../../../types';
-import { apiURL } from '../../../../constants';
-import eventImage from '../../../../assest/images/event.png';
+import { EventList } from '../../../types';
+import { apiURL } from '../../../constants';
+import eventImage from '../../../assests/images/event.png';
 
 interface Props {
   event: EventList;
 }
 
-const CardEvent: React.FC<Props> = ({ event }) => {
+const CardEventUser: React.FC<Props> = ({ event }) => {
   let image = eventImage;
 
   if (event.image) {
@@ -36,4 +36,4 @@ const CardEvent: React.FC<Props> = ({ event }) => {
   );
 };
 
-export default CardEvent;
+export default CardEventUser;

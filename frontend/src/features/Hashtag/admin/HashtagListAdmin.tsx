@@ -3,9 +3,9 @@ import { Alert, Button, CircularProgress, Dialog, DialogActions, DialogContent, 
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectHashtagList, selectHashtagListLoading, selectHashtagOne } from '../hashtagSlice';
 import { deleteHashtag, editHashtag, fetchHashtagList, fetchOneHashtag } from '../hashtagThunk';
-import CardHashtagAdmin from '../components/CardHashtagAdmin/CardHashtagAdmin';
+import CardHashtagAdmin from '../components/CardHashtagAdmin';
 import { HashtagMutation } from '../../../types';
-import FormHashtag from '../components/FormHashtag/FormHashtag';
+import FormHashtag from '../components/FormHashtag';
 
 const HashtagListAdmin = () => {
   const [id, setId] = useState('');

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, CircularProgress, Grid, Pagination, Paper } from '@mui/material';
-import CardEvent from '../components/CardEvent/CardEvent';
+import CardEventUser from '../components/CardEventUser';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectEventList, selectEventLoading } from '../eventSlice';
 import { fetchEventList } from '../eventThunk';
@@ -29,7 +29,7 @@ const EventListUser = () => {
       <Paper sx={{ p: 1 }}>
         {!loadingEventList ? (
           events.eventPlanList.length !== 0 ? (
-            events.eventPlanList.map((event) => <CardEvent key={event._id} event={event} />)
+            events.eventPlanList.map((event) => <CardEventUser key={event._id} event={event} />)
           ) : (
             <Alert severity="info">Списка нет</Alert>
           )

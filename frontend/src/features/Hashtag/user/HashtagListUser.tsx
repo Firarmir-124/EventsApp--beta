@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Alert, CircularProgress, Grid, List, ListSubheader, Paper } from '@mui/material';
-import CardHashtagUser from '../components/CardHashtagUser/CardHashtagUser';
+import CardHashtagUser from '../components/CardHashtagUser';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectHashtagList, selectHashtagListLoading } from '../hashtagSlice';
 import { fetchHashtagList } from '../hashtagThunk';

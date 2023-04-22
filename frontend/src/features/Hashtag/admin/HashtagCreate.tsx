@@ -2,7 +2,7 @@ import React from 'react';
 import { Alert, Avatar, Box, Container, Snackbar, Typography } from '@mui/material';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import HashtagListAdmin from './HashtagListAdmin';
-import FormHashtag from '../components/FormHashtag/FormHashtag';
+import FormHashtag from '../components/FormHashtag';
 import { useAppDispatch } from '../../../app/hooks';
 import { createHashtag, fetchHashtagList } from '../hashtagThunk';
 import { HashtagMutation } from '../../../types';

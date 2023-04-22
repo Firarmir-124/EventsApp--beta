@@ -1,8 +1,8 @@
 import React from 'react';
 import Layout from '../../components/Layout/Layout';
 import { Chip, Container, Grid } from '@mui/material';
-import HashtagListUser from '../../Fiuters/Hashtag/user/HashtagListUser';
-import EventListUser from '../../Fiuters/Event/user/EventListUser';
+import HashtagListUser from '../Hashtag/user/HashtagListUser';
+import EventListUser from '../Event/user/EventListUser';
 
 const Home = () => {
   return (

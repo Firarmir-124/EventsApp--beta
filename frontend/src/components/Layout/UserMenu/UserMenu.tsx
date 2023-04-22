@@ -9,7 +9,7 @@ import Logout from '@mui/icons-material/Logout';
 import { IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { User } from '../../../types';
-import { logout } from '../../../Fiuters/User/usersThunk';
+import { logout } from '../../../features/User/usersThunk';
 import { useAppDispatch } from '../../../app/hooks';
 
 interface Props {

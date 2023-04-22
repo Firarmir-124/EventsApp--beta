@@ -1,6 +1,6 @@
 import React from 'react';
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import { HashtagListType } from '../../../../types';
+import { HashtagListType } from '../../../types';
 import SendIcon from '@mui/icons-material/Send';
 
 interface Props {

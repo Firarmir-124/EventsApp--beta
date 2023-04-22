@@ -14,11 +14,11 @@ import {
 import SimpleMdeReact from 'react-simplemde-editor';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import FileInput from '../../../../components/FileInput/FileInput';
-import { EventMutation } from '../../../../types';
-import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
-import { fetchHashtagList } from '../../../Hashtag/hashtagThunk';
-import { selectHashtagList, selectHashtagListLoading } from '../../../Hashtag/hashtagSlice';
+import FileInput from '../../../components/FileInput/FileInput';
+import { EventMutation } from '../../../types';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { fetchHashtagList } from '../../Hashtag/hashtagThunk';
+import { selectHashtagList, selectHashtagListLoading } from '../../Hashtag/hashtagSlice';
 import Divider from '@mui/material/Divider';
 
 interface Props {

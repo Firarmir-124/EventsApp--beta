@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Button, CircularProgress, Grid, TextField } from '@mui/material';
-import { HashtagMutation } from '../../../../types';
-import { useAppSelector } from '../../../../app/hooks';
-import { selectCreateHashtagLoading } from '../../hashtagSlice';
+import { HashtagMutation } from '../../../types';
+import { useAppSelector } from '../../../app/hooks';
+import { selectCreateHashtagLoading } from '../hashtagSlice';
 
 interface Props {
   onSubmit: (hashtag: HashtagMutation) => void;

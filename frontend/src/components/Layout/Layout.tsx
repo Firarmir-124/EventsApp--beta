@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import AnonymousMenu from './AnonymousMenu/AnonymousMenu';
 import UserMenu from './UserMenu/UserMenu';
 import { useAppSelector } from '../../app/hooks';
-import { selectUser } from '../../Fiuters/User/usersSlice';
+import { selectUser } from '../../features/User/usersSlice';
 
 interface Props {
   children: React.ReactNode;

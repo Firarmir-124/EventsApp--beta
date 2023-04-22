@@ -1,12 +1,12 @@
 import React from 'react';
 import { ButtonGroup, CircularProgress, Divider, IconButton, List, ListItemIcon, ListItemText } from '@mui/material';
 import InboxIcon from '@mui/icons-material/Inbox';
-import { HashtagListType } from '../../../../types';
+import { HashtagListType } from '../../../types';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import EditIcon from '@mui/icons-material/Edit';
-import { useAppSelector } from '../../../../app/hooks';
-import { selectUser } from '../../../User/usersSlice';
-import { selectRemoveLoading } from '../../../Event/eventSlice';
+import { useAppSelector } from '../../../app/hooks';
+import { selectUser } from '../../User/usersSlice';
+import { selectRemoveLoading } from '../../Event/eventSlice';
 
 interface Props {
   hashtag: HashtagListType;

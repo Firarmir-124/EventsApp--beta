@@ -1,13 +1,13 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Home from './containers/Home/Home';
-import FullEvent from './Fiuters/Event/user/FullEvent';
-import Event from './Fiuters/Event/Event';
-import EventList from './Fiuters/Event/admin/EventList';
-import CreateEvent from './Fiuters/Event/admin/CreateEvent';
-import HashtagCreate from './Fiuters/Hashtag/admin/HashtagCreate';
-import Register from './Fiuters/User/Register/Register';
-import Login from './Fiuters/User/Login/Login';
+import Home from './features/Home/Home';
+import FullEvent from './features/Event/user/FullEvent';
+import Event from './features/Event/Event';
+import EventList from './features/Event/admin/EventList';
+import CreateEvent from './features/Event/admin/CreateEvent';
+import HashtagCreate from './features/Hashtag/admin/HashtagCreate';
+import Register from './features/User/Register/Register';
+import Login from './features/User/Login/Login';
 
 function App() {
   return (
