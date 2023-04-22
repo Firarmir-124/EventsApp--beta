@@ -4,11 +4,13 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import 'easymde/dist/easymde.min.css';
 import FormEvent from '../components/FormEvent';
 import { EventMutation } from '../../../types';
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { createEvent } from '../eventThunk';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { selectUser } from '../../User/usersSlice';
 
 const CreateEvent = () => {
+  const user = useAppSelector(selectUser);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -16,6 +18,11 @@ const CreateEvent = () => {
     await dispatch(createEvent(event)).unwrap();
     navigate('/');
   };
+
+  if (user?.role !== 'organizer') {
+    return <Navigate to="/login" />;
+  }
+
   return (
     <Container>
       <Box

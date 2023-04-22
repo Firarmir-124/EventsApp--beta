@@ -17,8 +17,11 @@ import { selectEventList, selectEventLoading } from '../eventSlice';
 import { fetchEventList } from '../eventThunk';
 import { StyledTableCell } from '../../../constants';
 import CardEventAdmin from '../components/CardEventAdmin';
+import { Navigate } from 'react-router-dom';
+import { selectUser } from '../../User/usersSlice';
 
 const EventList = () => {
+  const user = useAppSelector(selectUser);
   const [page, setPage] = React.useState(1);
   const dispatch = useAppDispatch();
   const eventList = useAppSelector(selectEventList);
@@ -33,6 +36,10 @@ const EventList = () => {
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+
+  if (user?.role !== 'organizer') {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <Container sx={{ mt: '20px' }}>
