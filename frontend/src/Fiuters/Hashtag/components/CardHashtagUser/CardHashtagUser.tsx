@@ -1,7 +1,7 @@
 import React from 'react';
-import { Divider, List, ListItemIcon, ListItemText } from '@mui/material';
-import InboxIcon from '@mui/icons-material/Inbox';
+import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { HashtagListType } from '../../../../types';
+import SendIcon from '@mui/icons-material/Send';
 
 interface Props {
   hashtag: HashtagListType;
@@ -9,15 +9,12 @@ interface Props {
 
 const CardHashtagUser: React.FC<Props> = ({ hashtag }) => {
   return (
-    <>
-      <List sx={{ display: 'flex', alignItem: 'center' }}>
-        <ListItemIcon>
-          <InboxIcon />
-        </ListItemIcon>
-        <ListItemText primary={hashtag.name} />
-      </List>
-      <Divider />
-    </>
+    <ListItemButton>
+      <ListItemIcon>
+        <SendIcon />
+      </ListItemIcon>
+      <ListItemText primary={hashtag.name} />
+    </ListItemButton>
   );
 };
 

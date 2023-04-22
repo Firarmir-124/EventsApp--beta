@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, CircularProgress, Grid, Pagination, Paper } from '@mui/material';
-import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import CardEvent from '../components/CardEvent/CardEvent';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectEventList, selectEventLoading } from '../eventSlice';
@@ -24,9 +23,9 @@ const EventListUser = () => {
 
   return (
     <Grid xs item>
-      <Paper sx={{ mb: 1, p: 1 }} elevation={4}>
-        <ControlPanel />
-      </Paper>
+      {/*<Paper sx={{ mb: 1, p: 1 }} elevation={4}>*/}
+      {/*  <ControlPanel />*/}
+      {/*</Paper>*/}
       <Paper sx={{ p: 1 }}>
         {!loadingEventList ? (
           events.eventPlanList.length !== 0 ? (
@@ -38,7 +37,12 @@ const EventListUser = () => {
           <CircularProgress />
         )}
       </Paper>
-      <Pagination count={Math.ceil(events.eventPlanListLength / 15)} page={page} onChange={handleChange} />
+      <Pagination
+        sx={{ mt: '20px' }}
+        count={Math.ceil(events.eventPlanListLength / 8)}
+        page={page}
+        onChange={handleChange}
+      />
     </Grid>
   );
 };

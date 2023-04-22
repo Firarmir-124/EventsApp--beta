@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Alert, CircularProgress, Grid, Paper } from '@mui/material';
+import { Alert, CircularProgress, Grid, List, ListSubheader, Paper } from '@mui/material';
 import CardHashtagUser from '../components/CardHashtagUser/CardHashtagUser';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectHashtagList, selectHashtagListLoading } from '../hashtagSlice';
@@ -16,16 +16,27 @@ const HashtagListUser = () => {
 
   return (
     <Grid marginLeft={5} xs={3} item>
-      <Paper sx={{ position: 'fixed' }}>
-        {!loadingHashtagList ? (
-          hashtagList.length !== 0 ? (
-            hashtagList.map((hashtag) => <CardHashtagUser key={hashtag._id} hashtag={hashtag} />)
+      <Paper>
+        <List
+          sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+          component="nav"
+          aria-labelledby="nested-list-subheader"
+          subheader={
+            <ListSubheader component="div" id="nested-list-subheader">
+              Список хэштегов
+            </ListSubheader>
+          }
+        >
+          {!loadingHashtagList ? (
+            hashtagList.length !== 0 ? (
+              hashtagList.map((hashtag) => <CardHashtagUser key={hashtag._id} hashtag={hashtag} />)
+            ) : (
+              <Alert severity="info">Списка нет</Alert>
+            )
           ) : (
-            <Alert severity="info">Списка нет</Alert>
-          )
-        ) : (
-          <CircularProgress />
-        )}
+            <CircularProgress />
+          )}
+        </List>
       </Paper>
     </Grid>
   );
