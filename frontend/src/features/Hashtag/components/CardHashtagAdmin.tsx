@@ -6,7 +6,7 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import { useAppSelector } from '../../../app/hooks';
 import { selectUser } from '../../User/usersSlice';
-import { selectRemoveLoading } from '../../Event/eventSlice';
+import { selectRemoveHashtagLoading } from '../hashtagSlice';
 
 interface Props {
   hashtag: HashtagListType;
@@ -16,7 +16,7 @@ interface Props {
 
 const CardHashtagAdmin: React.FC<Props> = ({ hashtag, removeHashtagCard, setOpenModal }) => {
   const user = useAppSelector(selectUser);
-  const removeLoading = useAppSelector(selectRemoveLoading);
+  const removeLoading = useAppSelector(selectRemoveHashtagLoading);
   return (
     <>
       <List sx={{ display: 'flex', alignItem: 'center' }}>

@@ -13,8 +13,8 @@ import {
   TableRow,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectEventList, selectEventLoading } from '../eventSlice';
-import { fetchEventList } from '../eventThunk';
+import { openSnackbar, selectEventList, selectEventLoading } from '../eventSlice';
+import { fetchEventList, removeEvent } from '../eventThunk';
 import { StyledTableCell } from '../../../constants';
 import CardEventAdmin from '../components/CardEventAdmin';
 import { Navigate } from 'react-router-dom';
@@ -38,6 +38,18 @@ const EventList = () => {
     setPage(value);
   };
 
+  const removeCardEvent = async (id: string) => {
+    if (window.confirm('Вы действительно хотите удалить ?')) {
+      await dispatch(removeEvent(id)).unwrap();
+      if (page) {
+        await dispatch(fetchEventList(page)).unwrap();
+      }
+      dispatch(openSnackbar({ status: true, parameter: 'remove_event' }));
+    } else {
+      return;
+    }
+  };
+
   if (user?.role !== 'organizer') {
     return <Navigate to="/login" />;
   }
@@ -59,7 +71,9 @@ const EventList = () => {
             <TableBody>
               {!loadingEventList ? (
                 eventList.eventPlanList.length !== 0 ? (
-                  eventList.eventPlanList.map((event) => <CardEventAdmin key={event._id} event={event} />)
+                  eventList.eventPlanList.map((event) => (
+                    <CardEventAdmin removeCardEvent={() => removeCardEvent(event._id)} key={event._id} event={event} />
+                  ))
                 ) : (
                   <TableRow>
                     <TableCell>

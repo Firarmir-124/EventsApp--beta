@@ -1,15 +1,20 @@
 import React from 'react';
 import { StyledTableCell, StyledTableRow } from '../../../constants';
-import { Button, ButtonGroup } from '@mui/material';
+import { Button, ButtonGroup, CircularProgress } from '@mui/material';
 import { EventList } from '../../../types';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { useAppSelector } from '../../../app/hooks';
+import { selectRemoveEventLoading } from '../eventSlice';
 
 interface Props {
   event: EventList;
+  removeCardEvent: React.MouseEventHandler;
 }
 
-const CardEventAdmin: React.FC<Props> = ({ event }) => {
+const CardEventAdmin: React.FC<Props> = ({ event, removeCardEvent }) => {
+  const removeLoading = useAppSelector(selectRemoveEventLoading);
+
   return (
     <StyledTableRow key={event._id}>
       <StyledTableCell align="left">{event.title}</StyledTableCell>
@@ -18,8 +23,8 @@ const CardEventAdmin: React.FC<Props> = ({ event }) => {
       <StyledTableCell align="left">{event.speaker.length}</StyledTableCell>
       <StyledTableCell align="right">
         <ButtonGroup variant="contained" aria-label="outlined primary button group">
-          <Button size="small" color="error">
-            <DeleteIcon />
+          <Button disabled={removeLoading} onClick={removeCardEvent} size="small" color="error">
+            {!removeLoading ? <DeleteIcon /> : <CircularProgress size={20} />}
           </Button>
           <Button size="small" color="success">
             <EditIcon />

@@ -28,9 +28,13 @@ const HashtagListAdmin = () => {
   }, [dispatch, id]);
 
   const removeHashtagCard = async (id: string) => {
-    await dispatch(deleteHashtag(id)).unwrap();
-    await dispatch(fetchHashtagList()).unwrap();
-    setOpen(true);
+    if (window.confirm('Вы действительно хотите удалить ?')) {
+      await dispatch(deleteHashtag(id)).unwrap();
+      await dispatch(fetchHashtagList()).unwrap();
+      setOpen(true);
+    } else {
+      return;
+    }
   };
 
   const closeModal = () => {
