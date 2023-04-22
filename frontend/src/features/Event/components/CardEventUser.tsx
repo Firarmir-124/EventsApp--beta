@@ -17,8 +17,8 @@ const CardEventUser: React.FC<Props> = ({ event }) => {
   }
 
   return (
-    <Card sx={{ mb: 1 }}>
-      <CardMedia sx={{ height: 140 }} image={image} title="green iguana" />
+    <Card sx={{ mb: 5 }}>
+      <CardMedia sx={{ height: 400 }} image={image} title="green iguana" />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {event.title}
