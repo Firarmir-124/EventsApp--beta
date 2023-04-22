@@ -20,6 +20,7 @@ export interface EventType {
   image: string;
   hashtag: string;
   user: Types.ObjectId;
+  createDate: string;
 }
 
 export interface HashtagType {

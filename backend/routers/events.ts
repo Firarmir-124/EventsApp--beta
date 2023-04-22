@@ -19,7 +19,8 @@ eventsRouter.get('/', authAnonymous, async (req, res) => {
     const eventPlanList = await EventPlan.find()
       .skip((page - 1) * perPage)
       .limit(perPage)
-      .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user']);
+      .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
+      .sort({ createDate: -1 });
 
     return res.send({ eventPlanListLength: eventPlanListFull.length, eventPlanList });
   } catch {
@@ -39,6 +40,7 @@ eventsRouter.post('/', imagesUpload.single('image'), auth, permit('organizer'), 
       image: req.file && req.file.filename,
       hashtag: req.body.hashtag,
       user: user._id,
+      createDate: new Date().toISOString(),
     });
 
     return res.send(newEventPlan);

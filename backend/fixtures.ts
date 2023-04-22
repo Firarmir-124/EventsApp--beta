@@ -39,6 +39,7 @@ const run = async () => {
       image: null,
       hashtag: `test${i}`,
       user: user._id,
+      createDate: new Date().toISOString(),
     });
   }
 

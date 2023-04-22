@@ -28,6 +28,7 @@ const EventSchema = new Schema<EventType>({
     ref: 'User',
     required: true,
   },
+  createDate: String,
 });
 
 const EventPlan = model('EventPlan', EventSchema);
