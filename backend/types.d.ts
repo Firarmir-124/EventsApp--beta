@@ -18,7 +18,7 @@ export interface EventType {
   ];
   time: string;
   image: string;
-  hashtag: string;
+  hashtag: Types.ObjectId;
   user: Types.ObjectId;
   createDate: string;
 }

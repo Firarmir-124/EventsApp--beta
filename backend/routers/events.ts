@@ -21,7 +21,8 @@ eventsRouter.get('/', authAnonymous, async (req, res) => {
     if (req.query.hashtag !== undefined) {
       const eventPlanList = await EventPlan.find({ hashtag: idHashtag })
         .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
-        .sort({ createDate: -1 });
+        .sort({ createDate: -1 })
+        .populate('hashtag');
 
       return res.send({ eventPlanListLength: eventPlanList.length, eventPlanList });
     } else {
@@ -30,7 +31,8 @@ eventsRouter.get('/', authAnonymous, async (req, res) => {
         .skip((page - 1) * perPage)
         .limit(perPage)
         .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
-        .sort({ createDate: -1 });
+        .sort({ createDate: -1 })
+        .populate('hashtag');
 
       return res.send({ eventPlanListLength: eventPlanListFull.length, eventPlanList });
     }
