@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Button, CircularProgress, Dialog, DialogActions, DialogContent, Snackbar } from '@mui/material';
+import { Alert, CircularProgress, Snackbar } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectHashtagList, selectHashtagListLoading, selectHashtagOne } from '../hashtagSlice';
 import { deleteHashtag, editHashtag, fetchHashtagList, fetchOneHashtag } from '../hashtagThunk';
@@ -7,11 +7,12 @@ import CardHashtagAdmin from '../components/CardHashtagAdmin';
 import { HashtagMutation } from '../../../types';
 import FormHashtag from '../components/FormHashtag';
 import SnackbarCard from '../../../components/SnackbarCard';
+import ModalCard from '../../../components/ModalCard';
+import { closeModal, openModal } from '../../Event/eventSlice';
 
 const HashtagListAdmin = () => {
   const [id, setId] = useState('');
   const [open, setOpen] = useState(false);
-  const [modal, setModal] = useState(false);
   const dispatch = useAppDispatch();
   const listHashtag = useAppSelector(selectHashtagList);
   const loadingListHashtag = useAppSelector(selectHashtagListLoading);
@@ -37,13 +38,8 @@ const HashtagListAdmin = () => {
     }
   };
 
-  const closeModal = () => {
-    setModal(false);
-    setId('');
-  };
-
   const setOpenModal = (id: string) => {
-    setModal(true);
+    dispatch(openModal());
     setId(id);
   };
 
@@ -53,7 +49,7 @@ const HashtagListAdmin = () => {
     }
     await dispatch(fetchHashtagList()).unwrap();
     setId('');
-    setModal(false);
+    dispatch(closeModal());
   };
 
   return (
@@ -81,18 +77,8 @@ const HashtagListAdmin = () => {
         </Alert>
       </Snackbar>
 
-      <Dialog
-        open={modal}
-        onClose={closeModal}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogContent>{hashtagOne && <FormHashtag onSubmit={onSubmit} hashtag={hashtagOne} />}</DialogContent>
-        <DialogActions>
-          <Button onClick={closeModal}>Закрыть</Button>
-        </DialogActions>
-      </Dialog>
       <SnackbarCard />
+      <ModalCard>{hashtagOne && <FormHashtag onSubmit={onSubmit} hashtag={hashtagOne} />}</ModalCard>
     </>
   );
 };

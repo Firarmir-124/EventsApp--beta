@@ -1,7 +1,7 @@
 import { EventListFull, EventOne, ValidationError } from '../../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { createEvent, fetchEventList, removeEvent } from './eventThunk';
+import { createEvent, fetchEventList, fetchOneEvent, removeEvent } from './eventThunk';
 
 interface EventType {
   eventList: EventListFull;
@@ -16,6 +16,7 @@ interface EventType {
     status: boolean;
     parameter: string;
   };
+  modal: boolean;
 }
 
 const initialState: EventType = {
@@ -34,6 +35,7 @@ const initialState: EventType = {
     status: false,
     parameter: '',
   },
+  modal: false,
 };
 
 const eventSlice = createSlice({
@@ -42,6 +44,12 @@ const eventSlice = createSlice({
   reducers: {
     openSnackbar: (state, { payload: obj }: PayloadAction<{ status: boolean; parameter: string }>) => {
       state.snackbar = obj;
+    },
+    openModal: (state) => {
+      state.modal = true;
+    },
+    closeModal: (state) => {
+      state.modal = false;
     },
   },
   extraReducers: (builder) => {
@@ -66,6 +74,18 @@ const eventSlice = createSlice({
       state.eventCreateLoading = false;
     });
 
+    builder.addCase(fetchOneEvent.pending, (state) => {
+      state.eventOneLoading = true;
+      state.eventOne = null;
+    });
+    builder.addCase(fetchOneEvent.fulfilled, (state, { payload: eventOne }) => {
+      state.eventOneLoading = false;
+      state.eventOne = eventOne;
+    });
+    builder.addCase(fetchOneEvent.rejected, (state) => {
+      state.eventOneLoading = false;
+    });
+
     builder.addCase(removeEvent.pending, (state) => {
       state.eventRemoveLoading = true;
     });
@@ -79,10 +99,10 @@ const eventSlice = createSlice({
 });
 
 export const eventReducer = eventSlice.reducer;
-export const { openSnackbar } = eventSlice.actions;
+export const { openSnackbar, openModal, closeModal } = eventSlice.actions;
 
 export const selectEventList = (state: RootState) => state.eventReducer.eventList;
-export const selectCreateLoading = (state: RootState) => state.eventReducer.eventCreateLoading;
+export const selectCreateEventLoading = (state: RootState) => state.eventReducer.eventCreateLoading;
 export const selectEditLoading = (state: RootState) => state.eventReducer.eventEditLoading;
 export const selectRemoveEventLoading = (state: RootState) => state.eventReducer.eventRemoveLoading;
 export const selectEventOne = (state: RootState) => state.eventReducer.eventOne;
@@ -90,3 +110,4 @@ export const selectEventOneLoading = (state: RootState) => state.eventReducer.ev
 export const selectEventError = (state: RootState) => state.eventReducer.eventError;
 export const selectEventLoading = (state: RootState) => state.eventReducer.eventListLoading;
 export const selectSnackbarState = (state: RootState) => state.eventReducer.snackbar;
+export const selectModal = (state: RootState) => state.eventReducer.modal;

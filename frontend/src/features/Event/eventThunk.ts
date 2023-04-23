@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axios';
-import { EventListFull, EventMutation, ValidationError } from '../../types';
+import { EventListFull, EventMutation, EventOne, ValidationError } from '../../types';
 import { isAxiosError } from 'axios';
 
 export const fetchEventList = createAsyncThunk<EventListFull, number>('event/fetch_eventList', async (page) => {
@@ -15,7 +15,7 @@ export const createEvent = createAsyncThunk<void, EventMutation, { rejectValue: 
     const keys = Object.keys(eventMutation) as (keyof EventMutation)[];
 
     keys.forEach((id) => {
-      const value = eventMutation[id];
+      const value = eventMutation[id] as string;
 
       if (value !== null) {
         formData.append(id, value);
@@ -44,7 +44,7 @@ export const updateEvent = createAsyncThunk<void, updateType, { rejectValue: Val
     const keys = Object.keys(arg.event) as (keyof EventMutation)[];
 
     keys.forEach((id) => {
-      const value = arg.event[id];
+      const value = arg.event[id] as string;
 
       if (value !== null) {
         formData.append(id, value);
@@ -60,6 +60,14 @@ export const updateEvent = createAsyncThunk<void, updateType, { rejectValue: Val
     }
   },
 );
+
+export const fetchOneEvent = createAsyncThunk<EventOne | null, string>('event/fetch_eventOne', async (id) => {
+  const response = await axiosApi.get<EventOne | null>('/eventPlan/' + id);
+  if (!response.data) {
+    throw new Error('not found');
+  }
+  return response.data;
+});
 
 export const removeEvent = createAsyncThunk<void, string>('event/remove_event', async (id) => {
   await axiosApi.delete('/eventPlan/' + id);

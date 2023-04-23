@@ -20,25 +20,36 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { fetchHashtagList } from '../../Hashtag/hashtagThunk';
 import { selectHashtagList, selectHashtagListLoading } from '../../Hashtag/hashtagSlice';
 import Divider from '@mui/material/Divider';
-import { selectEventError } from '../eventSlice';
+import { selectCreateEventLoading, selectEventError } from '../eventSlice';
 
 interface Props {
   onSubmit: (event: EventMutation) => void;
+  event?: EventMutation;
 }
 
-const FormEvent: React.FC<Props> = ({ onSubmit }) => {
+const FormEvent: React.FC<Props> = ({ onSubmit, event }) => {
   const dispatch = useAppDispatch();
-  const [speaker, setSpeaker] = useState([{ name: '' }]);
-  const [eventType, setEventType] = useState({
-    title: '',
-    description: '',
-    image: null,
-    hashtag: '',
-    time: '',
-  });
+  const [speaker, setSpeaker] = useState(
+    event
+      ? event.speaker.map((item) => {
+          return { name: item.name };
+        })
+      : [{ name: '' }],
+  );
+  const [eventType, setEventType] = useState(
+    event || {
+      title: '',
+      description: '',
+      image: null,
+      hashtag: '',
+      time: '',
+      speaker,
+    },
+  );
   const hashtags = useAppSelector(selectHashtagList);
   const loadingHashtag = useAppSelector(selectHashtagListLoading);
   const error = useAppSelector(selectEventError);
+  const createLoading = useAppSelector(selectCreateEventLoading);
 
   useEffect(() => {
     dispatch(fetchHashtagList());
@@ -65,9 +76,9 @@ const FormEvent: React.FC<Props> = ({ onSubmit }) => {
   const onFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const obj = {
+    const obj: EventMutation = {
       ...eventType,
-      speaker: JSON.stringify(speaker),
+      speaker: JSON.stringify([...speaker]) as never,
     };
 
     onSubmit(obj);
@@ -194,8 +205,8 @@ const FormEvent: React.FC<Props> = ({ onSubmit }) => {
         </Grid>
       </Grid>
       <Divider />
-      <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-        Создать
+      <Button disabled={createLoading} type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+        {!createLoading ? 'Создать' : <CircularProgress />}
       </Button>
     </Box>
   );

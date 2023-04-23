@@ -10,9 +10,10 @@ import { selectRemoveEventLoading } from '../eventSlice';
 interface Props {
   event: EventList;
   removeCardEvent: React.MouseEventHandler;
+  openModalEvent: React.MouseEventHandler;
 }
 
-const CardEventAdmin: React.FC<Props> = ({ event, removeCardEvent }) => {
+const CardEventAdmin: React.FC<Props> = ({ event, removeCardEvent, openModalEvent }) => {
   const removeLoading = useAppSelector(selectRemoveEventLoading);
 
   return (
@@ -26,7 +27,7 @@ const CardEventAdmin: React.FC<Props> = ({ event, removeCardEvent }) => {
           <Button disabled={removeLoading} onClick={removeCardEvent} size="small" color="error">
             {!removeLoading ? <DeleteIcon /> : <CircularProgress size={20} />}
           </Button>
-          <Button size="small" color="success">
+          <Button onClick={openModalEvent} size="small" color="success">
             <EditIcon />
           </Button>
         </ButtonGroup>

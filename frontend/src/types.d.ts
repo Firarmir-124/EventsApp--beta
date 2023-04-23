@@ -66,7 +66,7 @@ export interface EventOne {
     },
   ];
   time: string;
-  image: string;
+  image: File | null;
   hashtag: string;
   user: string;
 }
@@ -77,6 +77,9 @@ export interface EventMutation {
   time: string;
   image: File | null;
   hashtag: string;
+  speaker: {
+    name: string;
+  }[];
 }
 
 export interface HashtagListType {
