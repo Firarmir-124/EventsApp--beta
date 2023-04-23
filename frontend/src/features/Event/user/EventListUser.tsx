@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, CircularProgress, Grid, Pagination } from '@mui/material';
+import { Alert, CircularProgress, Grid, Pagination, Paper } from '@mui/material';
 import CardEventUser from '../components/CardEventUser';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectEventList, selectEventLoading } from '../eventSlice';
 import { fetchEventList } from '../eventThunk';
+import ControlPanel from '../components/ControlPanel';
 
 const EventListUser = () => {
   const [page, setPage] = useState(1);
@@ -23,9 +24,9 @@ const EventListUser = () => {
 
   return (
     <Grid xs item>
-      {/*<Paper sx={{ mb: 1, p: 1 }} elevation={4}>*/}
-      {/*  <ControlPanel />*/}
-      {/*</Paper>*/}
+      <Paper sx={{ mb: 1, p: 1 }} elevation={4}>
+        <ControlPanel />
+      </Paper>
       {!loadingEventList ? (
         events.eventPlanList.length !== 0 ? (
           events.eventPlanList.map((event) => <CardEventUser key={event._id} event={event} />)
