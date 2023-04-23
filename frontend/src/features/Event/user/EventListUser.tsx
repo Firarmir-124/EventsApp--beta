@@ -5,8 +5,10 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectEventList, selectEventLoading } from '../eventSlice';
 import { fetchEventList } from '../eventThunk';
 import ControlPanel from '../components/ControlPanel';
+import { useParams } from 'react-router-dom';
 
 const EventListUser = () => {
+  const { id } = useParams();
   const [page, setPage] = useState(1);
   const dispatch = useAppDispatch();
   const events = useAppSelector(selectEventList);
@@ -14,9 +16,9 @@ const EventListUser = () => {
 
   useEffect(() => {
     if (page) {
-      dispatch(fetchEventList(page));
+      dispatch(fetchEventList({ page, idHashtag: id }));
     }
-  }, [dispatch, page]);
+  }, [dispatch, page, id]);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);

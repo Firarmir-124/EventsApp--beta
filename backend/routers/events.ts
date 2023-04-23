@@ -13,16 +13,17 @@ import config from '../config';
 const eventsRouter = express.Router();
 
 eventsRouter.get('/', authAnonymous, async (req, res) => {
-  try {
-    const page = parseInt(req.query.page as string) || 1;
-    const perPage = 8;
+  const page = parseInt(req.query.page as string) || 1;
+  const idHashtag = req.query.hashtag as string;
 
-    if (req.query.search !== undefined) {
-      const eventPlanList = await EventPlan.find({ title: { $regex: req.query.search as string } })
+  const perPage = 8;
+  try {
+    if (req.query.hashtag !== undefined) {
+      const eventPlanList = await EventPlan.find({ hashtag: idHashtag })
         .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
         .sort({ createDate: -1 });
 
-      return res.send({ eventPlanListLength: 0, eventPlanList });
+      return res.send({ eventPlanListLength: eventPlanList.length, eventPlanList });
     } else {
       const eventPlanListFull = await EventPlan.find();
       const eventPlanList = await EventPlan.find()

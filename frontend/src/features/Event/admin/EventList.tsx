@@ -42,7 +42,7 @@ const EventList = () => {
 
   useEffect(() => {
     if (page) {
-      dispatch(fetchEventList(page));
+      dispatch(fetchEventList({ page, idHashtag: undefined }));
     }
   }, [dispatch, page]);
 
@@ -60,7 +60,7 @@ const EventList = () => {
     if (window.confirm('Вы действительно хотите удалить ?')) {
       await dispatch(removeEvent(id)).unwrap();
       if (page) {
-        await dispatch(fetchEventList(page)).unwrap();
+        await dispatch(fetchEventList({ page, idHashtag: undefined })).unwrap();
       }
       dispatch(openSnackbar({ status: true, parameter: 'remove_event' }));
     } else {
@@ -78,7 +78,7 @@ const EventList = () => {
       await dispatch(updateEvent({ event, id: idEvent })).unwrap();
     }
     if (page) {
-      await dispatch(fetchEventList(page)).unwrap();
+      await dispatch(fetchEventList({ page, idHashtag: undefined })).unwrap();
     }
     setIdEvent('');
     dispatch(closeModal());

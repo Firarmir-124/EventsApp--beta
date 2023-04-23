@@ -13,6 +13,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/:id" element={<Home />} />
       <Route path="/full_event/:id" element={<FullEvent />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />

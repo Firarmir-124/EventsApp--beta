@@ -1,9 +1,21 @@
 import React, { useEffect } from 'react';
-import { Alert, CircularProgress, Grid, List, ListSubheader, Paper } from '@mui/material';
+import {
+  Alert,
+  CircularProgress,
+  Grid,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader,
+  Paper,
+} from '@mui/material';
 import CardHashtagUser from '../components/CardHashtagUser';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectHashtagList, selectHashtagListLoading } from '../hashtagSlice';
 import { fetchHashtagList } from '../hashtagThunk';
+import { Link } from 'react-router-dom';
+import TagIcon from '@mui/icons-material/Tag';
 
 const HashtagListUser = () => {
   const dispatch = useAppDispatch();
@@ -27,6 +39,12 @@ const HashtagListUser = () => {
             </ListSubheader>
           }
         >
+          <ListItemButton component={Link} to={'/'}>
+            <ListItemIcon>
+              <TagIcon />
+            </ListItemIcon>
+            <ListItemText primary="Всё" />
+          </ListItemButton>
           {!loadingHashtagList ? (
             hashtagList.length !== 0 ? (
               hashtagList.map((hashtag) => <CardHashtagUser key={hashtag._id} hashtag={hashtag} />)
