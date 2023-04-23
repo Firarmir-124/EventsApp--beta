@@ -22,6 +22,7 @@ const CardEventAdmin: React.FC<Props> = ({ event, removeCardEvent, openModalEven
       <StyledTableCell align="left">{event.time}</StyledTableCell>
       <StyledTableCell align="left">0</StyledTableCell>
       <StyledTableCell align="left">{event.speaker.length}</StyledTableCell>
+      <StyledTableCell align="left">{event.hashtag.name}</StyledTableCell>
       <StyledTableCell align="right">
         <ButtonGroup variant="contained" aria-label="outlined primary button group">
           <Button disabled={removeLoading} onClick={removeCardEvent} size="small" color="error">

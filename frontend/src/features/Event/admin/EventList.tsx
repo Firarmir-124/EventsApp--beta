@@ -30,6 +30,10 @@ import SnackbarCard from '../../../components/SnackbarCard';
 import { EventMutation } from '../../../types';
 import ModalCard from '../../../components/ModalCard';
 import FormEvent from '../components/FormEvent';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { fetchHashtagList } from '../../Hashtag/hashtagThunk';
+import { selectHashtagList } from '../../Hashtag/hashtagSlice';
 
 const EventList = () => {
   const user = useAppSelector(selectUser);
@@ -39,18 +43,34 @@ const EventList = () => {
   const loadingEventList = useAppSelector(selectEventLoading);
   const [idEvent, setIdEvent] = useState('');
   const eventOne = useAppSelector(selectEventOne);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const hashtagList = useAppSelector(selectHashtagList);
+  const [idHashtag, setIdHashtag] = useState('');
 
   useEffect(() => {
     if (page) {
-      dispatch(fetchEventList({ page, idHashtag: undefined }));
+      dispatch(fetchEventList({ page, idHashtag }));
     }
-  }, [dispatch, page]);
+  }, [dispatch, page, idHashtag]);
 
   useEffect(() => {
     if (idEvent) {
       dispatch(fetchOneEvent(idEvent));
     }
   }, [dispatch, idEvent]);
+
+  useEffect(() => {
+    dispatch(fetchHashtagList());
+  }, [dispatch]);
+
+  const handleClick = (event: React.MouseEvent<HTMLTableCellElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = (id: string) => {
+    setAnchorEl(null);
+    setIdHashtag(id);
+  };
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -99,6 +119,9 @@ const EventList = () => {
                 <StyledTableCell align="left">Время</StyledTableCell>
                 <StyledTableCell align="left">Гости</StyledTableCell>
                 <StyledTableCell align="left">Спикеры</StyledTableCell>
+                <StyledTableCell sx={{ cursor: 'pointer' }} onClick={handleClick} align="left">
+                  Хэштег
+                </StyledTableCell>
                 <StyledTableCell align="right">Управление</StyledTableCell>
               </TableRow>
             </TableHead>
@@ -139,6 +162,26 @@ const EventList = () => {
       />
       <SnackbarCard />
       <ModalCard>{eventOne && <FormEvent onSubmit={onSubmit} event={eventOne} />}</ModalCard>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => setAnchorEl(null)}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuItem onClick={() => setIdHashtag('')}>Все</MenuItem>
+        {hashtagList.length !== 0 ? (
+          hashtagList.map((item) => (
+            <MenuItem key={item._id} onClick={() => handleClose(item._id)}>
+              {item.name}
+            </MenuItem>
+          ))
+        ) : (
+          <Alert severity="info">Список пуст</Alert>
+        )}
+      </Menu>
     </Container>
   );
 };
