@@ -28,7 +28,7 @@ const CardEventUser: React.FC<Props> = ({ event }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button component={Link} to={'/full_event/' + 'id'} variant="outlined" size="small">
+        <Button component={Link} to={'/full_event/' + event._id} variant="outlined" size="small">
           Подробнее
         </Button>
       </CardActions>

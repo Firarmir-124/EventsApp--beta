@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Alert,
   Box,
@@ -97,6 +97,19 @@ const FormEvent: React.FC<Props> = ({ onSubmit, event }) => {
     }
   };
 
+  const options = useMemo(() => {
+    return {
+      spellChecker: false,
+      autofocus: true,
+      placeholder: 'Введите текст...',
+      status: false,
+      autoSave: {
+        enabled: true,
+        delay: 1000,
+      },
+    };
+  }, []);
+
   return (
     <Box component="form" sx={{ mt: 3, width: '100%' }} onSubmit={onFormSubmit}>
       <Grid container sx={{ flexDirection: 'column' }} spacing={2}>
@@ -115,7 +128,12 @@ const FormEvent: React.FC<Props> = ({ onSubmit, event }) => {
           />
         </Grid>
         <Grid item xs={12} display="flex">
-          <SimpleMdeReact style={{ width: '100%' }} value={eventType.description} onChange={onChangeDescription} />
+          <SimpleMdeReact
+            options={options}
+            style={{ width: '100%' }}
+            value={eventType.description}
+            onChange={onChangeDescription}
+          />
           <Paper sx={{ p: 1, width: '40%' }} elevation={3}>
             <IconButton onClick={addIngredient} aria-label="delete">
               <AddCircleIcon color="warning" sx={{ fontSize: '40px' }} />

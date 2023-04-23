@@ -77,7 +77,7 @@ eventsRouter.put('/:id', imagesUpload.single('image'), auth, permit('organizer')
       image: req.file && req.file.filename,
     };
 
-    if (oneEvent.image !== newEventPlan.image) {
+    if (oneEvent.image === newEventPlan.image) {
       await fs.unlink(path.join(config.publicPath, oneEvent.image));
     }
 
