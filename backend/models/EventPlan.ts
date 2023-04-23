@@ -20,7 +20,8 @@ const EventSchema = new Schema<EventType>({
   },
   image: String,
   hashtag: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'Hashtag',
     required: true,
   },
   user: {
