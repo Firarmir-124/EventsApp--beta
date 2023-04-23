@@ -5,10 +5,6 @@ import auth from '../middleware/auth';
 import permit from '../middleware/permit';
 import mongoose from 'mongoose';
 import { imagesUpload } from '../multer';
-import { EventType } from '../types';
-import { promises as fs } from 'fs';
-import path from 'path';
-import config from '../config';
 
 const eventsRouter = express.Router();
 
@@ -77,7 +73,6 @@ eventsRouter.get('/:id', async (req, res) => {
 
 eventsRouter.put('/:id', imagesUpload.single('image'), auth, permit('organizer'), async (req, res, next) => {
   try {
-    const oneEvent = (await EventPlan.findOne({ _id: req.params.id })) as EventType;
     const newEventPlan = {
       title: req.body.title,
       description: req.body.description,
@@ -86,10 +81,6 @@ eventsRouter.put('/:id', imagesUpload.single('image'), auth, permit('organizer')
       hashtag: req.body.hashtag,
       image: req.file && req.file.filename,
     };
-
-    if (oneEvent.image === newEventPlan.image) {
-      await fs.unlink(path.join(config.publicPath, oneEvent.image));
-    }
 
     await EventPlan.updateMany({ _id: req.params.id }, { $set: newEventPlan });
     return res.send(newEventPlan);

@@ -47,7 +47,10 @@ export interface EventList {
   ];
   time: string;
   image: string;
-  hashtag: string;
+  hashtag: {
+    _id: string;
+    name: string;
+  };
   user: string;
 }
 
