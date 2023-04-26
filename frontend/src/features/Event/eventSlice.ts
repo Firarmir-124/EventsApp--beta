@@ -17,6 +17,13 @@ interface EventType {
     parameter: string;
   };
   modal: boolean;
+  cellTable: {
+    id: string;
+    fullName: string;
+    name: string;
+    show: boolean;
+  }[];
+  drawerState: boolean;
 }
 
 const initialState: EventType = {
@@ -36,6 +43,39 @@ const initialState: EventType = {
     parameter: '',
   },
   modal: false,
+  cellTable: [
+    {
+      id: '1',
+      fullName: 'title',
+      name: 'Название',
+      show: true,
+    },
+    {
+      id: '2',
+      fullName: 'time',
+      name: 'Время',
+      show: true,
+    },
+    {
+      id: '3',
+      name: 'Гости',
+      fullName: 'null',
+      show: true,
+    },
+    {
+      id: '4',
+      fullName: 'speaker',
+      name: 'Спикеры',
+      show: true,
+    },
+    {
+      id: '5',
+      fullName: 'hashtag',
+      name: 'Хэштег',
+      show: true,
+    },
+  ],
+  drawerState: false,
 };
 
 const eventSlice = createSlice({
@@ -50,6 +90,16 @@ const eventSlice = createSlice({
     },
     closeModal: (state) => {
       state.modal = false;
+    },
+    toggleShowCellTable: (state, { payload: id }: PayloadAction<string>) => {
+      const index = state.cellTable.findIndex((item) => item.id === id);
+      state.cellTable[index].show = state.cellTable[index].show !== true;
+    },
+    openDrawer: (state) => {
+      state.drawerState = true;
+    },
+    closeDrawer: (state) => {
+      state.drawerState = false;
     },
   },
   extraReducers: (builder) => {
@@ -99,7 +149,7 @@ const eventSlice = createSlice({
 });
 
 export const eventReducer = eventSlice.reducer;
-export const { openSnackbar, openModal, closeModal } = eventSlice.actions;
+export const { openSnackbar, openModal, closeModal, toggleShowCellTable, openDrawer, closeDrawer } = eventSlice.actions;
 
 export const selectEventList = (state: RootState) => state.eventReducer.eventList;
 export const selectCreateEventLoading = (state: RootState) => state.eventReducer.eventCreateLoading;
@@ -111,3 +161,5 @@ export const selectEventError = (state: RootState) => state.eventReducer.eventEr
 export const selectEventLoading = (state: RootState) => state.eventReducer.eventListLoading;
 export const selectSnackbarState = (state: RootState) => state.eventReducer.snackbar;
 export const selectModal = (state: RootState) => state.eventReducer.modal;
+export const selectCellTable = (state: RootState) => state.eventReducer.cellTable;
+export const selectDrawerState = (state: RootState) => state.eventReducer.drawerState;
