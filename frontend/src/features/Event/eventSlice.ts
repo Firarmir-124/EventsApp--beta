@@ -24,6 +24,7 @@ interface EventType {
     show: boolean;
   }[];
   drawerState: boolean;
+  idHashtag: string;
 }
 
 const initialState: EventType = {
@@ -76,6 +77,7 @@ const initialState: EventType = {
     },
   ],
   drawerState: false,
+  idHashtag: '',
 };
 
 const eventSlice = createSlice({
@@ -100,6 +102,9 @@ const eventSlice = createSlice({
     },
     closeDrawer: (state) => {
       state.drawerState = false;
+    },
+    addIdHashtag: (state, { payload: id }: PayloadAction<string>) => {
+      state.idHashtag = id;
     },
   },
   extraReducers: (builder) => {
@@ -149,7 +154,8 @@ const eventSlice = createSlice({
 });
 
 export const eventReducer = eventSlice.reducer;
-export const { openSnackbar, openModal, closeModal, toggleShowCellTable, openDrawer, closeDrawer } = eventSlice.actions;
+export const { openSnackbar, openModal, closeModal, toggleShowCellTable, openDrawer, closeDrawer, addIdHashtag } =
+  eventSlice.actions;
 
 export const selectEventList = (state: RootState) => state.eventReducer.eventList;
 export const selectCreateEventLoading = (state: RootState) => state.eventReducer.eventCreateLoading;
@@ -163,3 +169,4 @@ export const selectSnackbarState = (state: RootState) => state.eventReducer.snac
 export const selectModal = (state: RootState) => state.eventReducer.modal;
 export const selectCellTable = (state: RootState) => state.eventReducer.cellTable;
 export const selectDrawerState = (state: RootState) => state.eventReducer.drawerState;
+export const selectIdHashtag = (state: RootState) => state.eventReducer.idHashtag;

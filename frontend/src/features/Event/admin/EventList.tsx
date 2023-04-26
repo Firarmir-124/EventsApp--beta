@@ -23,6 +23,7 @@ import {
   selectEventList,
   selectEventLoading,
   selectEventOne,
+  selectIdHashtag,
 } from '../eventSlice';
 import { fetchEventList, fetchOneEvent, removeEvent, updateEvent } from '../eventThunk';
 import { StyledTableCell } from '../../../constants';
@@ -33,10 +34,9 @@ import SnackbarCard from '../../../components/SnackbarCard';
 import { EventMutation } from '../../../types';
 import ModalCard from '../../../components/ModalCard';
 import FormEvent from '../components/FormEvent';
-import { fetchHashtagList } from '../../Hashtag/hashtagThunk';
-import { selectHashtagList } from '../../Hashtag/hashtagSlice';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DrawerCard from '../components/DrawerCard';
+import ControlPanelAdmin from '../components/ControlPanelAdmin';
 
 const EventList = () => {
   const user = useAppSelector(selectUser);
@@ -46,11 +46,8 @@ const EventList = () => {
   const loadingEventList = useAppSelector(selectEventLoading);
   const [idEvent, setIdEvent] = useState('');
   const eventOne = useAppSelector(selectEventOne);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const hashtagList = useAppSelector(selectHashtagList);
-  const [idHashtag, setIdHashtag] = useState('');
   const cellTables = useAppSelector(selectCellTable);
+  const idHashtag = useAppSelector(selectIdHashtag);
 
   useEffect(() => {
     if (page) {
@@ -63,18 +60,6 @@ const EventList = () => {
       dispatch(fetchOneEvent(idEvent));
     }
   }, [dispatch, idEvent]);
-
-  useEffect(() => {
-    dispatch(fetchHashtagList());
-  }, [dispatch]);
-
-  const handleClick = (event: React.MouseEvent<HTMLTableCellElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = (id: string) => {
-    setAnchorEl(null);
-    setIdHashtag(id);
-  };
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -117,6 +102,7 @@ const EventList = () => {
       <IconButton onClick={() => dispatch(openDrawer())}>
         <SettingsIcon />
       </IconButton>
+      <ControlPanelAdmin />
       <Paper elevation={3} sx={{ width: '100%', minHeight: '600px', overflowX: 'hidden' }}>
         <TableContainer component={Paper}>
           <Table aria-label="simple table">

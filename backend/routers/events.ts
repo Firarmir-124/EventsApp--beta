@@ -14,15 +14,18 @@ eventsRouter.get('/', authAnonymous, async (req, res) => {
 
   const perPage = 8;
   try {
+    const eventPlanListFull = await EventPlan.find();
+
     if (req.query.hashtag !== undefined) {
       const eventPlanList = await EventPlan.find({ hashtag: idHashtag })
+        .skip((page - 1) * perPage)
+        .limit(perPage)
         .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
         .sort({ createDate: -1 })
         .populate('hashtag');
 
       return res.send({ eventPlanListLength: eventPlanList.length, eventPlanList });
     } else {
-      const eventPlanListFull = await EventPlan.find();
       const eventPlanList = await EventPlan.find()
         .skip((page - 1) * perPage)
         .limit(perPage)
