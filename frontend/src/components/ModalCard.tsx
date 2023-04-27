@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { closeModal, selectModal } from '../features/Event/store/eventSlice';
+import { closeModal, selectModal } from '../features/Event/eventSlice';
 
 interface Props {
   children: React.ReactNode;

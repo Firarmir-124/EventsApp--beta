@@ -95,3 +95,10 @@ export interface HashtagListType {
 export interface HashtagMutation {
   name: string;
 }
+
+export interface TypesCallTable {
+  id: string;
+  name: string;
+  fullName: string;
+  show: boolean;
+}

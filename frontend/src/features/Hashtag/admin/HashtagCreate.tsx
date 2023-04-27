@@ -6,7 +6,7 @@ import FormHashtag from '../components/FormHashtag';
 import { useAppDispatch } from '../../../app/hooks';
 import { createHashtag, fetchHashtagList } from '../hashtagThunk';
 import { HashtagMutation } from '../../../types';
-import { openSnackbar } from '../../Event/store/eventSlice';
+import { openSnackbar } from '../../Event/eventSlice';
 
 const HashtagCreate = () => {
   const dispatch = useAppDispatch();

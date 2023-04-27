@@ -1,6 +1,6 @@
-import { EventListFull, EventOne, ValidationError } from '../../../types';
+import { EventListFull, EventOne, TypesCallTable, ValidationError } from '../../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../../../app/store';
+import { RootState } from '../../app/store';
 import { createEvent, fetchEventList, fetchOneEvent, removeEvent } from './eventThunk';
 
 interface EventType {
@@ -26,6 +26,7 @@ interface EventType {
   drawerState: boolean;
   idHashtag: string;
   perPage: number;
+  localSettings: TypesCallTable[];
 }
 
 const initialState: EventType = {
@@ -82,6 +83,7 @@ const initialState: EventType = {
   drawerState: false,
   idHashtag: '',
   perPage: 0,
+  localSettings: [],
 };
 
 const eventSlice = createSlice({
@@ -98,8 +100,13 @@ const eventSlice = createSlice({
       state.modal = false;
     },
     toggleShowCellTable: (state, { payload: id }: PayloadAction<string>) => {
-      const index = state.cellTable.findIndex((item) => item.id === id);
-      state.cellTable[index].show = state.cellTable[index].show !== true;
+      if (state.localSettings.length !== 0) {
+        const index = state.localSettings.findIndex((item) => item.id === id);
+        state.localSettings[index].show = state.localSettings[index].show !== true;
+      } else {
+        const index = state.cellTable.findIndex((item) => item.id === id);
+        state.cellTable[index].show = state.cellTable[index].show !== true;
+      }
     },
     openDrawer: (state) => {
       state.drawerState = true;
@@ -112,6 +119,19 @@ const eventSlice = createSlice({
     },
     createPerPage: (state, { payload: perPage }: PayloadAction<number>) => {
       state.perPage = perPage;
+    },
+    getSettingLocal: (state) => {
+      const local = localStorage.getItem('setting');
+
+      if (local) {
+        state.localSettings = JSON.parse(local);
+      }
+    },
+    saveSettingLocal: (state) => {
+      localStorage.setItem(
+        'setting',
+        JSON.stringify(state.localSettings.length !== 0 ? state.localSettings : state.cellTable),
+      );
     },
   },
   extraReducers: (builder) => {
@@ -161,8 +181,17 @@ const eventSlice = createSlice({
 });
 
 export const eventReducer = eventSlice.reducer;
-export const { openSnackbar, openModal, closeModal, toggleShowCellTable, openDrawer, closeDrawer, createPerPage } =
-  eventSlice.actions;
+export const {
+  openSnackbar,
+  openModal,
+  closeModal,
+  toggleShowCellTable,
+  openDrawer,
+  closeDrawer,
+  createPerPage,
+  saveSettingLocal,
+  getSettingLocal,
+} = eventSlice.actions;
 
 export const selectEventList = (state: RootState) => state.eventReducer.eventList;
 export const selectCreateEventLoading = (state: RootState) => state.eventReducer.eventCreateLoading;
@@ -178,3 +207,4 @@ export const selectCellTable = (state: RootState) => state.eventReducer.cellTabl
 export const selectDrawerState = (state: RootState) => state.eventReducer.drawerState;
 export const selectIdHashtag = (state: RootState) => state.eventReducer.idHashtag;
 export const selectPerPage = (state: RootState) => state.eventReducer.perPage;
+export const selectSettingsLocal = (state: RootState) => state.eventReducer.localSettings;

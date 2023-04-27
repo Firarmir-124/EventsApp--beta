@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, Snackbar } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { openSnackbar, selectSnackbarState } from '../features/Event/store/eventSlice';
+import { openSnackbar, selectSnackbarState } from '../features/Event/eventSlice';
 
 const SnackbarCard = () => {
   const open = useAppSelector(selectSnackbarState);

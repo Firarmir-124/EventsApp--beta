@@ -24,8 +24,9 @@ import {
   selectEventLoading,
   selectEventOne,
   selectPerPage,
-} from '../store/eventSlice';
-import { fetchEventList, fetchOneEvent, removeEvent, updateEvent } from '../store/eventThunk';
+  selectSettingsLocal,
+} from '../eventSlice';
+import { fetchEventList, fetchOneEvent, removeEvent, updateEvent } from '../eventThunk';
 import { StyledTableCell } from '../../../constants';
 import CardEventAdmin from '../components/CardEventAdmin';
 import { Navigate } from 'react-router-dom';
@@ -45,8 +46,9 @@ const EventList = () => {
   const loadingEventList = useAppSelector(selectEventLoading);
   const [idEvent, setIdEvent] = useState('');
   const eventOne = useAppSelector(selectEventOne);
-  const cellTables = useAppSelector(selectCellTable);
+  const cellTablesGlobal = useAppSelector(selectCellTable);
   const perPage = useAppSelector(selectPerPage);
+  const cellTablesLocal = useAppSelector(selectSettingsLocal);
 
   useEffect(() => {
     if (page) {
@@ -106,13 +108,21 @@ const EventList = () => {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                {cellTables
-                  .filter((item) => item.show)
-                  .map((name) => (
-                    <StyledTableCell key={name.id} align="left">
-                      {name.name}
-                    </StyledTableCell>
-                  ))}
+                {cellTablesLocal.length !== 0
+                  ? cellTablesLocal
+                      .filter((item) => item.show)
+                      .map((name) => (
+                        <StyledTableCell key={name.id} align="left">
+                          {name.name}
+                        </StyledTableCell>
+                      ))
+                  : cellTablesGlobal
+                      .filter((item) => item.show)
+                      .map((name) => (
+                        <StyledTableCell key={name.id} align="left">
+                          {name.name}
+                        </StyledTableCell>
+                      ))}
                 <StyledTableCell align="right">Управление</StyledTableCell>
               </TableRow>
             </TableHead>

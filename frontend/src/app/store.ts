@@ -3,7 +3,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from 'redux-persist/es/constants';
 import { usersReducer } from '../features/User/usersSlice';
-import { eventReducer } from '../features/Event/store/eventSlice';
+import { eventReducer } from '../features/Event/eventSlice';
 import { hashtagReducer } from '../features/Hashtag/hashtagSlice';
 
 const usersPersistConfig = {

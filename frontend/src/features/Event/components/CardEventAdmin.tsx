@@ -5,7 +5,7 @@ import { EventList } from '../../../types';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useAppSelector } from '../../../app/hooks';
-import { selectCellTable, selectRemoveEventLoading } from '../store/eventSlice';
+import { selectCellTable, selectRemoveEventLoading, selectSettingsLocal } from '../eventSlice';
 
 interface Props {
   event: EventList;
@@ -15,25 +15,40 @@ interface Props {
 
 const CardEventAdmin: React.FC<Props> = ({ event, removeCardEvent, openModalEvent }) => {
   const removeLoading = useAppSelector(selectRemoveEventLoading);
-  const cellTables = useAppSelector(selectCellTable);
+  const cellTablesGlobal = useAppSelector(selectCellTable);
+  const cellTablesLocal = useAppSelector(selectSettingsLocal);
 
   return (
     <StyledTableRow key={event._id}>
-      {cellTables
-        .filter((item) => item.show)
-        .map((name) => {
-          if (name.fullName)
-            return (
-              <StyledTableCell key={name.id} align="left">
-                {name.fullName === 'time' && event.time}
-                {name.fullName === 'title' && event.title}
-                {name.fullName === 'null' && '0'}
-                {name.fullName === 'speaker' && event.speaker.length}
-                {name.fullName === 'hashtag' && event.hashtag.name}
-              </StyledTableCell>
-            );
-        })}
-
+      {cellTablesLocal.length !== 0
+        ? cellTablesLocal
+            .filter((item) => item.show)
+            .map((name) => {
+              if (name.fullName)
+                return (
+                  <StyledTableCell key={name.id} align="left">
+                    {name.fullName === 'time' && event.time}
+                    {name.fullName === 'title' && event.title}
+                    {name.fullName === 'null' && '0'}
+                    {name.fullName === 'speaker' && event.speaker.length}
+                    {name.fullName === 'hashtag' && event.hashtag.name}
+                  </StyledTableCell>
+                );
+            })
+        : cellTablesGlobal
+            .filter((item) => item.show)
+            .map((name) => {
+              if (name.fullName)
+                return (
+                  <StyledTableCell key={name.id} align="left">
+                    {name.fullName === 'time' && event.time}
+                    {name.fullName === 'title' && event.title}
+                    {name.fullName === 'null' && '0'}
+                    {name.fullName === 'speaker' && event.speaker.length}
+                    {name.fullName === 'hashtag' && event.hashtag.name}
+                  </StyledTableCell>
+                );
+            })}
       <StyledTableCell align="right">
         <ButtonGroup variant="contained" aria-label="outlined primary button group">
           <Button disabled={removeLoading} onClick={removeCardEvent} size="small" color="error">

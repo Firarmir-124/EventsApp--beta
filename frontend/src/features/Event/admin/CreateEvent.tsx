@@ -5,10 +5,10 @@ import 'easymde/dist/easymde.min.css';
 import FormEvent from '../components/FormEvent';
 import { EventMutation } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { createEvent } from '../store/eventThunk';
+import { createEvent } from '../eventThunk';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { selectUser } from '../../User/usersSlice';
-import { openSnackbar } from '../store/eventSlice';
+import { openSnackbar } from '../eventSlice';
 
 const CreateEvent = () => {
   const user = useAppSelector(selectUser);

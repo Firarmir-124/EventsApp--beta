@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { Checkbox, Drawer, FormControlLabel, FormGroup, MenuItem, TextField, Typography } from '@mui/material';
+import { Button, Checkbox, Drawer, FormControlLabel, FormGroup, MenuItem, TextField, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import {
   closeDrawer,
   createPerPage,
+  getSettingLocal,
+  saveSettingLocal,
   selectCellTable,
   selectDrawerState,
+  selectSettingsLocal,
   toggleShowCellTable,
-} from '../store/eventSlice';
+} from '../eventSlice';
 
 const DrawerCard = () => {
-  const [perPage, setPerPage] = useState('');
-  const cellTables = useAppSelector(selectCellTable);
   const dispatch = useAppDispatch();
   const stateDrawer = useAppSelector(selectDrawerState);
+  const cellTablesGlobal = useAppSelector(selectCellTable);
+  const cellTablesLocal = useAppSelector(selectSettingsLocal);
+  const [perPage, setPerPage] = useState('');
 
   const toggleShowCell = (id: string) => {
     dispatch(toggleShowCellTable(id));
@@ -24,6 +28,10 @@ const DrawerCard = () => {
       dispatch(createPerPage(parseInt(perPage)));
     }
   }, [dispatch, perPage]);
+
+  useEffect(() => {
+    dispatch(getSettingLocal());
+  }, [dispatch]);
 
   return (
     <Drawer
@@ -36,30 +44,38 @@ const DrawerCard = () => {
     >
       <Typography>Панель колнок</Typography>
       <FormGroup>
-        {cellTables.map((item) => (
-          <FormControlLabel
-            onClick={() => toggleShowCell(item.id)}
-            key={item.id}
-            control={<Checkbox checked={item.show} defaultChecked />}
-            label={item.name}
-          />
-        ))}
+        {cellTablesLocal.length !== 0
+          ? cellTablesLocal.map((item) => (
+              <FormControlLabel
+                key={item.id}
+                control={<Checkbox onClick={() => toggleShowCell(item.id)} checked={item.show} />}
+                label={item.name}
+              />
+            ))
+          : cellTablesGlobal.map((item) => (
+              <FormControlLabel
+                key={item.id}
+                control={<Checkbox onClick={() => toggleShowCell(item.id)} checked={item.show} />}
+                label={item.name}
+              />
+            ))}
       </FormGroup>
+      <Button onClick={() => dispatch(saveSettingLocal())} sx={{ mt: '10px' }} variant="outlined">
+        Сохранить настройки колонок
+      </Button>
       <Typography>Панель строк</Typography>
       <TextField
         name="perPage"
         value={perPage}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerPage(e.target.value)}
         select
-        label="Выбрать хэштег"
         required
-        sx={{ width: '200px', mr: '10px' }}
+        sx={{ width: '60px' }}
       >
         <MenuItem value="" disabled>
-          Выберите размер:
+          Выберите число:
         </MenuItem>
-        <MenuItem value="0">Сбросить</MenuItem>
-        <MenuItem value="5">5</MenuItem>
+        <MenuItem value="8">8</MenuItem>
         <MenuItem value="10">10</MenuItem>
         <MenuItem value="15">15</MenuItem>
       </TextField>
