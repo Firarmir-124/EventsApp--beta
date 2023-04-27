@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { Alert, CircularProgress, MenuItem, Paper, TextField } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectHashtagList, selectHashtagListLoading } from '../../Hashtag/hashtagSlice';
-import { fetchHashtagList } from '../../Hashtag/hashtagThunk';
-import { addIdHashtag } from '../store/eventSlice';
+import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
+import { selectHashtagList, selectHashtagListLoading } from '../../../Hashtag/hashtagSlice';
+import { fetchHashtagList } from '../../../Hashtag/hashtagThunk';
+import { addIdHashtag } from '../../store/eventSlice';
 
-const ControlPanelAdmin = () => {
+const FilterHashtag = () => {
   const hashtags = useAppSelector(selectHashtagList);
   const dispatch = useAppDispatch();
   const loadingHashtag = useAppSelector(selectHashtagListLoading);
@@ -45,4 +45,4 @@ const ControlPanelAdmin = () => {
   );
 };
 
-export default ControlPanelAdmin;
+export default FilterHashtag;

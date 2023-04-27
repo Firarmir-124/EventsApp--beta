@@ -36,7 +36,7 @@ import ModalCard from '../../../components/ModalCard';
 import FormEvent from '../components/FormEvent';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DrawerCard from '../components/DrawerCard';
-import ControlPanelAdmin from '../components/ControlPanelAdmin';
+import FilterHashtag from './filterAdmin/filterHashtag';
 
 const EventList = () => {
   const user = useAppSelector(selectUser);
@@ -102,7 +102,7 @@ const EventList = () => {
       <IconButton onClick={() => dispatch(openDrawer())}>
         <SettingsIcon />
       </IconButton>
-      <ControlPanelAdmin />
+      <FilterHashtag />
       <Paper elevation={3} sx={{ width: '100%', minHeight: '600px', overflowX: 'hidden' }}>
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
