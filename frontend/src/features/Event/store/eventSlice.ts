@@ -25,6 +25,7 @@ interface EventType {
   }[];
   drawerState: boolean;
   idHashtag: string;
+  perPage: number;
 }
 
 const initialState: EventType = {
@@ -80,6 +81,7 @@ const initialState: EventType = {
   ],
   drawerState: false,
   idHashtag: '',
+  perPage: 0,
 };
 
 const eventSlice = createSlice({
@@ -107,6 +109,9 @@ const eventSlice = createSlice({
     },
     addIdHashtag: (state, { payload: id }: PayloadAction<string>) => {
       state.idHashtag = id;
+    },
+    createPerPage: (state, { payload: perPage }: PayloadAction<number>) => {
+      state.perPage = perPage;
     },
   },
   extraReducers: (builder) => {
@@ -156,7 +161,7 @@ const eventSlice = createSlice({
 });
 
 export const eventReducer = eventSlice.reducer;
-export const { openSnackbar, openModal, closeModal, toggleShowCellTable, openDrawer, closeDrawer, addIdHashtag } =
+export const { openSnackbar, openModal, closeModal, toggleShowCellTable, openDrawer, closeDrawer, createPerPage } =
   eventSlice.actions;
 
 export const selectEventList = (state: RootState) => state.eventReducer.eventList;
@@ -172,3 +177,4 @@ export const selectModal = (state: RootState) => state.eventReducer.modal;
 export const selectCellTable = (state: RootState) => state.eventReducer.cellTable;
 export const selectDrawerState = (state: RootState) => state.eventReducer.drawerState;
 export const selectIdHashtag = (state: RootState) => state.eventReducer.idHashtag;
+export const selectPerPage = (state: RootState) => state.eventReducer.perPage;

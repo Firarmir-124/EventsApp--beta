@@ -23,6 +23,7 @@ import {
   selectEventList,
   selectEventLoading,
   selectEventOne,
+  selectPerPage,
 } from '../store/eventSlice';
 import { fetchEventList, fetchOneEvent, removeEvent, updateEvent } from '../store/eventThunk';
 import { StyledTableCell } from '../../../constants';
@@ -45,12 +46,13 @@ const EventList = () => {
   const [idEvent, setIdEvent] = useState('');
   const eventOne = useAppSelector(selectEventOne);
   const cellTables = useAppSelector(selectCellTable);
+  const perPage = useAppSelector(selectPerPage);
 
   useEffect(() => {
     if (page) {
-      dispatch(fetchEventList({ page, perPage: eventList.perPage }));
+      dispatch(fetchEventList({ page, perPage }));
     }
-  }, [dispatch, page, eventList.perPage]);
+  }, [dispatch, page, perPage]);
 
   useEffect(() => {
     if (idEvent) {

@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Checkbox, Drawer, FormControlLabel, FormGroup, MenuItem, TextField, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { closeDrawer, selectCellTable, selectDrawerState, toggleShowCellTable } from '../store/eventSlice';
+import {
+  closeDrawer,
+  createPerPage,
+  selectCellTable,
+  selectDrawerState,
+  toggleShowCellTable,
+} from '../store/eventSlice';
 
 const DrawerCard = () => {
-  const [col, setCol] = useState('8');
+  const [perPage, setPerPage] = useState('');
   const cellTables = useAppSelector(selectCellTable);
   const dispatch = useAppDispatch();
   const stateDrawer = useAppSelector(selectDrawerState);
@@ -13,10 +19,16 @@ const DrawerCard = () => {
     dispatch(toggleShowCellTable(id));
   };
 
+  useEffect(() => {
+    if (perPage) {
+      dispatch(createPerPage(parseInt(perPage)));
+    }
+  }, [dispatch, perPage]);
+
   return (
     <Drawer
       PaperProps={{
-        sx: { width: '10%', p: '10px' },
+        sx: { p: '10px' },
       }}
       anchor="left"
       open={stateDrawer}
@@ -35,9 +47,9 @@ const DrawerCard = () => {
       </FormGroup>
       <Typography>Панель строк</Typography>
       <TextField
-        name="col"
-        value={col}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCol(e.target.value)}
+        name="perPage"
+        value={perPage}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerPage(e.target.value)}
         select
         label="Выбрать хэштег"
         required
@@ -46,18 +58,10 @@ const DrawerCard = () => {
         <MenuItem value="" disabled>
           Выберите размер:
         </MenuItem>
-        <MenuItem value="1" disabled>
-          5
-        </MenuItem>
-        <MenuItem value="10" disabled>
-          10
-        </MenuItem>
-        <MenuItem value="10" disabled>
-          50
-        </MenuItem>
-        <MenuItem value="10" disabled>
-          Макс
-        </MenuItem>
+        <MenuItem value="0">Сбросить</MenuItem>
+        <MenuItem value="5">5</MenuItem>
+        <MenuItem value="10">10</MenuItem>
+        <MenuItem value="15">15</MenuItem>
       </TextField>
     </Drawer>
   );
