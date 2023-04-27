@@ -55,8 +55,10 @@ export interface EventList {
 }
 
 export interface EventListFull {
-  eventPlanListLength: number;
-  eventPlanList: EventList[];
+  length: number;
+  perPage: number;
+  eventList: EventList[];
+  pages: number;
 }
 
 export interface EventOne {

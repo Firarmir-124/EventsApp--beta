@@ -29,8 +29,10 @@ interface EventType {
 
 const initialState: EventType = {
   eventList: {
-    eventPlanListLength: 0,
-    eventPlanList: [],
+    length: 0,
+    perPage: 8,
+    eventList: [],
+    pages: 0,
   },
   eventListLoading: false,
   eventCreateLoading: false,

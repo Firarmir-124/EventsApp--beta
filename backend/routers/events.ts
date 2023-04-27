@@ -10,31 +10,23 @@ const eventsRouter = express.Router();
 
 eventsRouter.get('/', authAnonymous, async (req, res) => {
   const page = parseInt(req.query.page as string) || 1;
-  const idHashtag = req.query.hashtag as string;
+  const perPage = parseInt(req.query.perPage as string) || 8;
 
-  const perPage = 8;
   try {
-    const eventPlanListFull = await EventPlan.find();
+    const eventLength = await EventPlan.count();
+    const eventPlanList = await EventPlan.find()
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
+      .sort({ createDate: -1 })
+      .populate('hashtag');
 
-    if (req.query.hashtag !== undefined) {
-      const eventPlanList = await EventPlan.find({ hashtag: idHashtag })
-        .skip((page - 1) * perPage)
-        .limit(perPage)
-        .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
-        .sort({ createDate: -1 })
-        .populate('hashtag');
-
-      return res.send({ eventPlanListLength: eventPlanList.length, eventPlanList });
-    } else {
-      const eventPlanList = await EventPlan.find()
-        .skip((page - 1) * perPage)
-        .limit(perPage)
-        .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
-        .sort({ createDate: -1 })
-        .populate('hashtag');
-
-      return res.send({ eventPlanListLength: eventPlanListFull.length, eventPlanList });
-    }
+    return res.send({
+      length: eventLength,
+      perPage,
+      eventList: eventPlanList,
+      pages: Math.ceil(eventLength / perPage),
+    });
   } catch {
     return res.sendStatus(500);
   }

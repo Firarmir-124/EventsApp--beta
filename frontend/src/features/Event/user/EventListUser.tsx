@@ -16,9 +16,9 @@ const EventListUser = () => {
 
   useEffect(() => {
     if (page) {
-      dispatch(fetchEventList({ page, idHashtag: id }));
+      dispatch(fetchEventList({ page, perPage: events.perPage }));
     }
-  }, [dispatch, page, id]);
+  }, [dispatch, page, id, events.perPage]);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -30,20 +30,15 @@ const EventListUser = () => {
         <ControlPanel />
       </Paper>
       {!loadingEventList ? (
-        events.eventPlanList.length !== 0 ? (
-          events.eventPlanList.map((event) => <CardEventUser key={event._id} event={event} />)
+        events.eventList.length !== 0 ? (
+          events.eventList.map((event) => <CardEventUser key={event._id} event={event} />)
         ) : (
           <Alert severity="info">Списка нет</Alert>
         )
       ) : (
         <CircularProgress />
       )}
-      <Pagination
-        sx={{ mt: '20px' }}
-        count={Math.ceil(events.eventPlanListLength / 8)}
-        page={page}
-        onChange={handleChange}
-      />
+      <Pagination sx={{ mt: '20px' }} count={events.pages} page={page} onChange={handleChange} />
     </Grid>
   );
 };

@@ -23,7 +23,6 @@ import {
   selectEventList,
   selectEventLoading,
   selectEventOne,
-  selectIdHashtag,
 } from '../store/eventSlice';
 import { fetchEventList, fetchOneEvent, removeEvent, updateEvent } from '../store/eventThunk';
 import { StyledTableCell } from '../../../constants';
@@ -36,24 +35,22 @@ import ModalCard from '../../../components/ModalCard';
 import FormEvent from '../components/FormEvent';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DrawerCard from '../components/DrawerCard';
-import FilterHashtag from './filterAdmin/filterHashtag';
 
 const EventList = () => {
   const user = useAppSelector(selectUser);
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = useState(1);
   const dispatch = useAppDispatch();
   const eventList = useAppSelector(selectEventList);
   const loadingEventList = useAppSelector(selectEventLoading);
   const [idEvent, setIdEvent] = useState('');
   const eventOne = useAppSelector(selectEventOne);
   const cellTables = useAppSelector(selectCellTable);
-  const idHashtag = useAppSelector(selectIdHashtag);
 
   useEffect(() => {
     if (page) {
-      dispatch(fetchEventList({ page, idHashtag }));
+      dispatch(fetchEventList({ page, perPage: eventList.perPage }));
     }
-  }, [dispatch, page, idHashtag]);
+  }, [dispatch, page, eventList.perPage]);
 
   useEffect(() => {
     if (idEvent) {
@@ -69,7 +66,7 @@ const EventList = () => {
     if (window.confirm('Вы действительно хотите удалить ?')) {
       await dispatch(removeEvent(id)).unwrap();
       if (page) {
-        await dispatch(fetchEventList({ page, idHashtag: undefined })).unwrap();
+        await dispatch(fetchEventList({ page, perPage: eventList.perPage })).unwrap();
       }
       dispatch(openSnackbar({ status: true, parameter: 'remove_event' }));
     } else {
@@ -87,7 +84,7 @@ const EventList = () => {
       await dispatch(updateEvent({ event, id: idEvent })).unwrap();
     }
     if (page) {
-      await dispatch(fetchEventList({ page, idHashtag: undefined })).unwrap();
+      await dispatch(fetchEventList({ page, perPage: eventList.perPage })).unwrap();
     }
     setIdEvent('');
     dispatch(closeModal());
@@ -102,7 +99,6 @@ const EventList = () => {
       <IconButton onClick={() => dispatch(openDrawer())}>
         <SettingsIcon />
       </IconButton>
-      <FilterHashtag />
       <Paper elevation={3} sx={{ width: '100%', minHeight: '600px', overflowX: 'hidden' }}>
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
@@ -120,8 +116,8 @@ const EventList = () => {
             </TableHead>
             <TableBody>
               {!loadingEventList ? (
-                eventList.eventPlanList.length !== 0 ? (
-                  eventList.eventPlanList.map((event) => (
+                eventList.eventList.length !== 0 ? (
+                  eventList.eventList.map((event) => (
                     <CardEventAdmin
                       openModalEvent={() => openModalEvent(event._id)}
                       removeCardEvent={() => removeCardEvent(event._id)}
@@ -147,12 +143,7 @@ const EventList = () => {
           </Table>
         </TableContainer>
       </Paper>
-      <Pagination
-        sx={{ mt: '20px' }}
-        count={Math.ceil(eventList.eventPlanListLength / 8)}
-        page={page}
-        onChange={handleChange}
-      />
+      <Pagination sx={{ mt: '20px' }} count={eventList.pages} page={page} onChange={handleChange} />
       <SnackbarCard />
       <ModalCard>{eventOne && <FormEvent onSubmit={onSubmit} event={eventOne} />}</ModalCard>
       <DrawerCard />

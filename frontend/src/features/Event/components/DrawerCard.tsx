@@ -1,9 +1,10 @@
-import React from 'react';
-import { Checkbox, Drawer, FormControlLabel, FormGroup, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { Checkbox, Drawer, FormControlLabel, FormGroup, MenuItem, TextField, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { closeDrawer, selectCellTable, selectDrawerState, toggleShowCellTable } from '../store/eventSlice';
 
 const DrawerCard = () => {
+  const [col, setCol] = useState('8');
   const cellTables = useAppSelector(selectCellTable);
   const dispatch = useAppDispatch();
   const stateDrawer = useAppSelector(selectDrawerState);
@@ -32,6 +33,32 @@ const DrawerCard = () => {
           />
         ))}
       </FormGroup>
+      <Typography>Панель строк</Typography>
+      <TextField
+        name="col"
+        value={col}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCol(e.target.value)}
+        select
+        label="Выбрать хэштег"
+        required
+        sx={{ width: '200px', mr: '10px' }}
+      >
+        <MenuItem value="" disabled>
+          Выберите размер:
+        </MenuItem>
+        <MenuItem value="1" disabled>
+          5
+        </MenuItem>
+        <MenuItem value="10" disabled>
+          10
+        </MenuItem>
+        <MenuItem value="10" disabled>
+          50
+        </MenuItem>
+        <MenuItem value="10" disabled>
+          Макс
+        </MenuItem>
+      </TextField>
     </Drawer>
   );
 };
