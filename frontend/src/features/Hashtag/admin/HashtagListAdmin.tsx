@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, CircularProgress, Snackbar } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectHashtagList, selectHashtagListLoading, selectHashtagOne } from '../hashtagSlice';
+import {
+  selectHashtagErrorError,
+  selectHashtagList,
+  selectHashtagListLoading,
+  selectHashtagOne,
+} from '../hashtagSlice';
 import { deleteHashtag, editHashtag, fetchHashtagList, fetchOneHashtag } from '../hashtagThunk';
 import CardHashtagAdmin from '../components/CardHashtagAdmin';
 import { HashtagMutation } from '../../../types';
@@ -17,6 +22,7 @@ const HashtagListAdmin = () => {
   const listHashtag = useAppSelector(selectHashtagList);
   const loadingListHashtag = useAppSelector(selectHashtagListLoading);
   const hashtagOne = useAppSelector(selectHashtagOne);
+  const removeError = useAppSelector(selectHashtagErrorError);
 
   useEffect(() => {
     dispatch(fetchHashtagList());
@@ -54,6 +60,7 @@ const HashtagListAdmin = () => {
 
   return (
     <>
+      {removeError && <Alert severity="error">{removeError.error}</Alert>}
       {!loadingListHashtag ? (
         listHashtag.length !== 0 ? (
           listHashtag.map((hashtag) => (

@@ -3,6 +3,7 @@ import Hashtag from '../models/Hashtag';
 import mongoose from 'mongoose';
 import auth from '../middleware/auth';
 import permit from '../middleware/permit';
+import EventPlan from '../models/EventPlan';
 
 const hashtagsRoutes = express.Router();
 
@@ -55,6 +56,12 @@ hashtagsRoutes.put('/:id', auth, permit('organizer'), async (req, res, next) => 
 
 hashtagsRoutes.delete('/:id', auth, permit('organizer'), async (req, res, next) => {
   try {
+    const events = await EventPlan.find({ hashtag: req.params.id });
+
+    if (events.length !== 0) {
+      return res.status(404).send({ error: 'Нельзя удалить' });
+    }
+
     await Hashtag.deleteOne({ _id: req.params.id });
     return res.send({ remove: req.params.id });
   } catch (e) {

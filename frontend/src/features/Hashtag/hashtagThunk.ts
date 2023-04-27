@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axios';
-import { HashtagListType, HashtagMutation, ValidationError } from '../../types';
+import { GlobalError, HashtagListType, HashtagMutation, ValidationError } from '../../types';
 import { isAxiosError } from 'axios';
 
 export const fetchHashtagList = createAsyncThunk<HashtagListType[]>('hashtag/fetch_hashtagList', async () => {
@@ -43,6 +43,15 @@ export const editHashtag = createAsyncThunk<void, EditType>('hashtag/edit_hashta
   await axiosApi.put('/hashtag/' + arg.id, arg.hashtag);
 });
 
-export const deleteHashtag = createAsyncThunk<void, string>('hashtag/delete_hashtag', async (id) => {
-  await axiosApi.delete('/hashtag/' + id);
-});
+export const deleteHashtag = createAsyncThunk<void, string, { rejectValue: GlobalError }>(
+  'hashtag/delete_hashtag',
+  async (id, { rejectWithValue }) => {
+    try {
+      await axiosApi.delete('/hashtag/' + id);
+    } catch (e) {
+      if (isAxiosError(e) && e.response && e.response.status === 404) {
+        return rejectWithValue(e.response.data as GlobalError);
+      }
+    }
+  },
+);

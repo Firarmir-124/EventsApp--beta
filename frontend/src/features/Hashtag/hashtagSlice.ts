@@ -1,4 +1,4 @@
-import { HashtagListType, ValidationError } from '../../types';
+import { GlobalError, HashtagListType, ValidationError } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { deleteHashtag, editHashtag, fetchHashtagList, fetchOneHashtag } from './hashtagThunk';
@@ -12,6 +12,7 @@ interface HashtagType {
   hashtagOne: HashtagListType | null;
   hashtagOneLoading: boolean;
   hashtagError: ValidationError | null;
+  hashtagErrorRemove: GlobalError | null;
 }
 
 const initialState: HashtagType = {
@@ -23,6 +24,7 @@ const initialState: HashtagType = {
   hashtagOne: null,
   hashtagOneLoading: false,
   hashtagError: null,
+  hashtagErrorRemove: null,
 };
 
 const hashtagSlice = createSlice({
@@ -36,6 +38,7 @@ const hashtagSlice = createSlice({
     builder.addCase(fetchHashtagList.fulfilled, (state, { payload: hashtagList }) => {
       state.hashtagListLoading = false;
       state.hashtagList = hashtagList;
+      state.hashtagErrorRemove = null;
     });
     builder.addCase(fetchHashtagList.rejected, (state) => {
       state.hashtagListLoading = false;
@@ -47,8 +50,9 @@ const hashtagSlice = createSlice({
     builder.addCase(deleteHashtag.fulfilled, (state) => {
       state.hashtagRemoveLoading = false;
     });
-    builder.addCase(deleteHashtag.rejected, (state) => {
+    builder.addCase(deleteHashtag.rejected, (state, { payload: error }) => {
       state.hashtagRemoveLoading = false;
+      state.hashtagErrorRemove = error || null;
     });
 
     builder.addCase(fetchOneHashtag.pending, (state) => {
@@ -85,3 +89,4 @@ export const selectHashtagOne = (state: RootState) => state.hashtagReducer.hasht
 export const selectHashtagOneLoading = (state: RootState) => state.hashtagReducer.hashtagOneLoading;
 export const selectHashtagError = (state: RootState) => state.hashtagReducer.hashtagError;
 export const selectHashtagListLoading = (state: RootState) => state.hashtagReducer.hashtagListLoading;
+export const selectHashtagErrorError = (state: RootState) => state.hashtagReducer.hashtagErrorRemove;
