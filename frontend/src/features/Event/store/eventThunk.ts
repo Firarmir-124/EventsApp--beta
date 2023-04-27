@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axiosApi from '../../axios';
-import { EventListFull, EventMutation, EventOne, ValidationError } from '../../types';
+import axiosApi from '../../../axios';
+import { EventListFull, EventMutation, EventOne, ValidationError } from '../../../types';
 import { isAxiosError } from 'axios';
 
 interface eventListType {

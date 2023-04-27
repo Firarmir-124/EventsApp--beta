@@ -3,7 +3,7 @@ import { Alert, CircularProgress, MenuItem, Paper, TextField } from '@mui/materi
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectHashtagList, selectHashtagListLoading } from '../../Hashtag/hashtagSlice';
 import { fetchHashtagList } from '../../Hashtag/hashtagThunk';
-import { addIdHashtag } from '../eventSlice';
+import { addIdHashtag } from '../store/eventSlice';
 
 const ControlPanelAdmin = () => {
   const hashtags = useAppSelector(selectHashtagList);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Checkbox, Drawer, FormControlLabel, FormGroup, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { closeDrawer, selectCellTable, selectDrawerState, toggleShowCellTable } from '../eventSlice';
+import { closeDrawer, selectCellTable, selectDrawerState, toggleShowCellTable } from '../store/eventSlice';
 
 const DrawerCard = () => {
   const cellTables = useAppSelector(selectCellTable);

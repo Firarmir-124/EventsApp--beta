@@ -8,7 +8,7 @@ import { HashtagMutation } from '../../../types';
 import FormHashtag from '../components/FormHashtag';
 import SnackbarCard from '../../../components/SnackbarCard';
 import ModalCard from '../../../components/ModalCard';
-import { closeModal, openModal } from '../../Event/eventSlice';
+import { closeModal, openModal } from '../../Event/store/eventSlice';
 
 const HashtagListAdmin = () => {
   const [id, setId] = useState('');

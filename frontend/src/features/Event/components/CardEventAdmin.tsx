@@ -5,7 +5,7 @@ import { EventList } from '../../../types';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useAppSelector } from '../../../app/hooks';
-import { selectCellTable, selectRemoveEventLoading } from '../eventSlice';
+import { selectCellTable, selectRemoveEventLoading } from '../store/eventSlice';
 
 interface Props {
   event: EventList;

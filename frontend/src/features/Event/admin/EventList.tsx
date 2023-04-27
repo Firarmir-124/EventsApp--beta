@@ -24,8 +24,8 @@ import {
   selectEventLoading,
   selectEventOne,
   selectIdHashtag,
-} from '../eventSlice';
-import { fetchEventList, fetchOneEvent, removeEvent, updateEvent } from '../eventThunk';
+} from '../store/eventSlice';
+import { fetchEventList, fetchOneEvent, removeEvent, updateEvent } from '../store/eventThunk';
 import { StyledTableCell } from '../../../constants';
 import CardEventAdmin from '../components/CardEventAdmin';
 import { Navigate } from 'react-router-dom';

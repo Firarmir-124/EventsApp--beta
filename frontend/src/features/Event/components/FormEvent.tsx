@@ -20,7 +20,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { fetchHashtagList } from '../../Hashtag/hashtagThunk';
 import { selectHashtagList, selectHashtagListLoading } from '../../Hashtag/hashtagSlice';
 import Divider from '@mui/material/Divider';
-import { selectCreateEventLoading, selectEventError } from '../eventSlice';
+import { selectCreateEventLoading, selectEventError } from '../store/eventSlice';
 
 interface Props {
   onSubmit: (event: EventMutation) => void;

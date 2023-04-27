@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Alert, CircularProgress, Grid, Pagination, Paper } from '@mui/material';
 import CardEventUser from '../components/CardEventUser';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectEventList, selectEventLoading } from '../eventSlice';
-import { fetchEventList } from '../eventThunk';
+import { selectEventList, selectEventLoading } from '../store/eventSlice';
+import { fetchEventList } from '../store/eventThunk';
 import ControlPanel from '../components/ControlPanel';
 import { useParams } from 'react-router-dom';
 
