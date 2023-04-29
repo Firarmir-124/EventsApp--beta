@@ -11,22 +11,52 @@ const eventsRouter = express.Router();
 eventsRouter.get('/', authAnonymous, async (req, res) => {
   const page = parseInt(req.query.page as string) || 1;
   const perPage = parseInt(req.query.perPage as string) || 8;
+  const allEvents = req.query.allEvents as string;
 
   try {
-    const eventLength = await EventPlan.count();
-    const eventPlanList = await EventPlan.find()
-      .skip((page - 1) * perPage)
-      .limit(perPage)
-      .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
-      .sort({ createDate: -1 })
-      .populate('hashtag');
+    if (allEvents !== undefined) {
+      const titleEvents = await EventPlan.find().select('title');
+      return res.send(titleEvents);
+    } else if (req.query.filter !== undefined) {
+      const filter: any = JSON.parse(req.query.filter as string);
 
-    return res.send({
-      length: eventLength,
-      perPage,
-      eventList: eventPlanList,
-      pages: Math.ceil(eventLength / perPage),
-    });
+      Object.keys(filter).forEach((key) => {
+        if (filter[key] === null) {
+          delete filter[key];
+        }
+      });
+
+      console.log(filter);
+
+      const eventPlanList = await EventPlan.find(filter)
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
+        .sort({ createDate: -1 })
+        .populate('hashtag');
+
+      return res.send({
+        length: eventPlanList.length,
+        perPage,
+        eventList: eventPlanList,
+        pages: Math.ceil(eventPlanList.length / perPage),
+      });
+    } else {
+      const eventLength = await EventPlan.count();
+      const eventPlanList = await EventPlan.find()
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
+        .sort({ createDate: -1 })
+        .populate('hashtag');
+
+      return res.send({
+        length: eventLength,
+        perPage,
+        eventList: eventPlanList,
+        pages: Math.ceil(eventLength / perPage),
+      });
+    }
   } catch {
     return res.sendStatus(500);
   }

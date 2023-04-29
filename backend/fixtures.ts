@@ -3,6 +3,7 @@ import config from './config';
 import User from './models/Users';
 import EventPlan from './models/EventPlan';
 import crypto from 'crypto';
+import Hashtag from './models/Hashtag';
 
 const run = async () => {
   mongoose.set('strictQuery', false);
@@ -11,6 +12,8 @@ const run = async () => {
 
   try {
     await db.dropCollection('users');
+    await db.dropCollection('eventplans');
+    await db.dropCollection('hashtags');
   } catch (e) {
     console.log('Collections were not present, skipping drop...');
   }
@@ -21,6 +24,10 @@ const run = async () => {
     password: '123',
     token: crypto.randomUUID(),
     role: 'organizer',
+  });
+
+  const hashtag = await Hashtag.create({
+    name: 'Аниме',
   });
 
   for (let i = 0; i <= 5; i++) {
@@ -37,7 +44,7 @@ const run = async () => {
       ],
       time: new Date().toISOString(),
       image: null,
-      hashtag: `644264a446259271719c3ae4`,
+      hashtag: hashtag._id,
       user: user._id,
       createDate: new Date().toISOString(),
     });
@@ -57,7 +64,7 @@ const run = async () => {
       ],
       time: new Date().toISOString(),
       image: null,
-      hashtag: `64455a516f8b33b1b120ef78`,
+      hashtag: hashtag._id,
       user: user._id,
       createDate: new Date().toISOString(),
     });
@@ -77,7 +84,7 @@ const run = async () => {
       ],
       time: new Date().toISOString(),
       image: null,
-      hashtag: `64455a5c6f8b33b1b120ef7c`,
+      hashtag: hashtag._id,
       user: user._id,
       createDate: new Date().toISOString(),
     });

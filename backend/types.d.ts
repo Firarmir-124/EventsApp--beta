@@ -26,3 +26,9 @@ export interface EventType {
 export interface HashtagType {
   name: string;
 }
+
+export interface Filter {
+  titleEvent: string[];
+  titleHashtag: string;
+  dateTimeEvent: string;
+}
