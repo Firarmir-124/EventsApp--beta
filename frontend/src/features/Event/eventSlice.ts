@@ -1,7 +1,7 @@
-import { EventListFull, EventOne, TypesCallTable, ValidationError } from '../../types';
+import { AllEvents, EventListFull, EventOne, TypesCallTable, ValidationError } from '../../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { createEvent, fetchEventList, fetchOneEvent, removeEvent } from './eventThunk';
+import { createEvent, fetchEventList, fetchEventsAll, fetchOneEvent, removeEvent } from './eventThunk';
 
 interface EventType {
   eventList: EventListFull;
@@ -27,6 +27,9 @@ interface EventType {
   idHashtag: string;
   perPage: number;
   localSettings: TypesCallTable[];
+  localSettingsLoading: boolean;
+  eventsAll: AllEvents[];
+  resetFilter: boolean;
 }
 
 const initialState: EventType = {
@@ -84,6 +87,9 @@ const initialState: EventType = {
   idHashtag: '',
   perPage: 0,
   localSettings: [],
+  localSettingsLoading: false,
+  eventsAll: [],
+  resetFilter: false,
 };
 
 const eventSlice = createSlice({
@@ -133,6 +139,12 @@ const eventSlice = createSlice({
         JSON.stringify(state.localSettings.length !== 0 ? state.localSettings : state.cellTable),
       );
     },
+    openFilterShow: (state) => {
+      state.modal = true;
+    },
+    resetFilterType: (state, { payload: type }: PayloadAction<boolean>) => {
+      state.resetFilter = type;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchEventList.pending, (state) => {
@@ -144,6 +156,17 @@ const eventSlice = createSlice({
     });
     builder.addCase(fetchEventList.rejected, (state) => {
       state.eventListLoading = false;
+    });
+
+    builder.addCase(fetchEventsAll.pending, (state) => {
+      state.localSettingsLoading = true;
+    });
+    builder.addCase(fetchEventsAll.fulfilled, (state, { payload: eventsAll }) => {
+      state.eventsAll = eventsAll;
+      state.localSettingsLoading = false;
+    });
+    builder.addCase(fetchEventsAll.rejected, (state) => {
+      state.localSettingsLoading = false;
     });
 
     builder.addCase(createEvent.pending, (state) => {
@@ -191,6 +214,8 @@ export const {
   createPerPage,
   saveSettingLocal,
   getSettingLocal,
+  openFilterShow,
+  resetFilterType,
 } = eventSlice.actions;
 
 export const selectEventList = (state: RootState) => state.eventReducer.eventList;
@@ -208,3 +233,6 @@ export const selectDrawerState = (state: RootState) => state.eventReducer.drawer
 export const selectIdHashtag = (state: RootState) => state.eventReducer.idHashtag;
 export const selectPerPage = (state: RootState) => state.eventReducer.perPage;
 export const selectSettingsLocal = (state: RootState) => state.eventReducer.localSettings;
+export const selectEventsAll = (state: RootState) => state.eventReducer.eventsAll;
+export const selectSettingsLocalLoading = (state: RootState) => state.eventReducer.localSettingsLoading;
+export const selectFilterReset = (state: RootState) => state.eventReducer.resetFilter;

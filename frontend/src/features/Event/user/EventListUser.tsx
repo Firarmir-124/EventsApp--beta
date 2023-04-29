@@ -16,7 +16,7 @@ const EventListUser = () => {
 
   useEffect(() => {
     if (page) {
-      dispatch(fetchEventList({ page, perPage: events.perPage }));
+      dispatch(fetchEventList({ page, perPage: events.perPage, filter: null }));
     }
   }, [dispatch, page, id, events.perPage]);
 

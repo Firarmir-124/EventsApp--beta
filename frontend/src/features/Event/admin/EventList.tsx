@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
+  Button,
   CircularProgress,
   Container,
   IconButton,
@@ -19,10 +20,12 @@ import {
   openDrawer,
   openModal,
   openSnackbar,
+  resetFilterType,
   selectCellTable,
   selectEventList,
   selectEventLoading,
   selectEventOne,
+  selectFilterReset,
   selectPerPage,
   selectSettingsLocal,
 } from '../eventSlice';
@@ -49,10 +52,11 @@ const EventList = () => {
   const cellTablesGlobal = useAppSelector(selectCellTable);
   const perPage = useAppSelector(selectPerPage);
   const cellTablesLocal = useAppSelector(selectSettingsLocal);
+  const resetFilter = useAppSelector(selectFilterReset);
 
   useEffect(() => {
     if (page) {
-      dispatch(fetchEventList({ page, perPage }));
+      dispatch(fetchEventList({ page, perPage, filter: null }));
     }
   }, [dispatch, page, perPage]);
 
@@ -70,7 +74,7 @@ const EventList = () => {
     if (window.confirm('Вы действительно хотите удалить ?')) {
       await dispatch(removeEvent(id)).unwrap();
       if (page) {
-        await dispatch(fetchEventList({ page, perPage: eventList.perPage })).unwrap();
+        await dispatch(fetchEventList({ page, perPage: eventList.perPage, filter: null })).unwrap();
       }
       dispatch(openSnackbar({ status: true, parameter: 'remove_event' }));
     } else {
@@ -88,10 +92,15 @@ const EventList = () => {
       await dispatch(updateEvent({ event, id: idEvent })).unwrap();
     }
     if (page) {
-      await dispatch(fetchEventList({ page, perPage: eventList.perPage })).unwrap();
+      await dispatch(fetchEventList({ page, perPage: eventList.perPage, filter: null })).unwrap();
     }
     setIdEvent('');
     dispatch(closeModal());
+  };
+
+  const onResetFilter = () => {
+    dispatch(resetFilterType(false));
+    dispatch(fetchEventList({ page: 0, perPage: 0, filter: null }));
   };
 
   if (user?.role !== 'organizer') {
@@ -100,6 +109,7 @@ const EventList = () => {
 
   return (
     <Container sx={{ mt: '20px' }}>
+      {resetFilter && <Button onClick={onResetFilter}>Сброисть фильтры</Button>}
       <IconButton onClick={() => dispatch(openDrawer())}>
         <SettingsIcon />
       </IconButton>

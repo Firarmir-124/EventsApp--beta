@@ -1,12 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axios';
-import { EventListFull, EventMutation, EventOne, ValidationError } from '../../types';
+import { AllEvents, EventListFull, EventMutation, EventOne, ValidationError } from '../../types';
 import { isAxiosError } from 'axios';
 
 type eventListType =
   | {
       perPage: number;
       page: number;
+      filter: string | null;
     }
   | undefined;
 
@@ -15,9 +16,17 @@ export const fetchEventList = createAsyncThunk<EventListFull, eventListType>('ev
 
   if (arg) {
     url = `/eventPlan?page=${arg.page}&perPage=${arg.perPage}`;
+    if (arg.filter) {
+      url = `/eventPlan?page=${arg.page}&perPage=${arg.perPage}&filter=${arg.filter}`;
+    }
   }
 
   const response = await axiosApi.get<EventListFull>(url);
+  return response.data;
+});
+
+export const fetchEventsAll = createAsyncThunk<AllEvents[]>('event/fetch_eventsAll', async () => {
+  const response = await axiosApi.get<AllEvents[]>('/eventPlan?allEvents');
   return response.data;
 });
 

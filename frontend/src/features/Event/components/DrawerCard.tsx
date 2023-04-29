@@ -11,6 +11,7 @@ import {
   selectSettingsLocal,
   toggleShowCellTable,
 } from '../eventSlice';
+import FilterAdmin from '../admin/filterAdmin/FilterAdmin';
 
 const DrawerCard = () => {
   const dispatch = useAppDispatch();
@@ -79,6 +80,8 @@ const DrawerCard = () => {
         <MenuItem value="10">10</MenuItem>
         <MenuItem value="15">15</MenuItem>
       </TextField>
+      <Typography>Фильтр данных</Typography>
+      <FilterAdmin />
     </Drawer>
   );
 };

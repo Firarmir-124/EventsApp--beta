@@ -54,6 +54,11 @@ export interface EventList {
   user: string;
 }
 
+export interface AllEvents {
+  _id: string;
+  title: string;
+}
+
 export interface EventListFull {
   length: number;
   perPage: number;
@@ -101,4 +106,21 @@ export interface TypesCallTable {
   name: string;
   fullName: string;
   show: boolean;
+}
+
+interface Option {
+  _id: string;
+  title: string;
+}
+
+export interface Filter {
+  titleEvent: Option[];
+  titleHashtag: string;
+  dateTimeEvent: string;
+}
+
+export interface FilterMutation {
+  title: { $in: string[] } | null;
+  hashtag: string | null;
+  time: string | null;
 }
