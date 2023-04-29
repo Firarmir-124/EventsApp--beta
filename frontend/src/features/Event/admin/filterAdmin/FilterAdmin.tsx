@@ -60,7 +60,7 @@ const FilterAdmin = () => {
 
   return (
     <Box component="form" onSubmit={onSubmit} sx={{ width: '300px' }}>
-      <Grid spacing={3} container>
+      <Grid spacing={2} container>
         <Grid xs={12} item>
           {!eventsAllLoading ? (
             <Autocomplete

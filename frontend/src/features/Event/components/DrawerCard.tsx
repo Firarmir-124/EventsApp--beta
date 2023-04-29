@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Checkbox, Drawer, FormControlLabel, FormGroup, MenuItem, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  Checkbox,
+  Drawer,
+  FormControlLabel,
+  FormGroup,
+  Grid,
+  MenuItem,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import {
   closeDrawer,
@@ -12,6 +22,8 @@ import {
   toggleShowCellTable,
 } from '../eventSlice';
 import FilterAdmin from '../admin/filterAdmin/FilterAdmin';
+import SaveIcon from '@mui/icons-material/Save';
+import Divider from '@mui/material/Divider';
 
 const DrawerCard = () => {
   const dispatch = useAppDispatch();
@@ -37,51 +49,74 @@ const DrawerCard = () => {
   return (
     <Drawer
       PaperProps={{
-        sx: { p: '10px' },
+        sx: { p: '10px', maxWidth: '300px' },
       }}
       anchor="left"
       open={stateDrawer}
       onClose={() => dispatch(closeDrawer())}
     >
-      <Typography>Панель колнок</Typography>
-      <FormGroup>
-        {cellTablesLocal.length !== 0
-          ? cellTablesLocal.map((item) => (
-              <FormControlLabel
-                key={item.id}
-                control={<Checkbox onClick={() => toggleShowCell(item.id)} checked={item.show} />}
-                label={item.name}
-              />
-            ))
-          : cellTablesGlobal.map((item) => (
-              <FormControlLabel
-                key={item.id}
-                control={<Checkbox onClick={() => toggleShowCell(item.id)} checked={item.show} />}
-                label={item.name}
-              />
-            ))}
-      </FormGroup>
-      <Button onClick={() => dispatch(saveSettingLocal())} sx={{ mt: '10px' }} variant="outlined">
-        Сохранить настройки колонок
-      </Button>
-      <Typography>Панель строк</Typography>
-      <TextField
-        name="perPage"
-        value={perPage}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerPage(e.target.value)}
-        select
-        required
-        sx={{ width: '60px' }}
-      >
-        <MenuItem value="" disabled>
-          Выберите число:
-        </MenuItem>
-        <MenuItem value="8">8</MenuItem>
-        <MenuItem value="10">10</MenuItem>
-        <MenuItem value="15">15</MenuItem>
-      </TextField>
-      <Typography>Фильтр данных</Typography>
-      <FilterAdmin />
+      <Grid spacing={3} container>
+        <Grid xs={12} item>
+          <Typography component="p" variant="h6">
+            Панель колнок
+          </Typography>
+          <Divider sx={{ my: 2 }} light />
+          <FormGroup>
+            {cellTablesLocal.length !== 0
+              ? cellTablesLocal.map((item) => (
+                  <FormControlLabel
+                    key={item.id}
+                    control={<Checkbox onClick={() => toggleShowCell(item.id)} checked={item.show} />}
+                    label={item.name}
+                  />
+                ))
+              : cellTablesGlobal.map((item) => (
+                  <FormControlLabel
+                    key={item.id}
+                    control={<Checkbox onClick={() => toggleShowCell(item.id)} checked={item.show} />}
+                    label={item.name}
+                  />
+                ))}
+          </FormGroup>
+          <Button
+            onClick={() => dispatch(saveSettingLocal())}
+            sx={{ mt: '10px' }}
+            variant="outlined"
+            startIcon={<SaveIcon />}
+          >
+            Сохранить
+          </Button>
+        </Grid>
+        <Grid xs={12} item>
+          <Typography component="p" variant="h6">
+            Панель строк
+          </Typography>
+          <Divider sx={{ my: 2 }} light />
+          <TextField
+            name="perPage"
+            value={perPage}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPerPage(e.target.value)}
+            select
+            required
+            sx={{ width: '60px' }}
+            variant="standard"
+          >
+            <MenuItem value="" disabled>
+              Выберите число:
+            </MenuItem>
+            <MenuItem value="8">8</MenuItem>
+            <MenuItem value="10">10</MenuItem>
+            <MenuItem value="15">15</MenuItem>
+          </TextField>
+        </Grid>
+        <Grid xs={12} item>
+          <Typography component="p" variant="h6">
+            Фильтр
+          </Typography>
+          <Divider sx={{ my: 2 }} light />
+          <FilterAdmin />
+        </Grid>
+      </Grid>
     </Drawer>
   );
 };
