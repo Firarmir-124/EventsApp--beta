@@ -17,6 +17,7 @@ import { fetchEventList } from '../eventThunk';
 import { useParams } from 'react-router-dom';
 import FilterUser from './FilterUser';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import Divider from '@mui/material/Divider';
 
 const EventListUser = () => {
   const { id } = useParams();
@@ -47,6 +48,7 @@ const EventListUser = () => {
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Typography sx={{ my: 2, mr: 1 }} component="h1" variant="h4">
             Мероприятия
+            <Divider light sx={{ mt: 1, background: '#ff6300' }} />
           </Typography>
           {resetFilter && (
             <IconButton onClick={toResetFilter}>
