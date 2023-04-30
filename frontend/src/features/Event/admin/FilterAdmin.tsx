@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Autocomplete, Box, Button, Checkbox, Grid, MenuItem, Skeleton, TextField } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
-import { fetchEventList, fetchEventsAll } from '../../eventThunk';
-import {
-  closeDrawer,
-  closeModal,
-  resetFilterType,
-  selectEventsAll,
-  selectSettingsLocalLoading,
-} from '../../eventSlice';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { fetchEventList, fetchEventsAll } from '../eventThunk';
+import { closeDrawer, closeModal, resetFilterType, selectEventsAll, selectSettingsLocalLoading } from '../eventSlice';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { selectHashtagList } from '../../../Hashtag/hashtagSlice';
-import { fetchHashtagList } from '../../../Hashtag/hashtagThunk';
-import { Filter, FilterMutation, Option } from '../../../../types';
+import { selectHashtagList } from '../../Hashtag/hashtagSlice';
+import { fetchHashtagList } from '../../Hashtag/hashtagThunk';
+import { Filter, FilterMutation, Option } from '../../../types';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;

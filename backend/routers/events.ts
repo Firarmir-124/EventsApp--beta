@@ -36,28 +36,6 @@ eventsRouter.get('/', authAnonymous, async (req, res) => {
         eventList: eventPlanList,
         pages: 0,
       });
-    } else if (req.query.filterU !== undefined) {
-      const filterU = JSON.parse(req.query.filterU as string);
-
-      Object.keys(filterU).forEach((key) => {
-        if (filterU[key] === null) {
-          delete filterU[key];
-        }
-      });
-
-      const eventPlanList = await EventPlan.find(filterU)
-        .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
-        .sort({ createDate: -1 })
-        .populate('hashtag');
-
-      console.log(filterU);
-
-      return res.send({
-        length: 0,
-        perPage,
-        eventList: eventPlanList,
-        pages: 0,
-      });
     } else {
       const eventLength = await EventPlan.count();
       const eventPlanList = await EventPlan.find()
@@ -92,7 +70,6 @@ eventsRouter.post('/', imagesUpload.single('image'), auth, permit('organizer'), 
       hashtag: req.body.hashtag,
       user: user._id,
       createDate: new Date().toISOString(),
-      date: `${new Date(req.body.time).getDate()} ${new Date(req.body.time).getMonth()}`,
     });
 
     return res.send(newEventPlan);

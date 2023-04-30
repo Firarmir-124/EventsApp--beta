@@ -30,12 +30,6 @@ interface EventType {
   localSettingsLoading: boolean;
   eventsAll: AllEvents[];
   resetFilter: boolean;
-  objFilterU: {
-    date: {
-      $in: string[];
-    } | null;
-    hashtag: string | null;
-  };
 }
 
 const initialState: EventType = {
@@ -96,10 +90,6 @@ const initialState: EventType = {
   localSettingsLoading: false,
   eventsAll: [],
   resetFilter: false,
-  objFilterU: {
-    date: null,
-    hashtag: null,
-  },
 };
 
 const eventSlice = createSlice({
@@ -149,19 +139,8 @@ const eventSlice = createSlice({
         JSON.stringify(state.localSettings.length !== 0 ? state.localSettings : state.cellTable),
       );
     },
-    openFilterShow: (state) => {
-      state.modal = true;
-    },
     resetFilterType: (state, { payload: type }: PayloadAction<boolean>) => {
       state.resetFilter = type;
-    },
-    addTimeToFilterObj: (state, { payload: time }: PayloadAction<{ $in: string[] }>) => {
-      state.objFilterU.date = time;
-      state.resetFilter = true;
-    },
-    addHashtagToFilterObj: (state, { payload: hashtag }: PayloadAction<string>) => {
-      state.objFilterU.hashtag = hashtag;
-      state.resetFilter = true;
     },
   },
   extraReducers: (builder) => {
@@ -232,10 +211,7 @@ export const {
   createPerPage,
   saveSettingLocal,
   getSettingLocal,
-  openFilterShow,
   resetFilterType,
-  addTimeToFilterObj,
-  addHashtagToFilterObj,
 } = eventSlice.actions;
 
 export const selectEventList = (state: RootState) => state.eventReducer.eventList;
@@ -256,4 +232,3 @@ export const selectSettingsLocal = (state: RootState) => state.eventReducer.loca
 export const selectEventsAll = (state: RootState) => state.eventReducer.eventsAll;
 export const selectSettingsLocalLoading = (state: RootState) => state.eventReducer.localSettingsLoading;
 export const selectFilterReset = (state: RootState) => state.eventReducer.resetFilter;
-export const selectObjFilterU = (state: RootState) => state.eventReducer.objFilterU;

@@ -18,9 +18,7 @@ export const fetchEventList = createAsyncThunk<EventListFull, eventListType>('ev
   if (arg) {
     url = `/eventPlan?page=${arg.page}&perPage=${arg.perPage}`;
     if (arg.filter) {
-      url = `/eventPlan?page=${arg.page}&perPage=${arg.perPage}&filter=${arg.filter}`;
-    } else if (arg.filterU) {
-      url = `/eventPlan?page=${arg.page}&perPage=${arg.perPage}&filterU=${arg.filterU}`;
+      url = `/eventPlan?filter=${arg.filter}`;
     }
   }
 

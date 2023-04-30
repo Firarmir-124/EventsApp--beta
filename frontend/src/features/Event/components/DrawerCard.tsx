@@ -21,7 +21,7 @@ import {
   selectSettingsLocal,
   toggleShowCellTable,
 } from '../eventSlice';
-import FilterAdmin from '../admin/filterAdmin/FilterAdmin';
+import FilterAdmin from '../admin/FilterAdmin';
 import SaveIcon from '@mui/icons-material/Save';
 import Divider from '@mui/material/Divider';
 

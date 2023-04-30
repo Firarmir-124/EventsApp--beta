@@ -1,53 +1,136 @@
 import React, { useEffect, useState } from 'react';
-import { Datepicker, DatepickerEvent } from '@meinefinsternis/react-horizontal-date-picker';
-import { useAppDispatch } from '../../../app/hooks';
-import { ru } from 'date-fns/esm/locale';
-import { addTimeToFilterObj } from '../eventSlice';
+import { Autocomplete, Box, Button, Checkbox, Grid, MenuItem, Skeleton, TextField, Typography } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { closeDrawer, closeModal, resetFilterType, selectEventsAll, selectSettingsLocalLoading } from '../eventSlice';
+import { Filter, FilterMutation, Option } from '../../../types';
+import { selectHashtagList } from '../../Hashtag/hashtagSlice';
+import { fetchEventList, fetchEventsAll } from '../eventThunk';
+import { fetchHashtagList } from '../../Hashtag/hashtagThunk';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import Divider from '@mui/material/Divider';
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const FilterUser = () => {
-  const [date, setDate] = useState<{
-    endValue: Date | null;
-    startValue: Date | null;
-    rangeDates: Date[] | null;
-  }>({
-    startValue: null,
-    endValue: null,
-    rangeDates: [],
-  });
   const dispatch = useAppDispatch();
-
-  const handleChange = (d: DatepickerEvent) => {
-    const [startValue, endValue, rangeDates] = d;
-    setDate((prev) => ({ ...prev, endValue, startValue, rangeDates }));
-  };
+  const eventsAll = useAppSelector(selectEventsAll);
+  const [value, setValue] = useState<Filter>({
+    titleEvent: [],
+    titleHashtag: '',
+    dateTimeEvent: '',
+  });
+  const hashtags = useAppSelector(selectHashtagList);
+  const eventsAllLoading = useAppSelector(selectSettingsLocalLoading);
 
   useEffect(() => {
-    const newAry: Date[] = [];
+    dispatch(fetchEventsAll());
+    dispatch(fetchHashtagList());
+  }, [dispatch]);
 
-    if (date.startValue !== null) {
-      newAry.push(date.startValue);
-    }
+  const titleEventOnChange = (event: React.ChangeEvent<any>, newValue: Option[]) => {
+    setValue((prev) => ({ ...prev, titleEvent: newValue }));
+  };
 
-    if (date.rangeDates !== null) {
-      newAry.pop();
-      newAry.push(...date.rangeDates);
-    }
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setValue((prev) => ({ ...prev, [name]: value }));
+  };
 
-    const obj = {
-      date: {
-        $in: newAry.map((item) => `${item.getDate().toString()} ${item.getMonth().toString()}`),
-      },
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const obj: FilterMutation = {
+      title: value.titleEvent.length > 0 ? { $in: value.titleEvent.map((item) => item.title) } : null,
+      hashtag: value.titleHashtag.length > 0 ? value.titleHashtag : null,
+      time: value.dateTimeEvent.length > 0 ? value.dateTimeEvent : null,
     };
 
-    if (obj.date.$in.length > 0) {
-      dispatch(addTimeToFilterObj(obj.date));
-    }
-  }, [date, dispatch]);
-
+    await dispatch(fetchEventList({ page: 0, perPage: 0, filter: JSON.stringify(obj) })).unwrap();
+    dispatch(closeModal());
+    dispatch(resetFilterType(true));
+    dispatch(closeDrawer());
+  };
   return (
-    <>
-      <Datepicker onChange={handleChange} locale={ru} startValue={date.startValue} endValue={date.endValue} />
-    </>
+    <Box component="form" onSubmit={onSubmit} sx={{ width: '300px' }}>
+      <Grid spacing={2} container>
+        <Grid xs={12} item>
+          <Typography component="p" variant="h5">
+            Искать по названию
+          </Typography>
+          <Divider sx={{ my: 2 }} />
+          {!eventsAllLoading ? (
+            <Autocomplete
+              multiple
+              id="checkboxes-tags-demo"
+              options={eventsAll}
+              disableCloseOnSelect
+              getOptionLabel={(option) => option.title}
+              renderOption={(props, option, { selected }) => (
+                <li {...props} key={option._id}>
+                  <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
+                  {option.title}
+                </li>
+              )}
+              renderInput={(params) => <TextField {...params} label="Искать по названию" placeholder="Favorites" />}
+              onChange={titleEventOnChange}
+              value={value.titleEvent}
+            />
+          ) : (
+            <Skeleton variant="rounded" width="100%" height={60} />
+          )}
+        </Grid>
+
+        <Grid xs={12} item>
+          <Typography component="p" variant="h5">
+            Искать по хэштегам
+          </Typography>
+          <Divider sx={{ my: 2 }} />
+          <TextField
+            value={value.titleHashtag}
+            onChange={onChange}
+            fullWidth
+            name="titleHashtag"
+            select
+            label="Выбрать хэштег"
+          >
+            <MenuItem value="" disabled>
+              Выберите хэштег:
+            </MenuItem>
+            {hashtags.map((item) => (
+              <MenuItem key={item._id} value={item._id}>
+                {item.name}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+
+        <Grid xs={12} item>
+          <Typography component="p" variant="h5">
+            Искать по дате
+          </Typography>
+          <Divider sx={{ my: 2 }} />
+          <TextField
+            name="dateTimeEvent"
+            id="datetime-local"
+            label="Выбрать дату и время"
+            type="datetime-local"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            value={value.dateTimeEvent}
+            onChange={onChange}
+          />
+        </Grid>
+
+        <Grid xs={12} item>
+          <Button type="submit" variant="outlined">
+            Фильтровать
+          </Button>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 
