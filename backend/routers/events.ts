@@ -18,28 +18,45 @@ eventsRouter.get('/', authAnonymous, async (req, res) => {
       const titleEvents = await EventPlan.find().select('title');
       return res.send(titleEvents);
     } else if (req.query.filter !== undefined) {
-      const filter: any = JSON.parse(req.query.filter as string);
-
+      const filter = JSON.parse(req.query.filter as string);
       Object.keys(filter).forEach((key) => {
         if (filter[key] === null) {
           delete filter[key];
         }
       });
 
-      console.log(filter);
-
       const eventPlanList = await EventPlan.find(filter)
-        .skip((page - 1) * perPage)
-        .limit(perPage)
         .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
         .sort({ createDate: -1 })
         .populate('hashtag');
 
       return res.send({
-        length: eventPlanList.length,
+        length: 0,
         perPage,
         eventList: eventPlanList,
-        pages: Math.ceil(eventPlanList.length / perPage),
+        pages: 0,
+      });
+    } else if (req.query.filterU !== undefined) {
+      const filterU = JSON.parse(req.query.filterU as string);
+
+      Object.keys(filterU).forEach((key) => {
+        if (filterU[key] === null) {
+          delete filterU[key];
+        }
+      });
+
+      const eventPlanList = await EventPlan.find(filterU)
+        .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
+        .sort({ createDate: -1 })
+        .populate('hashtag');
+
+      console.log(filterU);
+
+      return res.send({
+        length: 0,
+        perPage,
+        eventList: eventPlanList,
+        pages: 0,
       });
     } else {
       const eventLength = await EventPlan.count();
@@ -75,6 +92,7 @@ eventsRouter.post('/', imagesUpload.single('image'), auth, permit('organizer'), 
       hashtag: req.body.hashtag,
       user: user._id,
       createDate: new Date().toISOString(),
+      date: `${new Date(req.body.time).getDate()} ${new Date(req.body.time).getMonth()}`,
     });
 
     return res.send(newEventPlan);

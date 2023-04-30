@@ -21,6 +21,7 @@ export interface EventType {
   hashtag: Types.ObjectId;
   user: Types.ObjectId;
   createDate: string;
+  date: string;
 }
 
 export interface HashtagType {

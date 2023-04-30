@@ -56,7 +56,7 @@ const EventList = () => {
 
   useEffect(() => {
     if (page) {
-      dispatch(fetchEventList({ page, perPage, filter: null }));
+      dispatch(fetchEventList({ page, perPage }));
     }
   }, [dispatch, page, perPage]);
 
@@ -74,7 +74,7 @@ const EventList = () => {
     if (window.confirm('Вы действительно хотите удалить ?')) {
       await dispatch(removeEvent(id)).unwrap();
       if (page) {
-        await dispatch(fetchEventList({ page, perPage: eventList.perPage, filter: null })).unwrap();
+        await dispatch(fetchEventList({ page, perPage: eventList.perPage })).unwrap();
       }
       dispatch(openSnackbar({ status: true, parameter: 'remove_event' }));
     } else {
@@ -92,7 +92,7 @@ const EventList = () => {
       await dispatch(updateEvent({ event, id: idEvent })).unwrap();
     }
     if (page) {
-      await dispatch(fetchEventList({ page, perPage: eventList.perPage, filter: null })).unwrap();
+      await dispatch(fetchEventList({ page, perPage: eventList.perPage })).unwrap();
     }
     setIdEvent('');
     dispatch(closeModal());
@@ -100,7 +100,7 @@ const EventList = () => {
 
   const onResetFilter = () => {
     dispatch(resetFilterType(false));
-    dispatch(fetchEventList({ page: 0, perPage: 0, filter: null }));
+    dispatch(fetchEventList({ page, perPage }));
   };
 
   if (user?.role !== 'organizer') {

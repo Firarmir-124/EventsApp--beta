@@ -5,9 +5,10 @@ import { isAxiosError } from 'axios';
 
 type eventListType =
   | {
-      perPage: number;
-      page: number;
-      filter: string | null;
+      perPage?: number;
+      page?: number;
+      filter?: string;
+      filterU?: string;
     }
   | undefined;
 
@@ -18,6 +19,8 @@ export const fetchEventList = createAsyncThunk<EventListFull, eventListType>('ev
     url = `/eventPlan?page=${arg.page}&perPage=${arg.perPage}`;
     if (arg.filter) {
       url = `/eventPlan?page=${arg.page}&perPage=${arg.perPage}&filter=${arg.filter}`;
+    } else if (arg.filterU) {
+      url = `/eventPlan?page=${arg.page}&perPage=${arg.perPage}&filterU=${arg.filterU}`;
     }
   }
 

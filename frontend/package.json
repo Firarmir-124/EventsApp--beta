@@ -6,6 +6,7 @@
     "@date-io/date-fns": "^2.16.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@meinefinsternis/react-horizontal-date-picker": "^1.0.1",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.11.16",
     "@mui/x-date-pickers": "^6.1.0",
