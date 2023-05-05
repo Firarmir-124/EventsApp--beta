@@ -52,6 +52,7 @@ export interface EventList {
     name: string;
   };
   user: string;
+  viewsCount: number;
 }
 
 export interface TitleEventsType {

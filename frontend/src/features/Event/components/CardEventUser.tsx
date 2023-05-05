@@ -7,6 +7,7 @@ import eventImage from '../../../assests/images/event.png';
 import dayjs from 'dayjs';
 import { linksStyle } from '../../../components/Layout/Layout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 interface Props {
   event: EventList;
@@ -21,7 +22,7 @@ const CardEventUser: React.FC<Props> = ({ event }) => {
 
   return (
     <Grid item xs={2} sm={4} md={4}>
-      <Card sx={{ position: 'relative' }}>
+      <Card sx={{ position: 'relative', pb: 1 }}>
         <Paper
           sx={{
             background: 'rgb(0 0 0 / 54%)',
@@ -62,6 +63,13 @@ const CardEventUser: React.FC<Props> = ({ event }) => {
           <Typography sx={{ fontSize: 15 }} color="text.secondary" gutterBottom>
             {dayjs(event.time).format('dddd, MMMM D, YYYY h:mm A')}
           </Typography>
+          <Chip
+            sx={{ position: 'absolute', right: 5 }}
+            size="small"
+            avatar={<RemoveRedEyeIcon color="action" />}
+            label={event.viewsCount}
+            variant="outlined"
+          />
         </CardContent>
       </Card>
     </Grid>
