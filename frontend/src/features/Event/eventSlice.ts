@@ -1,7 +1,14 @@
-import { AllEvents, EventListFull, EventOne, TypesCallTable, ValidationError } from '../../types';
+import { EventListFull, EventOne, TypesCallTable, ValidationError, TitleEventsType } from '../../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { createEvent, fetchEventList, fetchEventsAll, fetchOneEvent, removeEvent } from './eventThunk';
+import {
+  createEvent,
+  fetchEventList,
+  fetchEventListFilter,
+  fetchEventTitle,
+  fetchOneEvent,
+  removeEvent,
+} from './eventThunk';
 
 interface EventType {
   eventList: EventListFull;
@@ -28,8 +35,8 @@ interface EventType {
   perPage: number;
   localSettings: TypesCallTable[];
   localSettingsLoading: boolean;
-  eventsAll: AllEvents[];
-  resetFilter: boolean;
+  titleEvents: TitleEventsType[];
+  titleEventsLoading: boolean;
 }
 
 const initialState: EventType = {
@@ -88,8 +95,8 @@ const initialState: EventType = {
   perPage: 0,
   localSettings: [],
   localSettingsLoading: false,
-  eventsAll: [],
-  resetFilter: false,
+  titleEvents: [],
+  titleEventsLoading: false,
 };
 
 const eventSlice = createSlice({
@@ -139,11 +146,12 @@ const eventSlice = createSlice({
         JSON.stringify(state.localSettings.length !== 0 ? state.localSettings : state.cellTable),
       );
     },
-    resetFilterType: (state, { payload: type }: PayloadAction<boolean>) => {
-      state.resetFilter = type;
-    },
   },
   extraReducers: (builder) => {
+    builder.addCase(fetchEventListFilter.fulfilled, (state, { payload: eventList }) => {
+      state.eventList = eventList;
+    });
+
     builder.addCase(fetchEventList.pending, (state) => {
       state.eventListLoading = true;
     });
@@ -155,15 +163,15 @@ const eventSlice = createSlice({
       state.eventListLoading = false;
     });
 
-    builder.addCase(fetchEventsAll.pending, (state) => {
-      state.localSettingsLoading = true;
+    builder.addCase(fetchEventTitle.pending, (state) => {
+      state.titleEventsLoading = true;
     });
-    builder.addCase(fetchEventsAll.fulfilled, (state, { payload: eventsAll }) => {
-      state.eventsAll = eventsAll;
-      state.localSettingsLoading = false;
+    builder.addCase(fetchEventTitle.fulfilled, (state, { payload: titleEvent }) => {
+      state.titleEventsLoading = false;
+      state.titleEvents = titleEvent;
     });
-    builder.addCase(fetchEventsAll.rejected, (state) => {
-      state.localSettingsLoading = false;
+    builder.addCase(fetchEventTitle.rejected, (state) => {
+      state.titleEventsLoading = false;
     });
 
     builder.addCase(createEvent.pending, (state) => {
@@ -211,7 +219,6 @@ export const {
   createPerPage,
   saveSettingLocal,
   getSettingLocal,
-  resetFilterType,
 } = eventSlice.actions;
 
 export const selectEventList = (state: RootState) => state.eventReducer.eventList;
@@ -229,6 +236,6 @@ export const selectDrawerState = (state: RootState) => state.eventReducer.drawer
 export const selectIdHashtag = (state: RootState) => state.eventReducer.idHashtag;
 export const selectPerPage = (state: RootState) => state.eventReducer.perPage;
 export const selectSettingsLocal = (state: RootState) => state.eventReducer.localSettings;
-export const selectEventsAll = (state: RootState) => state.eventReducer.eventsAll;
 export const selectSettingsLocalLoading = (state: RootState) => state.eventReducer.localSettingsLoading;
-export const selectFilterReset = (state: RootState) => state.eventReducer.resetFilter;
+export const selectEventTitleLoading = (state: RootState) => state.eventReducer.titleEventsLoading;
+export const selectEventTitle = (state: RootState) => state.eventReducer.titleEvents;

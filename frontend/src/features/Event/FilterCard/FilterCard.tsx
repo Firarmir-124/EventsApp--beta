@@ -1,35 +1,48 @@
 import React, { useEffect, useState } from 'react';
-import { Autocomplete, Box, Button, Checkbox, Grid, MenuItem, Skeleton, TextField, Typography } from '@mui/material';
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Checkbox,
+  Grid,
+  IconButton,
+  MenuItem,
+  Skeleton,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { closeDrawer, closeModal, resetFilterType, selectEventsAll, selectSettingsLocalLoading } from '../eventSlice';
-import { Filter, FilterMutation, Option } from '../../../types';
-import { selectHashtagList } from '../../Hashtag/hashtagSlice';
-import { fetchEventList, fetchEventsAll } from '../eventThunk';
-import { fetchHashtagList } from '../../Hashtag/hashtagThunk';
+import { fetchEventList, fetchEventListFilter, fetchEventTitle } from '../eventThunk';
+import { selectEventTitle, selectEventTitleLoading } from '../eventSlice';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import { TitleEventsType, Filter, FilterMutation } from '../../../types';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import Divider from '@mui/material/Divider';
+import { selectHashtagList } from '../../Hashtag/hashtagSlice';
+import { fetchHashtagList } from '../../Hashtag/hashtagThunk';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-const FilterUser = () => {
+const FilterCard = () => {
+  const filter = localStorage.getItem('filter' || null);
   const dispatch = useAppDispatch();
-  const eventsAll = useAppSelector(selectEventsAll);
   const [value, setValue] = useState<Filter>({
     titleEvent: [],
     titleHashtag: '',
     dateTimeEvent: '',
   });
   const hashtags = useAppSelector(selectHashtagList);
-  const eventsAllLoading = useAppSelector(selectSettingsLocalLoading);
+  const titleEvent = useAppSelector(selectEventTitle);
+  const loadingEventTitle = useAppSelector(selectEventTitleLoading);
 
   useEffect(() => {
-    dispatch(fetchEventsAll());
+    dispatch(fetchEventTitle());
     dispatch(fetchHashtagList());
   }, [dispatch]);
 
-  const titleEventOnChange = (event: React.ChangeEvent<any>, newValue: Option[]) => {
+  const titleEventOnChange = (event: React.ChangeEvent<any>, newValue: TitleEventsType[]) => {
     setValue((prev) => ({ ...prev, titleEvent: newValue }));
   };
 
@@ -47,11 +60,27 @@ const FilterUser = () => {
       time: value.dateTimeEvent.length > 0 ? value.dateTimeEvent : null,
     };
 
-    await dispatch(fetchEventList({ page: 0, perPage: 0, filter: JSON.stringify(obj) })).unwrap();
-    dispatch(closeModal());
-    dispatch(resetFilterType(true));
-    dispatch(closeDrawer());
+    const keys = Object.keys(obj) as (keyof FilterMutation)[];
+
+    keys.forEach((item) => {
+      if (obj[item] === null) {
+        delete obj[item];
+      }
+    });
+
+    await dispatch(fetchEventListFilter(obj));
   };
+
+  const resetFilter = async () => {
+    localStorage.removeItem('filter');
+    await dispatch(fetchEventList({ page: 0, perPage: 0 }));
+    setValue({
+      titleEvent: [],
+      titleHashtag: '',
+      dateTimeEvent: '',
+    });
+  };
+
   return (
     <Box component="form" onSubmit={onSubmit} sx={{ width: '300px' }}>
       <Grid spacing={2} container>
@@ -60,11 +89,11 @@ const FilterUser = () => {
             Искать по названию
           </Typography>
           <Divider sx={{ my: 2 }} />
-          {!eventsAllLoading ? (
+          {!loadingEventTitle ? (
             <Autocomplete
               multiple
               id="checkboxes-tags-demo"
-              options={eventsAll}
+              options={titleEvent}
               disableCloseOnSelect
               getOptionLabel={(option) => option.title}
               renderOption={(props, option, { selected }) => (
@@ -128,10 +157,15 @@ const FilterUser = () => {
           <Button type="submit" variant="outlined">
             Фильтровать
           </Button>
+          {filter && (
+            <IconButton onClick={resetFilter} aria-label="delete">
+              <RestartAltIcon />
+            </IconButton>
+          )}
         </Grid>
       </Grid>
     </Box>
   );
 };
 
-export default FilterUser;
+export default FilterCard;

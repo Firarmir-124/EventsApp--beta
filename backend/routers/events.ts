@@ -8,6 +8,20 @@ import { imagesUpload } from '../multer';
 
 const eventsRouter = express.Router();
 
+const getEvents = async (page: number, perPage: number, filter: any | null) => {
+  const eventLength = await EventPlan.count(filter);
+  const eventPlanList = await EventPlan.find(filter)
+    .skip((page - 1) * perPage)
+    .limit(perPage)
+    .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
+    .sort({ createDate: -1 })
+    .populate('hashtag');
+  return {
+    length: eventLength,
+    list: eventPlanList,
+  };
+};
+
 eventsRouter.get('/', authAnonymous, async (req, res) => {
   const page = parseInt(req.query.page as string) || 1;
   const perPage = parseInt(req.query.perPage as string) || 8;
@@ -19,42 +33,41 @@ eventsRouter.get('/', authAnonymous, async (req, res) => {
       return res.send(titleEvents);
     } else if (req.query.filter !== undefined) {
       const filter = JSON.parse(req.query.filter as string);
-      Object.keys(filter).forEach((key) => {
-        if (filter[key] === null) {
-          delete filter[key];
-        }
-      });
-
-      const eventPlanList = await EventPlan.find(filter)
-        .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
-        .sort({ createDate: -1 })
-        .populate('hashtag');
+      const list = await getEvents(page, perPage, filter);
 
       return res.send({
-        length: 0,
+        length: list.length,
         perPage,
-        eventList: eventPlanList,
-        pages: 0,
+        eventList: list.list,
+        pages: Math.ceil(list.length / perPage),
       });
     } else {
-      const eventLength = await EventPlan.count();
-      const eventPlanList = await EventPlan.find()
-        .skip((page - 1) * perPage)
-        .limit(perPage)
-        .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
-        .sort({ createDate: -1 })
-        .populate('hashtag');
+      const list = await getEvents(page, perPage, null);
 
       return res.send({
-        length: eventLength,
+        length: list.length,
         perPage,
-        eventList: eventPlanList,
-        pages: Math.ceil(eventLength / perPage),
+        eventList: list.list,
+        pages: Math.ceil(list.length / perPage),
       });
     }
   } catch {
     return res.sendStatus(500);
   }
+});
+
+eventsRouter.post('/filter', auth, permit('organizer'), async (req, res) => {
+  const page = parseInt(req.query.page as string) || 1;
+  const perPage = parseInt(req.query.perPage as string) || 8;
+  const filter = req.body;
+  const list = await getEvents(page, perPage, filter);
+
+  return res.send({
+    length: list.length,
+    perPage,
+    eventList: list.list,
+    pages: Math.ceil(list.length / perPage),
+  });
 });
 
 eventsRouter.post('/', imagesUpload.single('image'), auth, permit('organizer'), async (req, res, next) => {
@@ -71,6 +84,8 @@ eventsRouter.post('/', imagesUpload.single('image'), auth, permit('organizer'), 
       user: user._id,
       createDate: new Date().toISOString(),
     });
+
+    await res.cookie('test', newEventPlan);
 
     return res.send(newEventPlan);
   } catch (e) {

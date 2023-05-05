@@ -1,23 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Alert,
-  Box,
-  CircularProgress,
-  Container,
-  Grid,
-  IconButton,
-  Pagination,
-  Paper,
-  Typography,
-} from '@mui/material';
+import { Alert, Box, CircularProgress, Container, Grid, Pagination, Paper, Typography } from '@mui/material';
 import CardEventUser from '../components/CardEventUser';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { resetFilterType, selectEventList, selectEventLoading, selectFilterReset } from '../eventSlice';
+import { selectEventList, selectEventLoading } from '../eventSlice';
 import { fetchEventList } from '../eventThunk';
 import { useParams } from 'react-router-dom';
-import FilterUser from './FilterUser';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import Divider from '@mui/material/Divider';
+import FilterCard from '../FilterCard/FilterCard';
 
 const EventListUser = () => {
   const { id } = useParams();
@@ -25,7 +14,6 @@ const EventListUser = () => {
   const dispatch = useAppDispatch();
   const events = useAppSelector(selectEventList);
   const loadingEventList = useAppSelector(selectEventLoading);
-  const resetFilter = useAppSelector(selectFilterReset);
 
   useEffect(() => {
     if (page) {
@@ -37,11 +25,6 @@ const EventListUser = () => {
     setPage(value);
   };
 
-  const toResetFilter = async () => {
-    dispatch(resetFilterType(false));
-    await dispatch(fetchEventList({ page: 0, perPage: 0 }));
-  };
-
   return (
     <>
       <Container>
@@ -50,11 +33,6 @@ const EventListUser = () => {
             Мероприятия
             <Divider light sx={{ mt: 1, background: '#ff6300' }} />
           </Typography>
-          {resetFilter && (
-            <IconButton onClick={toResetFilter}>
-              <RestartAltIcon />
-            </IconButton>
-          )}
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
@@ -69,7 +47,7 @@ const EventListUser = () => {
             )}
           </Grid>
           <Paper elevation={3} sx={{ width: '300px', p: '10px', ml: '10px' }}>
-            <FilterUser />
+            <FilterCard />
           </Paper>
         </Box>
         <Pagination sx={{ mt: '20px' }} count={events.pages} page={page} onChange={handleChange} />

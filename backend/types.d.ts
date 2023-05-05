@@ -32,3 +32,11 @@ export interface Filter {
   titleHashtag: string;
   dateTimeEvent: string;
 }
+
+export interface Filter2 {
+  title: {
+    $in: string[];
+  };
+  hashtag: string;
+  time: string;
+}

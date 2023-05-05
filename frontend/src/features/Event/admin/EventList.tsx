@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
-  Button,
   CircularProgress,
   Container,
   IconButton,
@@ -20,12 +19,10 @@ import {
   openDrawer,
   openModal,
   openSnackbar,
-  resetFilterType,
   selectCellTable,
   selectEventList,
   selectEventLoading,
   selectEventOne,
-  selectFilterReset,
   selectPerPage,
   selectSettingsLocal,
 } from '../eventSlice';
@@ -40,8 +37,10 @@ import ModalCard from '../../../components/ModalCard';
 import FormEvent from '../components/FormEvent';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DrawerCard from '../components/DrawerCard';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 const EventList = () => {
+  const filter = localStorage.getItem('filter' || null);
   const user = useAppSelector(selectUser);
   const [page, setPage] = useState(1);
   const dispatch = useAppDispatch();
@@ -52,7 +51,6 @@ const EventList = () => {
   const cellTablesGlobal = useAppSelector(selectCellTable);
   const perPage = useAppSelector(selectPerPage);
   const cellTablesLocal = useAppSelector(selectSettingsLocal);
-  const resetFilter = useAppSelector(selectFilterReset);
 
   useEffect(() => {
     if (page) {
@@ -65,10 +63,6 @@ const EventList = () => {
       dispatch(fetchOneEvent(idEvent));
     }
   }, [dispatch, idEvent]);
-
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-  };
 
   const removeCardEvent = async (id: string) => {
     if (window.confirm('Вы действительно хотите удалить ?')) {
@@ -98,9 +92,9 @@ const EventList = () => {
     dispatch(closeModal());
   };
 
-  const onResetFilter = () => {
-    dispatch(resetFilterType(false));
-    dispatch(fetchEventList({ page, perPage }));
+  const resetFilter = async () => {
+    localStorage.removeItem('filter');
+    await dispatch(fetchEventList({ page: 0, perPage: 0 }));
   };
 
   if (user?.role !== 'organizer') {
@@ -109,10 +103,14 @@ const EventList = () => {
 
   return (
     <Container sx={{ mt: '20px' }}>
-      {resetFilter && <Button onClick={onResetFilter}>Сброисть фильтры</Button>}
       <IconButton onClick={() => dispatch(openDrawer())}>
         <SettingsIcon />
       </IconButton>
+      {filter && (
+        <IconButton onClick={resetFilter} aria-label="delete">
+          <RestartAltIcon />
+        </IconButton>
+      )}
       <Paper elevation={3} sx={{ width: '100%', minHeight: '600px', overflowX: 'hidden' }}>
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
@@ -165,7 +163,12 @@ const EventList = () => {
           </Table>
         </TableContainer>
       </Paper>
-      <Pagination sx={{ mt: '20px' }} count={eventList.pages} page={page} onChange={handleChange} />
+      <Pagination
+        sx={{ mt: '20px' }}
+        count={eventList.pages}
+        page={page}
+        onChange={(event: React.ChangeEvent<unknown>, value: number) => setPage(value)}
+      />
       <SnackbarCard />
       <ModalCard>{eventOne && <FormEvent onSubmit={onSubmit} event={eventOne} />}</ModalCard>
       <DrawerCard />

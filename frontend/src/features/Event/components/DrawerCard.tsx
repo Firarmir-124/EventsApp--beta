@@ -21,7 +21,7 @@ import {
   selectSettingsLocal,
   toggleShowCellTable,
 } from '../eventSlice';
-import FilterAdmin from '../admin/FilterAdmin';
+import FilterCard from '../FilterCard/FilterCard';
 import SaveIcon from '@mui/icons-material/Save';
 import Divider from '@mui/material/Divider';
 
@@ -49,7 +49,7 @@ const DrawerCard = () => {
   return (
     <Drawer
       PaperProps={{
-        sx: { p: '10px', maxWidth: '300px' },
+        sx: { p: '10px', maxWidth: '350px' },
       }}
       anchor="left"
       open={stateDrawer}
@@ -114,7 +114,7 @@ const DrawerCard = () => {
             Фильтр
           </Typography>
           <Divider sx={{ my: 2 }} light />
-          <FilterAdmin />
+          <FilterCard />
         </Grid>
       </Grid>
     </Drawer>

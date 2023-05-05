@@ -1,33 +1,45 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axios';
-import { AllEvents, EventListFull, EventMutation, EventOne, ValidationError } from '../../types';
+import { EventListFull, EventMutation, EventOne, FilterMutation, ValidationError, TitleEventsType } from '../../types';
 import { isAxiosError } from 'axios';
 
 type eventListType =
   | {
       perPage?: number;
       page?: number;
-      filter?: string;
-      filterU?: string;
     }
   | undefined;
 
 export const fetchEventList = createAsyncThunk<EventListFull, eventListType>('event/fetch_eventList', async (arg) => {
+  const filterLocal = localStorage.getItem('filter') as string;
   let url = '';
 
   if (arg) {
     url = `/eventPlan?page=${arg.page}&perPage=${arg.perPage}`;
-    if (arg.filter) {
-      url = `/eventPlan?filter=${arg.filter}`;
+    if (filterLocal) {
+      url = `/eventPlan?page=${arg.page}&perPage=${arg.perPage}&filter=${filterLocal}`;
     }
   }
-
   const response = await axiosApi.get<EventListFull>(url);
   return response.data;
 });
 
-export const fetchEventsAll = createAsyncThunk<AllEvents[]>('event/fetch_eventsAll', async () => {
-  const response = await axiosApi.get<AllEvents[]>('/eventPlan?allEvents');
+export const fetchEventListFilter = createAsyncThunk<EventListFull, FilterMutation>(
+  'event/fetch_eventList_filter',
+  async (arg) => {
+    const response = await axiosApi.post('/eventPlan/filter', arg);
+    const jsn = response.data;
+
+    localStorage.setItem('filter', JSON.stringify(arg));
+
+    if (jsn) {
+      return jsn;
+    }
+  },
+);
+
+export const fetchEventTitle = createAsyncThunk<TitleEventsType[]>('event/fetch_eventsAll', async () => {
+  const response = await axiosApi.get<TitleEventsType[]>('/eventPlan?allEvents');
   return response.data;
 });
 

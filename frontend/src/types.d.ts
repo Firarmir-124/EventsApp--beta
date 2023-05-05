@@ -54,7 +54,7 @@ export interface EventList {
   user: string;
 }
 
-export interface AllEvents {
+export interface TitleEventsType {
   _id: string;
   title: string;
 }
@@ -108,13 +108,8 @@ export interface TypesCallTable {
   show: boolean;
 }
 
-interface Option {
-  _id: string;
-  title: string;
-}
-
 export interface Filter {
-  titleEvent: Option[];
+  titleEvent: TitleEventsType[];
   titleHashtag: string;
   dateTimeEvent: string;
 }
