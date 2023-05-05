@@ -13,7 +13,7 @@ const getEvents = async (page: number, perPage: number, filter: any | null) => {
   const eventPlanList = await EventPlan.find(filter)
     .skip((page - 1) * perPage)
     .limit(perPage)
-    .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user'])
+    .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user', 'viewsCount'])
     .sort({ createDate: -1 })
     .populate('hashtag');
   return {
@@ -100,6 +100,9 @@ eventsRouter.post('/', imagesUpload.single('image'), auth, permit('organizer'), 
 eventsRouter.get('/:id', async (req, res) => {
   try {
     const eventPlan = await EventPlan.findOne({ _id: req.params.id });
+    if (eventPlan) {
+      await EventPlan.updateOne({ _id: req.params.id }, { $inc: { viewsCount: 1 } });
+    }
     return res.send(eventPlan);
   } catch {
     return res.sendStatus(500);

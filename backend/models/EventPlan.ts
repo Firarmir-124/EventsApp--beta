@@ -30,6 +30,10 @@ const EventSchema = new Schema<EventType>({
     required: true,
   },
   createDate: String,
+  viewsCount: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const EventPlan = model('EventPlan', EventSchema);
