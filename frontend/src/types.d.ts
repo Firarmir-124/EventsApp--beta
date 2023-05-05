@@ -80,6 +80,7 @@ export interface EventOne {
   image: File | null;
   hashtag: string;
   user: string;
+  viewsCount: number;
 }
 
 export interface EventMutation {

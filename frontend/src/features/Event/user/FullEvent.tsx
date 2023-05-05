@@ -3,19 +3,16 @@ import {
   Box,
   Button,
   Card,
-  CardActions,
   CardContent,
   Container,
-  Paper,
   Typography,
-  Avatar,
-  Chip,
   CardMedia,
   Alert,
   CircularProgress,
+  MenuList,
+  Paper,
 } from '@mui/material';
 import Layout from '../../../components/Layout/Layout';
-import ContactUs from '../components/ContactUs';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectEventOne, selectEventOneLoading } from '../eventSlice';
@@ -23,7 +20,15 @@ import { fetchOneEvent } from '../eventThunk';
 import dayjs from 'dayjs';
 import eventImage from '../../../assests/images/event.png';
 import { apiURL } from '../../../constants';
+import ru from 'dayjs/locale/ru';
+import Divider from '@mui/material/Divider';
+import WatchLaterIcon from '@mui/icons-material/WatchLater';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import AddLocationIcon from '@mui/icons-material/AddLocation';
+import CheckIcon from '@mui/icons-material/Check';
 import ReactMarkdown from 'react-markdown';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 const FullEvent = () => {
   const { id } = useParams();
@@ -45,54 +50,92 @@ const FullEvent = () => {
 
   return (
     <Layout>
-      <Container>
+      <Container sx={{ mt: 3 }}>
         {!getLoadingEventOne ? (
           eventOne ? (
-            <Card sx={{ mb: 1 }}>
-              <CardContent>
-                <CardMedia component="img" height="500" image={image} alt="Paella dish" />
-                <Paper elevation={3} sx={{ background: '#1976d2', color: '#fff', p: 1, my: 1 }}>
-                  <Typography variant="h6" component="p">
-                    Время проведения мероприятия
-                  </Typography>
-                </Paper>
-                <Paper sx={{ background: '#333', display: 'flex', justifyContent: 'space-between', px: 2 }}>
-                  <Box sx={{ display: 'flex' }}>
-                    <Typography color="#1976d2" component="p" variant="h1">
-                      {dayjs(eventOne.time).format('DD')}
+            <>
+              <Card sx={{ display: 'flex', minHeight: '500px' }}>
+                <CardMedia
+                  component="img"
+                  sx={{ flexGrow: 1, width: '50%' }}
+                  image={image}
+                  alt="Live from space album cover"
+                />
+                <Box sx={{ display: 'flex', flexDirection: 'column', width: '50%' }}>
+                  <CardContent>
+                    <Typography sx={{ mb: '10px' }} component="p" variant="h5">
+                      Live From Space
                     </Typography>
-                    <Typography color="#1976d2" component="p" variant="h5">
-                      числа в
-                    </Typography>
-                    <Typography color="#1976d2" component="p" variant="h1">
-                      {dayjs(eventOne.time).format('h')}:
-                    </Typography>
-                    <Typography color="white" component="p" variant="h1">
-                      {dayjs(eventOne.time).format('mm')}
-                    </Typography>
-                  </Box>
-                  <Typography color="#1976d2" component="p" variant="h1">
-                    {dayjs(eventOne.time).format('MMMM')}
-                  </Typography>
-                </Paper>
-                <Paper elevation={3} sx={{ background: '#1976d2', color: '#fff', p: 1, my: 1 }}>
-                  <Typography variant="h6" component="p">
-                    Общая информация
-                  </Typography>
-                </Paper>
+                    <Box
+                      sx={{
+                        width: '100px',
+                        height: '117px',
+                        background: '#cb3032',
+                        textAlign: 'center',
+                        color: '#fff',
+                        borderRadius: '10px',
+                      }}
+                    >
+                      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography sx={{ fontSize: '20px' }} component="p">
+                          {dayjs(eventOne.time).locale(ru).format('MMMM')}
+                        </Typography>
+                        <Typography component="p" sx={{ fontSize: '20px' }}>
+                          {dayjs(eventOne.time).locale(ru).format('D')}
+                        </Typography>
+                      </Box>
+                      <Divider />
+                      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography sx={{ fontSize: '15px' }} component="p">
+                          {dayjs(eventOne.time).locale(ru).format('dddd')}
+                        </Typography>
+                        <Typography component="p" sx={{ fontSize: '15px' }}>
+                          {dayjs(eventOne.time).locale(ru).format('h:mm')}
+                        </Typography>
+                      </Box>
+                      <MenuList sx={{ mt: 5 }}>
+                        <MenuItem sx={{ pl: 0 }}>
+                          <ListItemIcon>
+                            <WatchLaterIcon />
+                          </ListItemIcon>
+                          <Typography variant="body2" color="text.secondary">
+                            Продолжительность: 2 часа 30 минут
+                          </Typography>
+                        </MenuItem>
+                        <MenuItem sx={{ pl: 0 }}>
+                          <ListItemIcon>
+                            <AddLocationIcon />
+                          </ListItemIcon>
+                          <Typography variant="body2" color="text.secondary">
+                            Кыргызская Государственная Филармония им. Т.Сатылганова
+                          </Typography>
+                        </MenuItem>
+                        <MenuItem sx={{ pl: 0 }}>
+                          <ListItemIcon>
+                            <RemoveRedEyeIcon />
+                          </ListItemIcon>
+                          <Typography variant="body2" color="text.secondary">
+                            {eventOne.viewsCount}
+                          </Typography>
+                        </MenuItem>
+                      </MenuList>
+
+                      <Button sx={{ mt: 5 }} variant="contained" endIcon={<CheckIcon />}>
+                        Участвовать
+                      </Button>
+                    </Box>
+                  </CardContent>
+                </Box>
+              </Card>
+              <Paper sx={{ p: 1 }}>
+                <Typography sx={{ my: 2, mr: 1 }} component="h1" variant="h4">
+                  Информация
+                  <Divider light sx={{ mt: 1, background: '#ff6300', width: '100px' }} />
+                </Typography>
+
                 <ReactMarkdown>{eventOne.description}</ReactMarkdown>
-                <Paper elevation={3} sx={{ background: '#1976d2', color: '#fff', p: 1, my: 1 }}>
-                  <Typography variant="h6" component="p">
-                    Контактная информация
-                  </Typography>
-                </Paper>
-                <ContactUs />
-              </CardContent>
-              <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Button variant="contained">Подтвердить своё участие !</Button>
-                <Chip avatar={<Avatar>#</Avatar>} label="55" />
-              </CardActions>
-            </Card>
+              </Paper>
+            </>
           ) : (
             <Alert severity="info">Контент не подгрузился !</Alert>
           )
