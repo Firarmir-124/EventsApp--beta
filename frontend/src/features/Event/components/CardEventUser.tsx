@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import { linksStyle } from '../../../components/Layout/Layout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import ru from 'dayjs/locale/ru';
 
 interface Props {
   event: EventList;
@@ -61,7 +62,7 @@ const CardEventUser: React.FC<Props> = ({ event }) => {
             </Link>
           </Typography>
           <Typography sx={{ fontSize: 15 }} color="text.secondary" gutterBottom>
-            {dayjs(event.time).format('dddd, MMMM D, YYYY h:mm A')}
+            {dayjs(event.time).locale(ru).format('dddd, MMMM D, YYYY h:mm A')}
           </Typography>
           <Chip
             sx={{ position: 'absolute', right: 5 }}
