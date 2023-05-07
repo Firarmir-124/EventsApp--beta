@@ -22,27 +22,18 @@ const getEvents = async (page: number, perPage: number, filter: any | null) => {
   };
 };
 
-eventsRouter.get('/', authAnonymous, async (req, res) => {
+eventsRouter.post('/', authAnonymous, async (req, res) => {
   const page = parseInt(req.query.page as string) || 1;
   const perPage = parseInt(req.query.perPage as string) || 8;
   const allEvents = req.query.allEvents as string;
+  const filter = req.body;
 
   try {
     if (allEvents !== undefined) {
       const titleEvents = await EventPlan.find().select('title');
       return res.send(titleEvents);
-    } else if (req.query.filter !== undefined) {
-      const filter = JSON.parse(req.query.filter as string);
-      const list = await getEvents(page, perPage, filter);
-
-      return res.send({
-        length: list.length,
-        perPage,
-        eventList: list.list,
-        pages: Math.ceil(list.length / perPage),
-      });
     } else {
-      const list = await getEvents(page, perPage, null);
+      const list = await getEvents(page, perPage, filter);
 
       return res.send({
         length: list.length,

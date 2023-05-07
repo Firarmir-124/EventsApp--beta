@@ -11,16 +11,13 @@ type eventListType =
   | undefined;
 
 export const fetchEventList = createAsyncThunk<EventListFull, eventListType>('event/fetch_eventList', async (arg) => {
-  const filterLocal = localStorage.getItem('filter') as string;
+  const filterLocal = JSON.parse(localStorage.getItem('filter') as string);
   let url = '';
 
   if (arg) {
     url = `/eventPlan?page=${arg.page}&perPage=${arg.perPage}`;
-    if (filterLocal) {
-      url = `/eventPlan?page=${arg.page}&perPage=${arg.perPage}&filter=${filterLocal}`;
-    }
   }
-  const response = await axiosApi.get<EventListFull>(url);
+  const response = await axiosApi.post<EventListFull>(url, filterLocal);
   return response.data;
 });
 
@@ -39,7 +36,7 @@ export const fetchEventListFilter = createAsyncThunk<EventListFull, FilterMutati
 );
 
 export const fetchEventTitle = createAsyncThunk<TitleEventsType[]>('event/fetch_eventsAll', async () => {
-  const response = await axiosApi.get<TitleEventsType[]>('/eventPlan?allEvents');
+  const response = await axiosApi.post<TitleEventsType[]>('/eventPlan?allEvents');
   return response.data;
 });
 
