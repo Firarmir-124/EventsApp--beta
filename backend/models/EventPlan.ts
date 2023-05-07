@@ -34,6 +34,10 @@ const EventSchema = new Schema<EventType>({
     type: Number,
     default: 0,
   },
+  address: {
+    type: String,
+    required: true,
+  },
 });
 
 const EventPlan = model('EventPlan', EventSchema);

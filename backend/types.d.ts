@@ -22,6 +22,7 @@ export interface EventType {
   user: Types.ObjectId;
   createDate: string;
   viewsCount: number;
+  address: string;
 }
 
 export interface HashtagType {

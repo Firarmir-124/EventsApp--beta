@@ -74,9 +74,8 @@ eventsRouter.post('/', imagesUpload.single('image'), auth, permit('organizer'), 
       hashtag: req.body.hashtag,
       user: user._id,
       createDate: new Date().toISOString(),
+      address: req.body.address,
     });
-
-    await res.cookie('test', newEventPlan);
 
     return res.send(newEventPlan);
   } catch (e) {
