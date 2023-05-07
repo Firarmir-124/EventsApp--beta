@@ -13,7 +13,7 @@ const getEvents = async (page: number, perPage: number, filter: any | null) => {
   const eventPlanList = await EventPlan.find(filter)
     .skip((page - 1) * perPage)
     .limit(perPage)
-    .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user', 'viewsCount'])
+    .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user', 'viewsCount', 'address', 'createDate'])
     .sort({ createDate: -1 })
     .populate('hashtag');
   return {
@@ -76,6 +76,8 @@ eventsRouter.post('/', imagesUpload.single('image'), auth, permit('organizer'), 
       createDate: new Date().toISOString(),
       address: req.body.address,
     });
+
+    console.log(newEventPlan);
 
     return res.send(newEventPlan);
   } catch (e) {

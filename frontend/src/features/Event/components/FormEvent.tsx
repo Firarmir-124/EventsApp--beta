@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Alert,
+  Avatar,
   Box,
   Button,
   CircularProgress,
@@ -21,6 +22,12 @@ import { fetchHashtagList } from '../../Hashtag/hashtagThunk';
 import { selectHashtagList, selectHashtagListLoading } from '../../Hashtag/hashtagSlice';
 import Divider from '@mui/material/Divider';
 import { selectCreateEventLoading, selectEventError } from '../eventSlice';
+import TitleIcon from '@mui/icons-material/Title';
+import { green } from '@mui/material/colors';
+import SubtitlesIcon from '@mui/icons-material/Subtitles';
+import SpeakerGroupIcon from '@mui/icons-material/SpeakerGroup';
+import SettingsIcon from '@mui/icons-material/Settings';
+import AddLocationIcon from '@mui/icons-material/AddLocation';
 
 interface Props {
   onSubmit: (event: EventMutation) => void;
@@ -44,6 +51,7 @@ const FormEvent: React.FC<Props> = ({ onSubmit, event }) => {
       hashtag: '',
       time: '',
       speaker,
+      address: '',
     },
   );
   const hashtags = useAppSelector(selectHashtagList);
@@ -112,68 +120,104 @@ const FormEvent: React.FC<Props> = ({ onSubmit, event }) => {
 
   return (
     <Box component="form" sx={{ mt: 3, width: '100%' }} onSubmit={onFormSubmit}>
-      <Grid container sx={{ flexDirection: 'column' }} spacing={2}>
+      <Grid container sx={{ flexDirection: 'column' }} spacing={3}>
         <Grid item xs={12}>
+          <Box sx={{ display: 'flex' }}>
+            <Avatar sx={{ bgcolor: green[500], mr: 3, mb: 'auto' }}>
+              <TitleIcon />
+            </Avatar>
+            <TextField
+              label="Название мероприятие"
+              name="title"
+              type="text"
+              autoComplete="current-password"
+              fullWidth
+              variant="standard"
+              value={eventType.title}
+              onChange={onChange}
+              required
+              error={Boolean(getFieldError('title'))}
+              helperText={getFieldError('title')}
+            />
+          </Box>
+          <Box sx={{ display: 'flex' }}>
+            <Avatar sx={{ bgcolor: green[500], mr: 3, mb: 'auto' }}>
+              <SubtitlesIcon />
+            </Avatar>
+            <SimpleMdeReact
+              options={options}
+              style={{ width: '100%' }}
+              value={eventType.description}
+              onChange={onChangeDescription}
+            />
+          </Box>
+        </Grid>
+        <Grid item xs={12} display="flex">
+          <Avatar sx={{ bgcolor: green[500], mr: 3, mb: 'auto' }}>
+            <AddLocationIcon />
+          </Avatar>
           <TextField
-            label="Название мероприятие"
-            name="title"
+            label="Адресс мероприятие"
+            name="address"
             type="text"
             autoComplete="current-password"
             fullWidth
-            value={eventType.title}
+            value={eventType.address}
             onChange={onChange}
             required
-            error={Boolean(getFieldError('title'))}
-            helperText={getFieldError('title')}
+            error={Boolean(getFieldError('address'))}
+            helperText={getFieldError('address')}
           />
         </Grid>
-        <Grid item xs={12} display="flex">
-          <SimpleMdeReact
-            options={options}
-            style={{ width: '100%' }}
-            value={eventType.description}
-            onChange={onChangeDescription}
-          />
-          <Paper sx={{ p: 1, width: '40%' }} elevation={3}>
-            <IconButton onClick={addIngredient} aria-label="delete">
-              <AddCircleIcon color="warning" sx={{ fontSize: '40px' }} />
-              <Typography sx={{ ml: '10px' }} component="p">
-                Добавить спикера
-              </Typography>
-            </IconButton>
+        <Grid item xs={12}>
+          <Box sx={{ display: 'flex' }}>
+            <Avatar sx={{ bgcolor: green[500], mr: 3, mb: 'auto' }}>
+              <SpeakerGroupIcon />
+            </Avatar>
+            <Paper sx={{ p: 1 }} elevation={3}>
+              <IconButton onClick={addIngredient} aria-label="delete">
+                <AddCircleIcon color="warning" sx={{ fontSize: '40px' }} />
+                <Typography sx={{ ml: '10px' }} component="p">
+                  Добавить спикера
+                </Typography>
+              </IconButton>
 
-            {speaker.length !== 0 ? (
-              speaker.map((item, index) => (
-                <Paper key={index} sx={{ p: 1, mb: 2 }} elevation={3}>
-                  <TextField
-                    name="name"
-                    label="Имя спикера"
-                    sx={{ mr: 1 }}
-                    value={speaker[index].name}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      setSpeaker((prevArr) => {
-                        const result = [...prevArr];
+              {speaker.length !== 0 ? (
+                speaker.map((item, index) => (
+                  <Paper key={index} sx={{ p: 1, mb: 2 }} elevation={3}>
+                    <TextField
+                      name="name"
+                      label="Имя спикера"
+                      sx={{ mr: 1 }}
+                      value={speaker[index].name}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setSpeaker((prevArr) => {
+                          const result = [...prevArr];
 
-                        result[index].name = e.target.value;
-                        return result;
-                      });
-                    }}
-                    required
-                    error={Boolean(getFieldError('name'))}
-                    helperText={getFieldError('name')}
-                  />
-                  <IconButton onClick={() => removeIngredient(index)} aria-label="delete">
-                    <RemoveCircleIcon color="warning" sx={{ fontSize: '40px' }} />
-                  </IconButton>
-                </Paper>
-              ))
-            ) : (
-              <Alert severity="info">Добавьте ингридиент !</Alert>
-            )}
-          </Paper>
+                          result[index].name = e.target.value;
+                          return result;
+                        });
+                      }}
+                      required
+                      error={Boolean(getFieldError('name'))}
+                      helperText={getFieldError('name')}
+                    />
+                    <IconButton onClick={() => removeIngredient(index)} aria-label="delete">
+                      <RemoveCircleIcon color="warning" sx={{ fontSize: '40px' }} />
+                    </IconButton>
+                  </Paper>
+                ))
+              ) : (
+                <Alert severity="info">Добавьте организаторов !</Alert>
+              )}
+            </Paper>
+          </Box>
         </Grid>
 
         <Grid item xs={12} display="flex" marginBottom="20px">
+          <Avatar sx={{ bgcolor: green[500], mr: 3, mb: 'auto' }}>
+            <SettingsIcon />
+          </Avatar>
           <TextField
             name="time"
             value={eventType.time}

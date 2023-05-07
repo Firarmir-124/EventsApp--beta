@@ -53,6 +53,7 @@ export interface EventList {
   };
   user: string;
   viewsCount: number;
+  address: string;
 }
 
 export interface TitleEventsType {
@@ -81,6 +82,7 @@ export interface EventOne {
   hashtag: string;
   user: string;
   viewsCount: number;
+  address: string;
 }
 
 export interface EventMutation {
@@ -92,6 +94,7 @@ export interface EventMutation {
   speaker: {
     name: string;
   }[];
+  address: string;
 }
 
 export interface HashtagListType {
