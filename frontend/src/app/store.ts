@@ -5,6 +5,7 @@ import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from 'redux-persist
 import { usersReducer } from '../features/User/usersSlice';
 import { eventReducer } from '../features/Event/eventSlice';
 import { hashtagReducer } from '../features/Hashtag/hashtagSlice';
+import { recordReducer } from '../features/Record/recordSlice';
 
 const usersPersistConfig = {
   key: 'petProject:users',
@@ -14,8 +15,9 @@ const usersPersistConfig = {
 
 const rootReducer = combineReducers({
   users: persistReducer(usersPersistConfig, usersReducer),
-  eventReducer: eventReducer,
-  hashtagReducer: hashtagReducer,
+  event: eventReducer,
+  hashtag: hashtagReducer,
+  record: recordReducer,
 });
 
 export const store = configureStore({

@@ -81,12 +81,12 @@ const hashtagSlice = createSlice({
 
 export const hashtagReducer = hashtagSlice.reducer;
 
-export const selectHashtagList = (state: RootState) => state.hashtagReducer.hashtagList;
-export const selectCreateHashtagLoading = (state: RootState) => state.hashtagReducer.hashtagCreateLoading;
-export const selectEditHashtagLoading = (state: RootState) => state.hashtagReducer.hashtagEditLoading;
-export const selectRemoveHashtagLoading = (state: RootState) => state.hashtagReducer.hashtagRemoveLoading;
-export const selectHashtagOne = (state: RootState) => state.hashtagReducer.hashtagOne;
-export const selectHashtagOneLoading = (state: RootState) => state.hashtagReducer.hashtagOneLoading;
-export const selectHashtagError = (state: RootState) => state.hashtagReducer.hashtagError;
-export const selectHashtagListLoading = (state: RootState) => state.hashtagReducer.hashtagListLoading;
-export const selectHashtagErrorError = (state: RootState) => state.hashtagReducer.hashtagErrorRemove;
+export const selectHashtagList = (state: RootState) => state.hashtag.hashtagList;
+export const selectCreateHashtagLoading = (state: RootState) => state.hashtag.hashtagCreateLoading;
+export const selectEditHashtagLoading = (state: RootState) => state.hashtag.hashtagEditLoading;
+export const selectRemoveHashtagLoading = (state: RootState) => state.hashtag.hashtagRemoveLoading;
+export const selectHashtagOne = (state: RootState) => state.hashtag.hashtagOne;
+export const selectHashtagOneLoading = (state: RootState) => state.hashtag.hashtagOneLoading;
+export const selectHashtagError = (state: RootState) => state.hashtag.hashtagError;
+export const selectHashtagListLoading = (state: RootState) => state.hashtag.hashtagListLoading;
+export const selectHashtagErrorError = (state: RootState) => state.hashtag.hashtagErrorRemove;
