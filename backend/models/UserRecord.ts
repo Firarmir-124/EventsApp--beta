@@ -1,11 +1,16 @@
-import { model, Schema } from 'mongoose';
+import { model, Schema, Types } from 'mongoose';
 import { RecordUserType } from '../types';
+import User from './Users';
 
 const RecordUserSchema = new Schema<RecordUserType>({
   name: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
+    validate: {
+      validator: async (value: Types.ObjectId) => User.findById(value),
+      message: 'Такого пользователя нет !',
+    },
   },
   phone: {
     type: String,

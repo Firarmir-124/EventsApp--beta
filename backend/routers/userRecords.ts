@@ -2,12 +2,15 @@ import auth from '../middleware/auth';
 import mongoose from 'mongoose';
 import express from 'express';
 import UserRecord from '../models/UserRecord';
+import { RequestWitUser } from '../middleware/authAnonymous';
 
 const usersRecordsRouter = express.Router();
 
-usersRecordsRouter.get('/', async (req, res) => {
+usersRecordsRouter.get('/', auth, async (req, res) => {
   try {
-    const usersList = await UserRecord.find();
+    const user = (req as RequestWitUser).user;
+
+    const usersList = await UserRecord.find({ name: user.id });
     return res.send(usersList);
   } catch {
     return res.sendStatus(500);

@@ -1,5 +1,7 @@
-import { model, Schema } from 'mongoose';
+import { model, Schema, Types } from 'mongoose';
 import { EventType } from '../types';
+import User from './Users';
+import Hashtag from './Hashtag';
 
 const EventSchema = new Schema<EventType>({
   title: {
@@ -23,11 +25,19 @@ const EventSchema = new Schema<EventType>({
     type: Schema.Types.ObjectId,
     ref: 'Hashtag',
     required: true,
+    validate: {
+      validator: async (value: Types.ObjectId) => Hashtag.findById(value),
+      message: 'Такого хэштега нет !',
+    },
   },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
+    validate: {
+      validator: async (value: Types.ObjectId) => User.findById(value),
+      message: 'Такого пользователя нет !',
+    },
   },
   createDate: String,
   viewsCount: {
