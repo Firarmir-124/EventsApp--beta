@@ -29,16 +29,8 @@ export interface HashtagType {
   name: string;
 }
 
-export interface Filter {
-  titleEvent: string[];
-  titleHashtag: string;
-  dateTimeEvent: string;
-}
-
-export interface Filter2 {
-  title: {
-    $in: string[];
-  };
-  hashtag: string;
-  time: string;
+export interface RecordUserType {
+  name: Types.ObjectId;
+  phone: string;
+  description: string;
 }
