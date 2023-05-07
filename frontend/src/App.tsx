@@ -8,13 +8,16 @@ import CreateEvent from './features/Event/admin/CreateEvent';
 import HashtagCreate from './features/Hashtag/admin/HashtagCreate';
 import Register from './features/User/Register/Register';
 import Login from './features/User/Login/Login';
+import Record from './features/Record/Record';
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/:id" element={<Home />} />
-      <Route path="/full_event/:id" element={<FullEvent />} />
+      <Route path="/full_event/:id" element={<FullEvent />}>
+        <Route path="record" element={<Record />} />
+      </Route>
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/event" element={<Event />}>

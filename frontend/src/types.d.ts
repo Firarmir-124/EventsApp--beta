@@ -124,3 +124,8 @@ export interface FilterMutation {
   hashtag: string | null;
   time: string | null;
 }
+
+export interface RecordUser {
+  phone: string;
+  description: string;
+}

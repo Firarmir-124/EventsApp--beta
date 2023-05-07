@@ -13,9 +13,9 @@ import {
   Paper,
 } from '@mui/material';
 import Layout from '../../../components/Layout/Layout';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useOutlet, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectEventOne, selectEventOneLoading } from '../eventSlice';
+import { openModal, selectEventOne, selectEventOneLoading } from '../eventSlice';
 import { fetchOneEvent } from '../eventThunk';
 import dayjs from 'dayjs';
 import eventImage from '../../../assests/images/event.png';
@@ -29,18 +29,26 @@ import AddLocationIcon from '@mui/icons-material/AddLocation';
 import CheckIcon from '@mui/icons-material/Check';
 import ReactMarkdown from 'react-markdown';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import Record from '../../Record/Record';
 
 const FullEvent = () => {
+  const outlet = useOutlet();
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const eventOne = useAppSelector(selectEventOne);
   const getLoadingEventOne = useAppSelector(selectEventOneLoading);
+  const navigate = useNavigate();
 
   let image = eventImage;
 
   if (eventOne && eventOne.image) {
     image = apiURL + '/' + eventOne.image;
   }
+
+  const openModalRecord = () => {
+    navigate('record');
+    dispatch(openModal());
+  };
 
   useEffect(() => {
     if (id) {
@@ -51,6 +59,7 @@ const FullEvent = () => {
   return (
     <Layout>
       <Container sx={{ mt: 3 }}>
+        {outlet ? <Record /> : null}
         {!getLoadingEventOne ? (
           eventOne ? (
             <>
@@ -120,7 +129,7 @@ const FullEvent = () => {
                         </MenuItem>
                       </MenuList>
 
-                      <Button sx={{ mt: 5 }} variant="contained" endIcon={<CheckIcon />}>
+                      <Button onClick={openModalRecord} sx={{ mt: 5 }} variant="contained" endIcon={<CheckIcon />}>
                         Участвовать
                       </Button>
                     </Box>
