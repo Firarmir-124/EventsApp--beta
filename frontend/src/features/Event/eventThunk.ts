@@ -55,7 +55,7 @@ export const createEvent = createAsyncThunk<void, EventMutation, { rejectValue: 
     });
 
     try {
-      await axiosApi.post<EventMutation>('/eventPlan', formData);
+      await axiosApi.post<EventMutation>('/eventPlan/create', formData);
     } catch (e) {
       if (isAxiosError(e) && e.response && e.response.status === 400) {
         return rejectWithValue(e.response.data as ValidationError);

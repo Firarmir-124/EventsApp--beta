@@ -5,6 +5,7 @@ const HashtagSchema = new Schema<HashtagType>({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
 });
 

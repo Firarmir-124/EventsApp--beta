@@ -61,7 +61,7 @@ eventsRouter.post('/filter', auth, permit('organizer'), async (req, res) => {
   });
 });
 
-eventsRouter.post('/', imagesUpload.single('image'), auth, permit('organizer'), async (req, res, next) => {
+eventsRouter.post('/create', imagesUpload.single('image'), auth, permit('organizer'), async (req, res, next) => {
   try {
     const user = (req as RequestWitUser).user;
 
