@@ -9,11 +9,13 @@ import HashtagCreate from './features/Hashtag/admin/HashtagCreate';
 import Register from './features/User/Register/Register';
 import Login from './features/User/Login/Login';
 import Record from './features/Record/Record';
+import Profile from './features/Profile/Profile';
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/profile" element={<Profile />} />
       <Route path="/:id" element={<Home />} />
       <Route path="/full_event/:id" element={<FullEvent />}>
         <Route path="record" element={<Record />} />

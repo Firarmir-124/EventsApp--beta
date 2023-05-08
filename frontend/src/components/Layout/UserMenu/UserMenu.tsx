@@ -77,18 +77,23 @@ const UserMenu: React.FC<Props> = ({ user }) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={() => setAnchorEl(null)}>
-          <Avatar /> Мой профиль
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={() => setAnchorEl(null)}>
-          <ListItemIcon>
-            <PersonAdd fontSize="small" />
-          </ListItemIcon>
-          <Link style={{ textDecoration: 'none', color: '#000' }} to="/event">
+        <Link style={{ textDecoration: 'none', color: '#000' }} to="/profile">
+          <MenuItem onClick={() => setAnchorEl(null)}>
+            <ListItemIcon>
+              <Avatar />
+            </ListItemIcon>
+            Мой профиль
+          </MenuItem>
+        </Link>
+        <Divider sx={{ my: 1 }} />
+        <Link style={{ textDecoration: 'none', color: '#000' }} to="/event">
+          <MenuItem onClick={() => setAnchorEl(null)}>
+            <ListItemIcon>
+              <PersonAdd fontSize="small" />
+            </ListItemIcon>
             Управление мероприятем
-          </Link>
-        </MenuItem>
+          </MenuItem>
+        </Link>
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
