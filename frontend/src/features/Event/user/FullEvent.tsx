@@ -11,9 +11,10 @@ import {
   CircularProgress,
   MenuList,
   Paper,
+  IconButton,
 } from '@mui/material';
 import Layout from '../../../components/Layout/Layout';
-import { useNavigate, useOutlet, useParams } from 'react-router-dom';
+import { Link, useNavigate, useOutlet, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { openModal, selectEventOne, selectEventOneLoading } from '../eventSlice';
 import { fetchOneEvent } from '../eventThunk';
@@ -30,6 +31,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import ReactMarkdown from 'react-markdown';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import Record from '../../Record/Record';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
 const FullEvent = () => {
   const outlet = useOutlet();
@@ -59,6 +61,11 @@ const FullEvent = () => {
   return (
     <Layout>
       <Container sx={{ mt: 3 }}>
+        <Link to="/">
+          <IconButton aria-label="delete">
+            <ArrowCircleLeftIcon sx={{ fontSize: '50px' }} />
+          </IconButton>
+        </Link>
         {outlet ? <Record /> : null}
         {!getLoadingEventOne ? (
           eventOne ? (

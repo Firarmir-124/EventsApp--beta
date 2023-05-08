@@ -1,17 +1,23 @@
 import React from 'react';
 import Layout from '../../components/Layout/Layout';
-import { Container, Grid, List, ListItemButton, ListItemText, ListSubheader, Paper } from '@mui/material';
+import { Container, Grid, IconButton, List, ListItemButton, ListItemText, ListSubheader, Paper } from '@mui/material';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Link, useOutlet } from 'react-router-dom';
 import Favorites from './Favorites/Favorites';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
 const Profile = () => {
   const outlet = useOutlet();
   return (
     <Layout>
       <Container sx={{ mt: 2 }}>
+        <Link to="/">
+          <IconButton aria-label="delete">
+            <ArrowCircleLeftIcon sx={{ fontSize: '50px' }} />
+          </IconButton>
+        </Link>
         <Grid container>
           <Grid xs={3} marginRight="20px" item>
             <Paper elevation={3}>
