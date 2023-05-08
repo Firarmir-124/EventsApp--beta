@@ -10,12 +10,17 @@ import Register from './features/User/Register/Register';
 import Login from './features/User/Login/Login';
 import Record from './features/Record/Record';
 import Profile from './features/Profile/Profile';
+import Requests from './features/Profile/Requests/Requests';
+import Favorites from './features/Profile/Favorites/Favorites';
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/profile" element={<Profile />}>
+        <Route path="favorite" element={<Favorites />} />
+        <Route path="request" element={<Requests />} />
+      </Route>
       <Route path="/:id" element={<Home />} />
       <Route path="/full_event/:id" element={<FullEvent />}>
         <Route path="record" element={<Record />} />

@@ -4,8 +4,11 @@ import { Container, Grid, List, ListItemButton, ListItemText, ListSubheader, Pap
 import ListItemIcon from '@mui/material/ListItemIcon';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { Link, useOutlet } from 'react-router-dom';
+import Favorites from './Favorites/Favorites';
 
 const Profile = () => {
+  const outlet = useOutlet();
   return (
     <Layout>
       <Container sx={{ mt: 2 }}>
@@ -21,13 +24,13 @@ const Profile = () => {
                   </ListSubheader>
                 }
               >
-                <ListItemButton>
+                <ListItemButton component={Link} to="favorite">
                   <ListItemIcon>
                     <FavoriteIcon />
                   </ListItemIcon>
                   <ListItemText primary="Выбранные мероприятия" />
                 </ListItemButton>
-                <ListItemButton>
+                <ListItemButton component={Link} to="request">
                   <ListItemIcon>
                     <AccessTimeIcon />
                   </ListItemIcon>
@@ -37,7 +40,7 @@ const Profile = () => {
             </Paper>
           </Grid>
           <Grid xs={true} item>
-            <Paper sx={{ p: 1 }}>Выбор действий</Paper>
+            <Paper sx={{ p: 1 }}>{outlet ? outlet : <Favorites />}</Paper>
           </Grid>
         </Grid>
       </Container>
