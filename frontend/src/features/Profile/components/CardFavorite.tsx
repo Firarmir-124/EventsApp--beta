@@ -3,13 +3,19 @@ import { Card, CardMedia, Checkbox, Chip, Grid, IconButton, Paper } from '@mui/m
 import { Link } from 'react-router-dom';
 import eventImage from '../../../assests/images/event.png';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { EventFavoritesType } from '../../../types';
+import { apiURL } from '../../../constants';
 
 interface Props {
-  onClick: React.MouseEventHandler;
+  event: EventFavoritesType;
 }
 
-const CardFavorite: React.FC<Props> = ({ onClick }) => {
-  const image = eventImage;
+const CardFavorite: React.FC<Props> = ({ event }) => {
+  let image = eventImage;
+
+  if (event.list.image) {
+    image = apiURL + '/' + event.list.image;
+  }
 
   return (
     <Grid item xs={2} sm={4} md={4}>
@@ -34,7 +40,7 @@ const CardFavorite: React.FC<Props> = ({ onClick }) => {
                   width: '100px',
                 }}
                 size="small"
-                label="Навзаниевапвапвапвапвап"
+                label={event.list.title}
                 color="primary"
               />
             </Grid>
@@ -44,12 +50,7 @@ const CardFavorite: React.FC<Props> = ({ onClick }) => {
               </IconButton>
             </Grid>
             <Grid item>
-              <Checkbox
-                onClick={onClick}
-                sx={{ color: '#fff' }}
-                color="default"
-                {...{ inputProps: { 'aria-label': 'Checkbox demo' } }}
-              />
+              <Checkbox sx={{ color: '#fff' }} color="default" {...{ inputProps: { 'aria-label': 'Checkbox demo' } }} />
             </Grid>
           </Grid>
         </Paper>

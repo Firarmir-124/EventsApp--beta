@@ -8,7 +8,7 @@ const favoritesRouter = express.Router();
 favoritesRouter.get('/', auth, async (req, res) => {
   try {
     const user = (req as RequestWithUser).user;
-    const favoritesList = await Favorites.find({ user: user._id });
+    const favoritesList = await Favorites.findOne({ user: user._id }).populate({ path: 'event.list' });
     return res.send(favoritesList);
   } catch (e) {
     return res.sendStatus(500);

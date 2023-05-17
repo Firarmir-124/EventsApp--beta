@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
-import { Avatar, Box, Button, Container, Grid, Typography } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Alert, Avatar, Box, Button, CircularProgress, Container, Grid, Typography } from '@mui/material';
 import CardFavorite from '../components/CardFavorite';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import BallotIcon from '@mui/icons-material/Ballot';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectFavoritesFetchLoading, selectFavoritesList } from '../profileSlice';
+import { fetchFavorites } from '../profileThunk';
 const Favorites = () => {
-  const [card, setCard] = useState<any[]>([]);
+  const dispatch = useAppDispatch();
+  const favoritesList = useAppSelector(selectFavoritesList);
+  const loadingFavoritesList = useAppSelector(selectFavoritesFetchLoading);
 
-  const addCard = (card: any) => {
-    setCard((prev) => [...prev, card]);
-  };
+  useEffect(() => {
+    dispatch(fetchFavorites());
+  }, [dispatch]);
+
+  console.log(favoritesList);
 
   return (
     <Container>
@@ -30,10 +37,15 @@ const Favorites = () => {
           Избранное
         </Typography>
         <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-          <CardFavorite onClick={() => addCard('1')} />
-          <CardFavorite onClick={() => addCard('2')} />
-          <CardFavorite onClick={() => addCard('3')} />
-          <CardFavorite onClick={() => addCard('4')} />
+          {favoritesList ? (
+            !loadingFavoritesList ? (
+              favoritesList.event.map((event) => <CardFavorite key={event._id} event={event} />)
+            ) : (
+              <CircularProgress />
+            )
+          ) : (
+            <Alert severity="info">Список пуст</Alert>
+          )}
         </Grid>
       </Box>
     </Container>

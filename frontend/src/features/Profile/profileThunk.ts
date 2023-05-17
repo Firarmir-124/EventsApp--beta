@@ -2,8 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { FavoritesType } from '../../types';
 import axiosApi from '../../axios';
 
-export const fetchFavorites = createAsyncThunk<FavoritesType[]>('profile/fetch_favorites', async () => {
-  const response = await axiosApi.get<FavoritesType[]>('/favorites');
+export const fetchFavorites = createAsyncThunk<FavoritesType | null>('profile/fetch_favorites', async () => {
+  const response = await axiosApi.get<FavoritesType | null>('/favorites');
   return response.data;
 });
 

@@ -130,12 +130,20 @@ export interface RecordUser {
   description: string;
 }
 
+export interface ListFavoritesType {
+  _id: string;
+  image: string;
+  title: string;
+}
+
+export interface EventFavoritesType {
+  list: ListFavoritesType;
+  show: boolean;
+  _id: string;
+}
+
 export interface FavoritesType {
   _id: string;
-  event: {
-    list: string;
-    show: boolean;
-    _id: string;
-  };
+  event: EventFavoritesType[];
   user: string;
 }

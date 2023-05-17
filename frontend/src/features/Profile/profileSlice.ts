@@ -4,14 +4,14 @@ import { RootState } from '../../app/store';
 import { addFavorites, fetchFavorites, removeFavorites } from './profileThunk';
 
 interface ProfileType {
-  favoritesList: FavoritesType[];
+  favoritesList: FavoritesType | null;
   favoritesFetchLoading: boolean;
   addFavoritesLoading: boolean;
   removeFavoritesLoading: boolean;
 }
 
 const initialState: ProfileType = {
-  favoritesList: [],
+  favoritesList: null,
   favoritesFetchLoading: false,
   addFavoritesLoading: false,
   removeFavoritesLoading: false,
