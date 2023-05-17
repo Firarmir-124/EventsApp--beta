@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import config from './config';
-import User from './models/Users';
+import User from './models/User';
 import EventPlan from './models/EventPlan';
 import crypto from 'crypto';
 import Hashtag from './models/Hashtag';

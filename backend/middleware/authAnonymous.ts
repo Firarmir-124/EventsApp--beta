@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { HydratedDocument } from 'mongoose';
 import { IUser } from '../types';
-import User from '../models/Users';
+import User from '../models/User';
 
 export interface RequestWitUser extends Request {
   user: HydratedDocument<IUser>;

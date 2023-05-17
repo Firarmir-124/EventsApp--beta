@@ -1,6 +1,6 @@
 import { model, Schema, Types } from 'mongoose';
 import { EventType } from '../types';
-import User from './Users';
+import User from './User';
 import Hashtag from './Hashtag';
 
 const EventSchema = new Schema<EventType>({

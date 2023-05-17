@@ -34,3 +34,12 @@ export interface RecordUserType {
   phone: string;
   description: string;
 }
+
+export interface FavoritesType {
+  user: string;
+  event: {
+    list: Types.ObjectId;
+    show: boolean;
+    _id: Types.ObjectId;
+  };
+}

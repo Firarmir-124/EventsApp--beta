@@ -6,6 +6,7 @@ import usersRouter from './routers/users';
 import hashtagsRoutes from './routers/hashtags';
 import eventsRouter from './routers/events';
 import usersRecordsRouter from './routers/userRecords';
+import favoritesRouter from './routers/favorites';
 
 const app = express();
 const port = 8000;
@@ -17,6 +18,7 @@ app.use('/users', usersRouter);
 app.use('/hashtag', hashtagsRoutes);
 app.use('/eventPlan', eventsRouter);
 app.use('/userRecord', usersRecordsRouter);
+app.use('/favorites', favoritesRouter);
 
 const run = async () => {
   mongoose.set('strictQuery', false);
