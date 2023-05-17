@@ -133,19 +133,6 @@ const eventSlice = createSlice({
     createPerPage: (state, { payload: perPage }: PayloadAction<number>) => {
       state.perPage = perPage;
     },
-    getSettingLocal: (state) => {
-      const local = localStorage.getItem('setting');
-
-      if (local) {
-        state.localSettings = JSON.parse(local);
-      }
-    },
-    saveSettingLocal: (state) => {
-      localStorage.setItem(
-        'setting',
-        JSON.stringify(state.localSettings.length !== 0 ? state.localSettings : state.cellTable),
-      );
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchEventListFilter.fulfilled, (state, { payload: eventList }) => {
@@ -209,17 +196,8 @@ const eventSlice = createSlice({
 });
 
 export const eventReducer = eventSlice.reducer;
-export const {
-  openSnackbar,
-  openModal,
-  closeModal,
-  toggleShowCellTable,
-  openDrawer,
-  closeDrawer,
-  createPerPage,
-  saveSettingLocal,
-  getSettingLocal,
-} = eventSlice.actions;
+export const { openSnackbar, openModal, closeModal, toggleShowCellTable, openDrawer, closeDrawer, createPerPage } =
+  eventSlice.actions;
 
 export const selectEventList = (state: RootState) => state.event.eventList;
 export const selectCreateEventLoading = (state: RootState) => state.event.eventCreateLoading;

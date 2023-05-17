@@ -1,28 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Button,
-  Checkbox,
-  Drawer,
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  MenuItem,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Checkbox, Drawer, FormControlLabel, FormGroup, Grid, MenuItem, TextField, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import {
   closeDrawer,
   createPerPage,
-  getSettingLocal,
-  saveSettingLocal,
   selectCellTable,
   selectDrawerState,
   selectSettingsLocal,
   toggleShowCellTable,
 } from '../eventSlice';
 import FilterCard from '../FilterCard/FilterCard';
-import SaveIcon from '@mui/icons-material/Save';
 import Divider from '@mui/material/Divider';
 
 const DrawerCard = () => {
@@ -41,10 +28,6 @@ const DrawerCard = () => {
       dispatch(createPerPage(parseInt(perPage)));
     }
   }, [dispatch, perPage]);
-
-  useEffect(() => {
-    dispatch(getSettingLocal());
-  }, [dispatch]);
 
   return (
     <Drawer
@@ -78,14 +61,6 @@ const DrawerCard = () => {
                   />
                 ))}
           </FormGroup>
-          <Button
-            onClick={() => dispatch(saveSettingLocal())}
-            sx={{ mt: '10px' }}
-            variant="outlined"
-            startIcon={<SaveIcon />}
-          >
-            Сохранить
-          </Button>
         </Grid>
         <Grid xs={12} item>
           <Typography component="p" variant="h6">

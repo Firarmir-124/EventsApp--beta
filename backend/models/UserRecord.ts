@@ -1,6 +1,6 @@
 import { model, Schema, Types } from 'mongoose';
 import { RecordUserType } from '../types';
-import User from './Users';
+import User from './User';
 
 const RecordUserSchema = new Schema<RecordUserType>({
   name: {

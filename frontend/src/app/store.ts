@@ -13,9 +13,15 @@ const usersPersistConfig = {
   whitelist: ['user'],
 };
 
+const settingsPersistConfig = {
+  key: 'petProject:settings',
+  storage,
+  whitelist: ['cellTable', 'perPage'],
+};
+
 const rootReducer = combineReducers({
   users: persistReducer(usersPersistConfig, usersReducer),
-  event: eventReducer,
+  event: persistReducer(settingsPersistConfig, eventReducer),
   hashtag: hashtagReducer,
   record: recordReducer,
 });
