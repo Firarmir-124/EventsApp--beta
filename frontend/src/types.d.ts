@@ -129,3 +129,13 @@ export interface RecordUser {
   phone: string;
   description: string;
 }
+
+export interface FavoritesType {
+  _id: string;
+  event: {
+    list: string;
+    show: boolean;
+    _id: string;
+  };
+  user: string;
+}
