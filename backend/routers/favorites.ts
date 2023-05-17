@@ -77,4 +77,22 @@ favoritesRouter.delete('/', auth, async (req, res) => {
   }
 });
 
+favoritesRouter.patch('/:id', auth, async (req, res) => {
+  const user = (req as RequestWithUser).user;
+  try {
+    const favoritesOne = await Favorites.findOne({ user: user._id });
+    if (favoritesOne) {
+      console.log(favoritesOne.event[0]._id);
+      const index = favoritesOne.event.findIndex((item) => item._id === req.params.id);
+      favoritesOne.event[index].show
+        ? (favoritesOne.event[index].show = false)
+        : (favoritesOne.event[index].show = true);
+      await favoritesOne.save();
+      return res.send({ show: true });
+    }
+  } catch {
+    return res.sendStatus(500);
+  }
+});
+
 export default favoritesRouter;
