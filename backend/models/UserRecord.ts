@@ -1,6 +1,7 @@
 import { model, Schema, Types } from 'mongoose';
 import { RecordUserType } from '../types';
 import User from './User';
+import EventPlan from './EventPlan';
 
 const RecordUserSchema = new Schema<RecordUserType>({
   name: {
@@ -19,6 +20,19 @@ const RecordUserSchema = new Schema<RecordUserType>({
   description: {
     type: String,
     required: true,
+  },
+  event: {
+    type: Schema.Types.ObjectId,
+    ref: 'EventPlan',
+    required: true,
+    validate: {
+      validator: async (value: Types.ObjectId) => EventPlan.findById(value),
+      message: 'Такого евента нет !',
+    },
+  },
+  status: {
+    type: Boolean,
+    default: false,
   },
 });
 

@@ -27,6 +27,9 @@ const SnackbarCard = () => {
     case 'remove_favorites':
       txt += 'Евент успешно убрался из избранного';
       break;
+    case 'create_record_user':
+      txt += 'Запрос успешно добавлен';
+      break;
   }
 
   return (

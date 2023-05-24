@@ -18,10 +18,13 @@ usersRecordsRouter.get('/', auth, async (req, res) => {
 });
 
 usersRecordsRouter.post('/', auth, async (req, res, next) => {
+  const user = (req as RequestWitUser).user;
   try {
     const newUserRecord = await UserRecord.create({
+      name: user._id,
       phone: req.body.phone,
       description: req.body.description,
+      event: req.body.event,
     });
 
     return res.send(newUserRecord);

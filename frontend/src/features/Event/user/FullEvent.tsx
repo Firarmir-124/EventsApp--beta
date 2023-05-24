@@ -32,6 +32,7 @@ import ReactMarkdown from 'react-markdown';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import Record from '../../Record/Record';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import SnackbarCard from '../../../components/SnackbarCard';
 
 const FullEvent = () => {
   const outlet = useOutlet();
@@ -159,6 +160,7 @@ const FullEvent = () => {
           <CircularProgress />
         )}
       </Container>
+      <SnackbarCard />
     </Layout>
   );
 };
