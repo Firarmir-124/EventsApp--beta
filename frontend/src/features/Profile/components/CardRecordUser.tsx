@@ -1,7 +1,9 @@
 import React from 'react';
-import { Box, IconButton, TableCell, TableRow } from '@mui/material';
+import { Box, IconButton, TableCell, TableRow, ButtonGroup } from '@mui/material';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { RecordUserList } from '../../../types';
+import LaunchIcon from '@mui/icons-material/Launch';
+import { Link } from 'react-router-dom';
 
 interface Props {
   record: RecordUserList;
@@ -25,9 +27,16 @@ const CardRecordUser: React.FC<Props> = ({ record, removeCardRecord }) => {
       <TableCell align="center">{record.event.title}</TableCell>
       <TableCell align="center">{record.phone}</TableCell>
       <TableCell align="center">
-        <IconButton onClick={removeCardRecord} aria-label="delete">
-          <RemoveCircleIcon />
-        </IconButton>
+        <ButtonGroup variant="contained" aria-label="outlined primary button group">
+          <IconButton onClick={removeCardRecord} aria-label="delete">
+            <RemoveCircleIcon />
+          </IconButton>
+          <Link to={`/full_event/${record.event._id}`}>
+            <IconButton aria-label="delete">
+              <LaunchIcon />
+            </IconButton>
+          </Link>
+        </ButtonGroup>
       </TableCell>
     </TableRow>
   );
