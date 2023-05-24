@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Box, CircularProgress, Container, Grid, Pagination, Paper, Typography } from '@mui/material';
 import CardEventUser from '../components/CardEventUser';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectEventList, selectEventLoading } from '../eventSlice';
+import { openSnackbar, selectEventList, selectEventLoading } from '../eventSlice';
 import { fetchEventList } from '../eventThunk';
 import { useParams } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 import FilterCard from '../FilterCard/FilterCard';
+import { addFavorites } from '../../Profile/profileThunk';
+import SnackbarCard from '../../../components/SnackbarCard';
 
 const EventListUser = () => {
   const { id } = useParams();
@@ -25,6 +27,11 @@ const EventListUser = () => {
     setPage(value);
   };
 
+  const addEventFavorites = async (id: string) => {
+    await dispatch(addFavorites(id)).unwrap();
+    dispatch(openSnackbar({ status: true, parameter: 'add_favorites' }));
+  };
+
   return (
     <>
       <Container>
@@ -38,7 +45,9 @@ const EventListUser = () => {
           <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
             {!loadingEventList ? (
               events.eventList.length !== 0 ? (
-                events.eventList.map((event) => <CardEventUser key={event._id} event={event} />)
+                events.eventList.map((event) => (
+                  <CardEventUser addEventFavorites={() => addEventFavorites(event._id)} key={event._id} event={event} />
+                ))
               ) : (
                 <Alert severity="info">Списка нет</Alert>
               )
@@ -52,6 +61,7 @@ const EventListUser = () => {
         </Box>
         <Pagination sx={{ mt: '20px' }} count={events.pages} page={page} onChange={handleChange} />
       </Container>
+      <SnackbarCard />
     </>
   );
 };

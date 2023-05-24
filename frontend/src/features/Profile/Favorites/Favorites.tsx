@@ -5,7 +5,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import BallotIcon from '@mui/icons-material/Ballot';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectFavoritesFetchLoading, selectFavoritesList } from '../profileSlice';
-import { fetchFavorites } from '../profileThunk';
+import { fetchFavorites, removeFavorites, showFavorites } from '../profileThunk';
 const Favorites = () => {
   const dispatch = useAppDispatch();
   const favoritesList = useAppSelector(selectFavoritesList);
@@ -15,13 +15,36 @@ const Favorites = () => {
     dispatch(fetchFavorites());
   }, [dispatch]);
 
-  console.log(favoritesList);
+  const removeOneCard = async (id: string) => {
+    if (window.confirm('Вы действительно хотите удалить ?')) {
+      await dispatch(removeFavorites({ deleteOne: id, deleteAll: undefined, deleteSelect: undefined })).unwrap();
+      await dispatch(fetchFavorites());
+    } else {
+      return;
+    }
+  };
+
+  const showFavoritesCard = async (id: string) => {
+    await dispatch(showFavorites(id)).unwrap();
+    await dispatch(fetchFavorites());
+  };
+
+  const removeSelected = async () => {
+    if (window.confirm('Вы действительно хотите удалить ?')) {
+      await dispatch(removeFavorites({ deleteOne: undefined, deleteAll: undefined, deleteSelect: true })).unwrap();
+      await dispatch(fetchFavorites());
+    } else {
+      return;
+    }
+  };
 
   return (
     <Container>
-      <Button variant="outlined" startIcon={<BallotIcon />}>
-        Удалить
-      </Button>
+      {favoritesList && favoritesList.event.filter((item) => item.show).length > 0 ? (
+        <Button onClick={removeSelected} variant="outlined" startIcon={<BallotIcon />}>
+          Удалить
+        </Button>
+      ) : null}
       <Box
         style={{
           marginTop: 8,
@@ -39,13 +62,22 @@ const Favorites = () => {
         <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
           {favoritesList ? (
             !loadingFavoritesList ? (
-              favoritesList.event.map((event) => <CardFavorite key={event._id} event={event} />)
+              favoritesList.event.length > 0 ? (
+                favoritesList.event.map((event) => (
+                  <CardFavorite
+                    key={event._id}
+                    event={event}
+                    removeOneCard={() => removeOneCard(event.list._id)}
+                    showFavoritesCard={() => showFavoritesCard(event.list._id)}
+                  />
+                ))
+              ) : (
+                <Alert severity="info">Список пуст</Alert>
+              )
             ) : (
               <CircularProgress />
             )
-          ) : (
-            <Alert severity="info">Список пуст</Alert>
-          )}
+          ) : null}
         </Grid>
       </Box>
     </Container>

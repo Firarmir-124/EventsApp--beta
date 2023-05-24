@@ -11,20 +11,28 @@ export const addFavorites = createAsyncThunk<void, string>('profile/add_favorite
   await axiosApi.post('/favorites', { event: { list: id } });
 });
 
-interface removeType {
-  deleteOne: string | undefined;
-  deleteAll: string | undefined;
-  deleteSelect: string | undefined;
-}
+type removeType =
+  | {
+      deleteOne: string | undefined;
+      deleteAll: string | undefined;
+      deleteSelect: boolean | undefined;
+    }
+  | undefined;
 
 export const removeFavorites = createAsyncThunk<void, removeType>('profile/remove_favorites', async (arg) => {
-  let url = `/favorites?deleteOne=${arg.deleteOne}`;
+  let url = '/favorites';
 
-  if (arg.deleteAll) {
-    url = `/favorites?deleteAll=${arg.deleteAll}`;
-  } else if (arg.deleteSelect) {
-    url = `/favorites?deleteSelect=true`;
+  if (arg) {
+    if (arg.deleteSelect) {
+      url = `/favorites?deleteSelected=true`;
+    } else if (arg.deleteOne) {
+      url = `/favorites?deleteOne=${arg.deleteOne}`;
+    }
   }
 
   await axiosApi.delete(url);
+});
+
+export const showFavorites = createAsyncThunk<void, string>('profile/show_favorites', async (id) => {
+  await axiosApi.patch('/favorites/' + id);
 });

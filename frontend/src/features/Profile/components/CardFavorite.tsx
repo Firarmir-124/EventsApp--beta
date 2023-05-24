@@ -8,9 +8,11 @@ import { apiURL } from '../../../constants';
 
 interface Props {
   event: EventFavoritesType;
+  removeOneCard: React.MouseEventHandler;
+  showFavoritesCard: React.MouseEventHandler;
 }
 
-const CardFavorite: React.FC<Props> = ({ event }) => {
+const CardFavorite: React.FC<Props> = ({ event, removeOneCard, showFavoritesCard }) => {
   let image = eventImage;
 
   if (event.list.image) {
@@ -45,16 +47,16 @@ const CardFavorite: React.FC<Props> = ({ event }) => {
               />
             </Grid>
             <Grid item>
-              <IconButton>
+              <IconButton onClick={removeOneCard}>
                 <DeleteIcon sx={{ color: '#fff' }} />
               </IconButton>
             </Grid>
             <Grid item>
-              <Checkbox sx={{ color: '#fff' }} color="default" {...{ inputProps: { 'aria-label': 'Checkbox demo' } }} />
+              <Checkbox onClick={showFavoritesCard} sx={{ color: '#fff' }} color="default" checked={event.show} />
             </Grid>
           </Grid>
         </Paper>
-        <Link to={'/full_event/' + '123'}>
+        <Link to={'/full_event/' + event.list._id}>
           <CardMedia sx={{ height: 200 }} image={image} title="green iguana" />
         </Link>
       </Card>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardMedia, Chip, Grid, IconButton, Paper, Typography } from '@mui/material';
+import { Card, CardContent, CardMedia, Checkbox, Chip, Grid, Paper, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { EventList } from '../../../types';
 import { apiURL } from '../../../constants';
@@ -9,12 +9,14 @@ import { linksStyle } from '../../../components/Layout/Layout';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import ru from 'dayjs/locale/ru';
+import Favorite from '@mui/icons-material/Favorite';
 
 interface Props {
   event: EventList;
+  addEventFavorites: React.MouseEventHandler;
 }
 
-const CardEventUser: React.FC<Props> = ({ event }) => {
+const CardEventUser: React.FC<Props> = ({ event, addEventFavorites }) => {
   let image = eventImage;
 
   if (event.image) {
@@ -42,9 +44,11 @@ const CardEventUser: React.FC<Props> = ({ event }) => {
               />
             </Grid>
             <Grid item>
-              <IconButton>
-                <FavoriteIcon sx={{ color: '#fff' }} />
-              </IconButton>
+              <Checkbox
+                onClick={addEventFavorites}
+                icon={<FavoriteIcon sx={{ color: '#fff' }} />}
+                checkedIcon={<Favorite sx={{ color: '#ff7300' }} />}
+              />
             </Grid>
           </Grid>
         </Paper>

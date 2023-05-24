@@ -21,6 +21,12 @@ const SnackbarCard = () => {
     case 'remove_hashtag':
       txt += 'Хэштег успешно удалено';
       break;
+    case 'add_favorites':
+      txt += 'Евент успешно добавлен в избранное';
+      break;
+    case 'remove_favorites':
+      txt += 'Евент успешно убрался из избранного';
+      break;
   }
 
   return (

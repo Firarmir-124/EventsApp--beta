@@ -51,7 +51,6 @@ favoritesRouter.delete('/', auth, async (req, res) => {
   const user = (req as RequestWithUser).user;
   const deleteOne = req.query.deleteOne as string;
   const deleteSelected = req.query.deleteSelected as string;
-  const deleteAll = req.query.deleteAll as string;
 
   try {
     const favoritesOne = await Favorites.findOne({ user: user._id });
@@ -65,12 +64,9 @@ favoritesRouter.delete('/', auth, async (req, res) => {
         return res.send({ remove: deleteOne });
       }
     } else if (deleteSelected) {
-      favoritesOne.event = favoritesOne.event.filter((item) => item.show === true);
+      favoritesOne.event = favoritesOne.event.filter((item) => item.show === false);
       await favoritesOne.save();
       return res.send('Удаленно несколько сущностей');
-    } else if (deleteAll) {
-      await Favorites.deleteOne({ _id: deleteAll });
-      return res.send('Удалены все сущности');
     }
   } catch (e) {
     return res.sendStatus(500);
@@ -82,8 +78,7 @@ favoritesRouter.patch('/:id', auth, async (req, res) => {
   try {
     const favoritesOne = await Favorites.findOne({ user: user._id });
     if (favoritesOne) {
-      console.log(favoritesOne.event[0]._id);
-      const index = favoritesOne.event.findIndex((item) => item._id === req.params.id);
+      const index = favoritesOne.event.findIndex((item) => item.list?.toString() === req.params.id);
       favoritesOne.event[index].show
         ? (favoritesOne.event[index].show = false)
         : (favoritesOne.event[index].show = true);

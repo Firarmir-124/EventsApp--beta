@@ -1,13 +1,14 @@
 import { FavoritesType } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { addFavorites, fetchFavorites, removeFavorites } from './profileThunk';
+import { addFavorites, fetchFavorites, removeFavorites, showFavorites } from './profileThunk';
 
 interface ProfileType {
   favoritesList: FavoritesType | null;
   favoritesFetchLoading: boolean;
   addFavoritesLoading: boolean;
   removeFavoritesLoading: boolean;
+  showFavoritesLoading: boolean;
 }
 
 const initialState: ProfileType = {
@@ -15,6 +16,7 @@ const initialState: ProfileType = {
   favoritesFetchLoading: false,
   addFavoritesLoading: false,
   removeFavoritesLoading: false,
+  showFavoritesLoading: false,
 };
 
 const profileSlice = createSlice({
@@ -52,6 +54,16 @@ const profileSlice = createSlice({
     builder.addCase(removeFavorites.rejected, (state) => {
       state.removeFavoritesLoading = false;
     });
+
+    builder.addCase(showFavorites.pending, (state) => {
+      state.showFavoritesLoading = true;
+    });
+    builder.addCase(showFavorites.fulfilled, (state) => {
+      state.showFavoritesLoading = false;
+    });
+    builder.addCase(showFavorites.rejected, (state) => {
+      state.showFavoritesLoading = false;
+    });
   },
 });
 
@@ -61,3 +73,4 @@ export const selectFavoritesList = (state: RootState) => state.profile.favorites
 export const selectFavoritesFetchLoading = (state: RootState) => state.profile.favoritesFetchLoading;
 export const selectFavoritesAddLoading = (state: RootState) => state.profile.addFavoritesLoading;
 export const selectFavoritesRemoveLoading = (state: RootState) => state.profile.removeFavoritesLoading;
+export const selectShowFavoritesLoading = (state: RootState) => state.profile.showFavoritesLoading;

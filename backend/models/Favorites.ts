@@ -18,7 +18,6 @@ const FavoritesSchema = new Schema({
           type: Boolean,
           default: false,
         },
-        _id: String,
       },
     ],
     required: true,
