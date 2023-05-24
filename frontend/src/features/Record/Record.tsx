@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectPostRecordUserLoading } from './recordSlice';
 import { postRecordUser } from './recordThunk';
 import { closeModal, openSnackbar } from '../Event/eventSlice';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Record = () => {
   const { id } = useParams();
@@ -17,6 +17,7 @@ const Record = () => {
     phone: '',
     description: '',
   });
+  const navigate = useNavigate();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -32,6 +33,7 @@ const Record = () => {
     await dispatch(postRecordUser(obj)).unwrap();
     dispatch(openSnackbar({ status: true, parameter: 'create_record_user' }));
     dispatch(closeModal());
+    navigate('/profile/request');
   };
 
   return (

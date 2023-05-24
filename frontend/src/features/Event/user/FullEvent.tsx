@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -33,13 +33,17 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import Record from '../../Record/Record';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import SnackbarCard from '../../../components/SnackbarCard';
+import { selectListRecordsUser } from '../../Record/recordSlice';
+import { fetchRecordsUser } from '../../Record/recordThunk';
 
 const FullEvent = () => {
+  const [dis, setDis] = useState(false);
   const outlet = useOutlet();
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const eventOne = useAppSelector(selectEventOne);
   const getLoadingEventOne = useAppSelector(selectEventOneLoading);
+  const listRecordsUser = useAppSelector(selectListRecordsUser);
   const navigate = useNavigate();
 
   let image = eventImage;
@@ -56,8 +60,15 @@ const FullEvent = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchOneEvent(id));
+      dispatch(fetchRecordsUser());
     }
   }, [dispatch, id]);
+
+  useEffect(() => {
+    if (id) {
+      setDis(!!listRecordsUser.find((item) => item.event._id === id));
+    }
+  }, [dispatch, id, listRecordsUser]);
 
   return (
     <Layout>
@@ -137,8 +148,14 @@ const FullEvent = () => {
                         </MenuItem>
                       </MenuList>
 
-                      <Button onClick={openModalRecord} sx={{ mt: 5 }} variant="contained" endIcon={<CheckIcon />}>
-                        Участвовать
+                      <Button
+                        disabled={dis}
+                        onClick={openModalRecord}
+                        sx={{ mt: 5 }}
+                        variant="contained"
+                        endIcon={<CheckIcon />}
+                      >
+                        {!dis ? 'Участвовать' : 'Отправлено'}
                       </Button>
                     </Box>
                   </CardContent>
