@@ -30,6 +30,9 @@ const SnackbarCard = () => {
     case 'create_record_user':
       txt += 'Запрос успешно добавлен';
       break;
+    case 'remove_card_user':
+      txt += 'Запрос успешно удален';
+      break;
   }
 
   return (

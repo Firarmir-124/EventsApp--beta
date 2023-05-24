@@ -1,19 +1,11 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectFetchRecordsUserLoading, selectListRecordsUser } from '../../Record/recordSlice';
-import { fetchRecordsUser } from '../../Record/recordThunk';
-import {
-  Alert,
-  Box,
-  CircularProgress,
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from '@mui/material';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import { fetchRecordsUser, removeRecordUser } from '../../Record/recordThunk';
+import { Alert, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { openSnackbar } from '../../Event/eventSlice';
+import CardRecordUser from '../components/CardRecordUser';
+import SnackbarCard from '../../../components/SnackbarCard';
 
 const Requests = () => {
   const dispatch = useAppDispatch();
@@ -24,60 +16,56 @@ const Requests = () => {
     dispatch(fetchRecordsUser());
   }, [dispatch]);
 
-  console.log(listRecordsUser);
+  const removeCardRecord = async (id: string) => {
+    if (window.confirm('Вы действительно хотите удалить ?')) {
+      await dispatch(removeRecordUser(id)).unwrap();
+      await dispatch(fetchRecordsUser()).unwrap();
+      dispatch(openSnackbar({ status: true, parameter: 'remove_card_user' }));
+    } else {
+      return;
+    }
+  };
 
   return (
-    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-      <TableHead>
-        <TableRow>
-          <TableCell>Статус</TableCell>
-          <TableCell align="center">Отправитель</TableCell>
-          <TableCell align="center">Евент</TableCell>
-          <TableCell align="center">Номер телефона</TableCell>
-          <TableCell align="center">Управление</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {!loading ? (
-          listRecordsUser.length !== 0 ? (
-            listRecordsUser.map((record) => (
-              <TableRow key={record._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell component="th" scope="row">
-                  <Box
-                    sx={{
-                      background: !record.status ? 'red' : 'green',
-                      width: '25px',
-                      height: '25px',
-                      borderRadius: '50%',
-                    }}
-                  ></Box>
-                </TableCell>
-                <TableCell align="center">{record.name.displayName}</TableCell>
-                <TableCell align="center">{record.event.title}</TableCell>
-                <TableCell align="center">{record.phone}</TableCell>
-                <TableCell align="center">
-                  <IconButton aria-label="delete">
-                    <RemoveCircleIcon />
-                  </IconButton>
+    <>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Статус</TableCell>
+            <TableCell align="center">Отправитель</TableCell>
+            <TableCell align="center">Евент</TableCell>
+            <TableCell align="center">Номер телефона</TableCell>
+            <TableCell align="center">Управление</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {!loading ? (
+            listRecordsUser.length !== 0 ? (
+              listRecordsUser.map((record) => (
+                <CardRecordUser
+                  key={record._id}
+                  record={record}
+                  removeCardRecord={() => removeCardRecord(record._id)}
+                />
+              ))
+            ) : (
+              <TableRow>
+                <TableCell>
+                  <Alert severity="info">Список пуст</Alert>
                 </TableCell>
               </TableRow>
-            ))
+            )
           ) : (
             <TableRow>
               <TableCell>
-                <Alert severity="info">Список пуст</Alert>
+                <CircularProgress />
               </TableCell>
             </TableRow>
-          )
-        ) : (
-          <TableRow>
-            <TableCell>
-              <CircularProgress />
-            </TableCell>
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+          )}
+        </TableBody>
+      </Table>
+      <SnackbarCard />
+    </>
   );
 };
 
