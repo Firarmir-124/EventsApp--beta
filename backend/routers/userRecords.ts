@@ -10,7 +10,10 @@ usersRecordsRouter.get('/', auth, async (req, res) => {
   try {
     const user = (req as RequestWitUser).user;
 
-    const usersList = await UserRecord.find({ name: user.id });
+    const usersList = await UserRecord.find({ name: user.id }).populate([
+      { path: 'event', select: 'title' },
+      { path: 'name', select: 'displayName' },
+    ]);
     return res.send(usersList);
   } catch {
     return res.sendStatus(500);

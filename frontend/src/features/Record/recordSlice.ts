@@ -1,13 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { postRecordUser } from './recordThunk';
+import { fetchRecordsUser, postRecordUser } from './recordThunk';
 import { RootState } from '../../app/store';
+import { RecordUserList } from '../../types';
 
 interface initialStateType {
   postRecordUserLoading: boolean;
+  listRecordsUser: RecordUserList[];
+  fetchRecordsUserLoading: boolean;
 }
 
 const initialState: initialStateType = {
   postRecordUserLoading: false,
+  listRecordsUser: [],
+  fetchRecordsUserLoading: false,
 };
 
 const recordSlice = createSlice({
@@ -24,8 +29,21 @@ const recordSlice = createSlice({
     builder.addCase(postRecordUser.rejected, (state) => {
       state.postRecordUserLoading = false;
     });
+
+    builder.addCase(fetchRecordsUser.pending, (state) => {
+      state.fetchRecordsUserLoading = true;
+    });
+    builder.addCase(fetchRecordsUser.fulfilled, (state, { payload: list }) => {
+      state.fetchRecordsUserLoading = false;
+      state.listRecordsUser = list;
+    });
+    builder.addCase(fetchRecordsUser.rejected, (state) => {
+      state.fetchRecordsUserLoading = false;
+    });
   },
 });
 
 export const recordReducer = recordSlice.reducer;
 export const selectPostRecordUserLoading = (state: RootState) => state.record.postRecordUserLoading;
+export const selectListRecordsUser = (state: RootState) => state.record.listRecordsUser;
+export const selectFetchRecordsUserLoading = (state: RootState) => state.record.fetchRecordsUserLoading;

@@ -130,6 +130,21 @@ export interface RecordUser {
   description: string;
 }
 
+export interface RecordUserList {
+  _id: string;
+  name: {
+    _id: string;
+    displayName: string;
+  };
+  phone: string;
+  description: string;
+  event: {
+    _id: string;
+    title: string;
+  };
+  status: boolean;
+}
+
 export interface ListFavoritesType {
   _id: string;
   image: string;
