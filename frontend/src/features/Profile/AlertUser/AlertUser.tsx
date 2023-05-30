@@ -1,48 +1,82 @@
-import React from 'react';
-import { Box, ButtonGroup, IconButton, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import SnackbarCard from '../../../components/SnackbarCard';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import React, { useEffect, useState } from 'react';
+import { Alert, Box, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectAlertsUser, selectFetchAlertsUserLoading } from '../../User/usersSlice';
+import { fetchAlertsUser } from '../../User/usersThunk';
+import ModalCard from '../../../components/ModalCard';
+import { openModal } from '../../Event/eventSlice';
+import { noPassedStage, passedStage } from '../../../constants';
 
 const AlertUser = () => {
-  return (
+  const dispatch = useAppDispatch();
+  const alertUser = useAppSelector(selectAlertsUser);
+  const loading = useAppSelector(selectFetchAlertsUserLoading);
+  const [index, setIndex] = useState('');
+
+  useEffect(() => {
+    dispatch(fetchAlertsUser());
+  }, [dispatch]);
+
+  const openAlertUser = (id: string) => {
+    setIndex(id);
+    dispatch(openModal());
+  };
+
+  const description = alertUser ? alertUser.alert.find((item) => item._id === index) : null;
+
+  return alertUser ? (
     <>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Статус</TableCell>
-            <TableCell align="center">Отправитель</TableCell>
-            <TableCell align="center">Евент</TableCell>
-            <TableCell align="center">Номер телефона</TableCell>
-            <TableCell align="center">Управление</TableCell>
+            <TableCell align="left">Статус</TableCell>
+            <TableCell align="right">Евент</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-            <TableCell component="th" scope="row">
-              <Box
-                sx={{
-                  background: 'gold',
-                  width: '25px',
-                  height: '25px',
-                  borderRadius: '50%',
-                }}
-              ></Box>
-            </TableCell>
-            <TableCell align="center">1</TableCell>
-            <TableCell align="center">2</TableCell>
-            <TableCell align="center">3</TableCell>
-            <TableCell align="center">
-              <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                <IconButton aria-label="delete">
-                  <RemoveCircleIcon />
-                </IconButton>
-              </ButtonGroup>
-            </TableCell>
-          </TableRow>
+          {!loading ? (
+            alertUser.alert.length !== 0 ? (
+              alertUser.alert
+                .filter((item) => !item.viewed)
+                .map((alertUser) => (
+                  <TableRow
+                    key={alertUser._id}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    onClick={() => openAlertUser(alertUser._id)}
+                  >
+                    <TableCell align="left">
+                      <Box
+                        sx={{
+                          background: alertUser.status ? 'green' : 'red',
+                          width: '25px',
+                          height: '25px',
+                          borderRadius: '50%',
+                        }}
+                      ></Box>
+                    </TableCell>
+                    <TableCell align="right">{alertUser.eventId.title}</TableCell>
+                  </TableRow>
+                ))
+            ) : (
+              <TableRow>
+                <TableCell>
+                  <Alert severity="info">Оповещений нет</Alert>
+                </TableCell>
+              </TableRow>
+            )
+          ) : (
+            <TableRow>
+              <TableCell>
+                <CircularProgress />
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
-      <SnackbarCard />
+      <ModalCard>{description ? (description.status ? passedStage : noPassedStage) : null}</ModalCard>
     </>
+  ) : (
+    <Alert></Alert>
   );
 };
 

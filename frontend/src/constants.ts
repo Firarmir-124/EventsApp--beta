@@ -20,3 +20,9 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
+
+export const passedStage =
+  'Здравствуйте, ваш запрос был принят и обработан, не отключайте телефон, с вами должны созвониться';
+
+export const noPassedStage =
+  'Здравствуйте, ваш запрос был принят и обработан, к сожалению вы не прошли на данный эвент';

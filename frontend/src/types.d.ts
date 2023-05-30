@@ -1,4 +1,5 @@
 export interface AlertType {
+  _id: string;
   viewed: boolean;
   eventId: {
     _id: string;
