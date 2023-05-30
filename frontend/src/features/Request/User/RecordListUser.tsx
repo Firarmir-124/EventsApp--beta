@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectFetchRecordsUserLoading, selectListRecordsUser } from '../../Record/recordSlice';
-import { fetchRecordsUser, removeRecordUser } from '../../Record/recordThunk';
+import { selectFetchRecordsUserLoading, selectListRecordsUser } from '../recordSlice';
+import { fetchRecordsUser, removeRecordUser } from '../recordThunk';
 import { Alert, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { openSnackbar } from '../../Event/eventSlice';
 import CardRecordUser from '../components/CardRecordUser';
 import SnackbarCard from '../../../components/SnackbarCard';
 
-const Requests = () => {
+const RecordListUser = () => {
   const dispatch = useAppDispatch();
   const loading = useAppSelector(selectFetchRecordsUserLoading);
   const listRecordsUser = useAppSelector(selectListRecordsUser);
@@ -69,4 +69,4 @@ const Requests = () => {
   );
 };
 
-export default Requests;
+export default RecordListUser;

@@ -6,6 +6,7 @@ import EventList from './admin/EventList';
 import TagIcon from '@mui/icons-material/Tag';
 import AddIcon from '@mui/icons-material/Add';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import AddAlertIcon from '@mui/icons-material/AddAlert';
 
 const Event = () => {
   const outlet = useOutlet();
@@ -32,6 +33,12 @@ const Event = () => {
             <Button component={Link} to="hashtag_create" variant="contained">
               <TagIcon sx={{ mr: '10px' }} />
               Создать хэштег
+            </Button>
+          </Grid>
+          <Grid marginRight="10px" item>
+            <Button component={Link} to="list_request" variant="contained">
+              <AddAlertIcon sx={{ mr: '10px' }} />
+              Список запросов
             </Button>
           </Grid>
         </Grid>

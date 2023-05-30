@@ -30,11 +30,11 @@ import AddLocationIcon from '@mui/icons-material/AddLocation';
 import CheckIcon from '@mui/icons-material/Check';
 import ReactMarkdown from 'react-markdown';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import Record from '../../Record/Record';
+import RecordCreate from '../../Request/User/RecordCreate';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import SnackbarCard from '../../../components/SnackbarCard';
-import { selectListRecordsUser } from '../../Record/recordSlice';
-import { fetchRecordsUser } from '../../Record/recordThunk';
+import { selectListRecordsUser } from '../../Request/recordSlice';
+import { fetchRecordsUser } from '../../Request/recordThunk';
 
 const FullEvent = () => {
   const [dis, setDis] = useState(false);
@@ -78,7 +78,7 @@ const FullEvent = () => {
             <ArrowCircleLeftIcon sx={{ fontSize: '50px' }} />
           </IconButton>
         </Link>
-        {outlet ? <Record /> : null}
+        {outlet ? <RecordCreate /> : null}
         {!getLoadingEventOne ? (
           eventOne ? (
             <>

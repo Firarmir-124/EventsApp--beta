@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import ModalCard from '../../components/ModalCard';
+import ModalCard from '../../../components/ModalCard';
 import { Box, Button, CircularProgress, Grid, TextField } from '@mui/material';
 import ReactInputMask from 'react-input-mask';
-import { RecordUser } from '../../types';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectPostRecordUserLoading } from './recordSlice';
-import { postRecordUser } from './recordThunk';
-import { closeModal, openSnackbar } from '../Event/eventSlice';
+import { RecordUser } from '../../../types';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectPostRecordUserLoading } from '../recordSlice';
+import { postRecordUser } from '../recordThunk';
+import { closeModal, openSnackbar } from '../../Event/eventSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const Record = () => {
+const RecordCreate = () => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const loading = useAppSelector(selectPostRecordUserLoading);
@@ -77,4 +77,4 @@ const Record = () => {
   );
 };
 
-export default Record;
+export default RecordCreate;

@@ -5,7 +5,7 @@ import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from 'redux-persist
 import { usersReducer } from '../features/User/usersSlice';
 import { eventReducer } from '../features/Event/eventSlice';
 import { hashtagReducer } from '../features/Hashtag/hashtagSlice';
-import { recordReducer } from '../features/Record/recordSlice';
+import { recordReducer } from '../features/Request/recordSlice';
 import { profileReducer } from '../features/Profile/profileSlice';
 
 const usersPersistConfig = {

@@ -8,9 +8,9 @@ import CreateEvent from './features/Event/admin/CreateEvent';
 import HashtagCreate from './features/Hashtag/admin/HashtagCreate';
 import Register from './features/User/Register/Register';
 import Login from './features/User/Login/Login';
-import Record from './features/Record/Record';
+import RecordCreate from './features/Request/User/RecordCreate';
 import Profile from './features/Profile/Profile';
-import Requests from './features/Profile/Requests/Requests';
+import RecordListUser from './features/Request/User/RecordListUser';
 import Favorites from './features/Profile/Favorites/Favorites';
 
 function App() {
@@ -19,11 +19,11 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/profile" element={<Profile />}>
         <Route path="favorite" element={<Favorites />} />
-        <Route path="request" element={<Requests />} />
+        <Route path="request" element={<RecordListUser />} />
       </Route>
       <Route path="/:id" element={<Home />} />
       <Route path="/full_event/:id" element={<FullEvent />}>
-        <Route path="record" element={<Record />} />
+        <Route path="record" element={<RecordCreate />} />
       </Route>
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
