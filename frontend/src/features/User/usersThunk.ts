@@ -39,6 +39,10 @@ export const login = createAsyncThunk<User, LoginMutation, { rejectValue: Global
   },
 );
 
+export const patchViewed = createAsyncThunk<void, string>('users/patchViewed', async (id) => {
+  await axiosApi.patch(`/users/${id}/viewed`);
+});
+
 export const logout = createAsyncThunk('users/logout', async (_, { dispatch }) => {
   await axiosApi.delete('/users/sessions');
   dispatch(unsetUser());

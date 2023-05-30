@@ -1,40 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { GlobalError, User, ValidationError } from '../../types';
 import { RootState } from '../../app/store';
-import { fetchAlertsUser, login, logout, register } from './usersThunk';
+import { fetchAlertsUser, login, logout, patchViewed, register } from './usersThunk';
 
 interface UsersState {
   user: User | null;
   usersList: User[];
-  oneUser: User | null;
-  getOneLoading: boolean;
-  getAllLoading: boolean;
   loginError: GlobalError | null;
   registerError: ValidationError | null;
   loginLoading: boolean;
   registerLoading: boolean;
   deleteOneLoading: boolean;
-  editOneLoading: boolean;
   logoutLoading: boolean;
   alertsUser: User | null;
   fetchAlertsUserLoading: boolean;
+  patchViewedLoading: boolean;
 }
 
 const initialState: UsersState = {
   user: null,
   usersList: [],
-  oneUser: null,
   loginError: null,
   registerError: null,
-  getOneLoading: false,
-  getAllLoading: false,
   deleteOneLoading: false,
-  editOneLoading: false,
   loginLoading: false,
   registerLoading: false,
   logoutLoading: false,
   alertsUser: null,
   fetchAlertsUserLoading: false,
+  patchViewedLoading: false,
 };
 
 const usersSlice = createSlice({
@@ -83,6 +77,16 @@ const usersSlice = createSlice({
       state.loginError = error || null;
     });
 
+    builder.addCase(patchViewed.pending, (state) => {
+      state.patchViewedLoading = true;
+    });
+    builder.addCase(patchViewed.fulfilled, (state) => {
+      state.patchViewedLoading = false;
+    });
+    builder.addCase(patchViewed.rejected, (state) => {
+      state.patchViewedLoading = false;
+    });
+
     builder.addCase(logout.pending, (state) => {
       state.logoutLoading = true;
     });
@@ -101,14 +105,9 @@ export const { unsetUser } = usersSlice.actions;
 export const selectUser = (state: RootState) => state.users.user;
 export const selectLoginLoading = (state: RootState) => state.users.loginLoading;
 export const selectLoginError = (state: RootState) => state.users.loginError;
-export const selectOneUser = (state: RootState) => state.users.oneUser;
-export const selectOneUserLoading = (state: RootState) => state.users.getOneLoading;
-export const selectEditOneUserLoading = (state: RootState) => state.users.editOneLoading;
-export const selectDeleteOneUserLoading = (state: RootState) => state.users.deleteOneLoading;
-export const selectUsersList = (state: RootState) => state.users.usersList;
-export const selectUsersListLoading = (state: RootState) => state.users.getAllLoading;
 export const selectRegisterLoading = (state: RootState) => state.users.registerLoading;
 export const selectRegisterError = (state: RootState) => state.users.registerError;
 export const selectLogoutLoading = (state: RootState) => state.users.logoutLoading;
 export const selectAlertsUser = (state: RootState) => state.users.alertsUser;
 export const selectFetchAlertsUserLoading = (state: RootState) => state.users.fetchAlertsUserLoading;
+export const selectPatchViewedLoading = (state: RootState) => state.users.patchViewedLoading;

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Alert, Box, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectAlertsUser, selectFetchAlertsUserLoading } from '../../User/usersSlice';
-import { fetchAlertsUser } from '../../User/usersThunk';
+import { patchViewed } from '../../User/usersThunk';
 import ModalCard from '../../../components/ModalCard';
 import { openModal } from '../../Event/eventSlice';
 import { noPassedStage, passedStage } from '../../../constants';
@@ -13,11 +13,8 @@ const AlertUser = () => {
   const loading = useAppSelector(selectFetchAlertsUserLoading);
   const [index, setIndex] = useState('');
 
-  useEffect(() => {
-    dispatch(fetchAlertsUser());
-  }, [dispatch]);
-
-  const openAlertUser = (id: string) => {
+  const openAlertUser = async (id: string) => {
+    await dispatch(patchViewed(id)).unwrap();
     setIndex(id);
     dispatch(openModal());
   };

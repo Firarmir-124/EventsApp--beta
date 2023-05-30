@@ -61,7 +61,7 @@ usersRouter.post('/sessions', async (req, res, next) => {
 
 usersRouter.patch('/:id/viewed', auth, async (req, res) => {
   try {
-    await User.updateOne({ _id: req.params.id }, { viewed: true });
+    await User.updateOne({ 'alert._id': req.params.id }, { $set: { 'alert.$.viewed': true } });
     return res.send({ viewed: true });
   } catch (e) {
     return res.sendStatus(500);
