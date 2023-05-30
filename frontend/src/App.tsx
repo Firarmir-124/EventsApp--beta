@@ -13,6 +13,7 @@ import Profile from './features/Profile/Profile';
 import RecordListUser from './features/Request/User/RecordListUser';
 import Favorites from './features/Profile/Favorites/Favorites';
 import RequestList from './features/Request/Admin/RequestList';
+import AlertUser from './features/Profile/AlertUser/AlertUser';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Route path="/profile" element={<Profile />}>
         <Route path="favorite" element={<Favorites />} />
         <Route path="request" element={<RecordListUser />} />
+        <Route path="alert" element={<AlertUser />} />
       </Route>
       <Route path="/:id" element={<Home />} />
       <Route path="/full_event/:id" element={<FullEvent />}>

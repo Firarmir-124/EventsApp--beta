@@ -1,15 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Layout from '../../components/Layout/Layout';
-import { Container, Grid, IconButton, List, ListItemButton, ListItemText, ListSubheader, Paper } from '@mui/material';
+import {
+  Badge,
+  CircularProgress,
+  Container,
+  Grid,
+  IconButton,
+  List,
+  ListItemButton,
+  ListItemText,
+  ListSubheader,
+  Paper,
+} from '@mui/material';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Link, useOutlet } from 'react-router-dom';
 import Favorites from './Favorites/Favorites';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import MailIcon from '@mui/icons-material/Mail';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectAlertsUser, selectFetchAlertsUserLoading } from '../User/usersSlice';
+import { fetchAlertsUser } from '../User/usersThunk';
 
 const Profile = () => {
   const outlet = useOutlet();
+  const dispatch = useAppDispatch();
+  const alertUser = useAppSelector(selectAlertsUser);
+  const loading = useAppSelector(selectFetchAlertsUserLoading);
+
+  useEffect(() => {
+    dispatch(fetchAlertsUser());
+  }, [dispatch]);
+
   return (
     <Layout>
       <Container sx={{ mt: 2 }}>
@@ -41,6 +64,21 @@ const Profile = () => {
                     <AccessTimeIcon />
                   </ListItemIcon>
                   <ListItemText primary="Активные запросы" />
+                </ListItemButton>
+                <ListItemButton component={Link} to="alert">
+                  <ListItemIcon>
+                    {!loading ? (
+                      <Badge
+                        badgeContent={alertUser ? alertUser.alert.filter((item) => !item.viewed).length : 0}
+                        color="primary"
+                      >
+                        <MailIcon color="action" />
+                      </Badge>
+                    ) : (
+                      <CircularProgress />
+                    )}
+                  </ListItemIcon>
+                  <ListItemText primary="Оповещения" />
                 </ListItemButton>
               </List>
             </Paper>

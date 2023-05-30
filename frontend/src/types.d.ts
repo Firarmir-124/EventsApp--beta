@@ -1,9 +1,19 @@
+export interface AlertType {
+  viewed: boolean;
+  eventId: {
+    _id: string;
+    title: string;
+  };
+  status: boolean;
+}
+
 export interface User {
   _id: string;
   email: string;
   displayName: string;
   token: string;
   role: string;
+  alert: AlertType[];
 }
 
 export interface RegisterMutation {

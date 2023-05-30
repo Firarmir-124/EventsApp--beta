@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { GlobalError, User, ValidationError } from '../../types';
 import { RootState } from '../../app/store';
-import { login, logout, register } from './usersThunk';
+import { fetchAlertsUser, login, logout, register } from './usersThunk';
 
 interface UsersState {
   user: User | null;
@@ -16,6 +16,8 @@ interface UsersState {
   deleteOneLoading: boolean;
   editOneLoading: boolean;
   logoutLoading: boolean;
+  alertsUser: User | null;
+  fetchAlertsUserLoading: boolean;
 }
 
 const initialState: UsersState = {
@@ -31,6 +33,8 @@ const initialState: UsersState = {
   loginLoading: false,
   registerLoading: false,
   logoutLoading: false,
+  alertsUser: null,
+  fetchAlertsUserLoading: false,
 };
 
 const usersSlice = createSlice({
@@ -42,6 +46,17 @@ const usersSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(fetchAlertsUser.pending, (state) => {
+      state.fetchAlertsUserLoading = true;
+    });
+    builder.addCase(fetchAlertsUser.fulfilled, (state, { payload: user }) => {
+      state.fetchAlertsUserLoading = false;
+      state.alertsUser = user;
+    });
+    builder.addCase(fetchAlertsUser.rejected, (state) => {
+      state.fetchAlertsUserLoading = false;
+    });
+
     builder.addCase(register.pending, (state) => {
       state.registerLoading = true;
       state.registerError = null;
@@ -95,3 +110,5 @@ export const selectUsersListLoading = (state: RootState) => state.users.getAllLo
 export const selectRegisterLoading = (state: RootState) => state.users.registerLoading;
 export const selectRegisterError = (state: RootState) => state.users.registerError;
 export const selectLogoutLoading = (state: RootState) => state.users.logoutLoading;
+export const selectAlertsUser = (state: RootState) => state.users.alertsUser;
+export const selectFetchAlertsUserLoading = (state: RootState) => state.users.fetchAlertsUserLoading;

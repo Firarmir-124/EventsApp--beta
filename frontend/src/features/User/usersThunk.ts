@@ -4,6 +4,11 @@ import axiosApi from '../../axios';
 import { isAxiosError } from 'axios';
 import { unsetUser } from './usersSlice';
 
+export const fetchAlertsUser = createAsyncThunk<User | null>('users/fetchAlertsUser', async () => {
+  const response = await axiosApi.get('/users');
+  return response.data;
+});
+
 export const register = createAsyncThunk<User, RegisterMutation, { rejectValue: ValidationError }>(
   'users/register',
   async (registerMutation, { rejectWithValue }) => {
