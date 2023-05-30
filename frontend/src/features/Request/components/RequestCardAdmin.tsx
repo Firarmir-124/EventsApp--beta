@@ -2,22 +2,43 @@ import React from 'react';
 import { StyledTableCell, StyledTableRow } from '../../../constants';
 import { Button, ButtonGroup } from '@mui/material';
 import PublishIcon from '@mui/icons-material/Publish';
+import { RecordUserList } from '../../../types';
+import { useAppDispatch } from '../../../app/hooks';
+import { openModal } from '../../Event/eventSlice';
 
-const RequestCardAdmin = () => {
+interface Props {
+  list: RecordUserList;
+  setIndex: () => void;
+}
+
+const RequestCardAdmin: React.FC<Props> = ({ list, setIndex }) => {
+  const dispatch = useAppDispatch();
+
+  const openDescriptionModal = () => {
+    dispatch(openModal());
+    setIndex();
+  };
+
   return (
-    <StyledTableRow>
-      <StyledTableCell align="center">Дима</StyledTableCell>
-      <StyledTableCell align="center">0555234009</StyledTableCell>
-      <StyledTableCell align="center">Бла бла бла</StyledTableCell>
-      <StyledTableCell align="center">Воркаут</StyledTableCell>
-      <StyledTableCell align="right">
-        <ButtonGroup variant="contained" aria-label="outlined primary button group">
-          <Button size="small" color="error">
-            <PublishIcon />
+    <>
+      <StyledTableRow>
+        <StyledTableCell align="center">{list.name.displayName}</StyledTableCell>
+        <StyledTableCell align="center">{list.phone}</StyledTableCell>
+        <StyledTableCell align="center">
+          <Button onClick={openDescriptionModal} variant="text">
+            Информация
           </Button>
-        </ButtonGroup>
-      </StyledTableCell>
-    </StyledTableRow>
+        </StyledTableCell>
+        <StyledTableCell align="center">{list.event.title}</StyledTableCell>
+        <StyledTableCell align="right">
+          <ButtonGroup variant="contained" aria-label="outlined primary button group">
+            <Button size="small" color="error">
+              <PublishIcon />
+            </Button>
+          </ButtonGroup>
+        </StyledTableCell>
+      </StyledTableRow>
+    </>
   );
 };
 
