@@ -6,6 +6,7 @@ import { RecordUserList } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { openModal } from '../../Event/eventSlice';
 import { selectPublishedLoading } from '../recordSlice';
+import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 
 interface Props {
   list: RecordUserList;
@@ -42,6 +43,9 @@ const RequestCardAdmin: React.FC<Props> = ({ list, setIndex, publishedRecord }) 
           >
             <Button size="small" color="error">
               {!loading ? <PublishIcon /> : <CircularProgress />}
+            </Button>
+            <Button size="small" color="error">
+              <DoNotDisturbIcon />
             </Button>
           </ButtonGroup>
         </StyledTableCell>

@@ -51,6 +51,13 @@ usersRecordsRouter.post('/', auth, async (req, res, next) => {
 
 usersRecordsRouter.patch('/:id/isPublished', auth, permit('organizer'), async (req, res) => {
   try {
+    const close = req.query.close;
+
+    if (close) {
+      await UserRecord.updateOne({ _id: req.params.id }, { status: 'close' });
+      return res.send({ published: req.params.id });
+    }
+
     await UserRecord.updateOne({ _id: req.params.id }, { status: true });
     return res.send({ published: req.params.id });
   } catch (e) {
