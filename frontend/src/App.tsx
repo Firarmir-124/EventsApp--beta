@@ -12,6 +12,7 @@ import RecordCreate from './features/Request/User/RecordCreate';
 import Profile from './features/Profile/Profile';
 import RecordListUser from './features/Request/User/RecordListUser';
 import Favorites from './features/Profile/Favorites/Favorites';
+import RequestList from './features/Request/Admin/RequestList';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="event_list" element={<EventList />} />
         <Route path="event_create" element={<CreateEvent />} />
         <Route path="hashtag_create" element={<HashtagCreate />} />
+        <Route path="list_request" element={<RequestList />} />
       </Route>
     </Routes>
   );
