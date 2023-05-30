@@ -1,11 +1,18 @@
 import { Types } from 'mongoose';
 
+export interface AlertType {
+  viewed: boolean;
+  eventId: string;
+  status: boolean;
+}
+
 export interface IUser {
   email: string;
   password: string;
   token: string;
   role: string;
   displayName: string;
+  alert: AlertType[];
 }
 
 export interface EventType {

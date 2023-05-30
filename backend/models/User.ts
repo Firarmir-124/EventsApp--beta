@@ -1,7 +1,8 @@
-import { HydratedDocument, Model, model, Schema } from 'mongoose';
+import { HydratedDocument, Model, model, Schema, Types } from 'mongoose';
 import { IUser } from '../types';
 import bcrypt from 'bcrypt';
 import { randomUUID } from 'crypto';
+import EventPlan from './EventPlan';
 
 const SALT_WORK_FACTOR = 10;
 
@@ -46,6 +47,22 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>({
   displayName: {
     type: String,
     required: true,
+  },
+  alert: {
+    type: [
+      {
+        viewed: Boolean,
+        eventId: {
+          type: Schema.Types.ObjectId,
+          ref: 'EventPlan',
+          validate: {
+            validator: async (value: Types.ObjectId) => EventPlan.findById(value),
+            message: 'Такого евента нет !',
+          },
+        },
+        status: Boolean,
+      },
+    ],
   },
 });
 
