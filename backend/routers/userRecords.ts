@@ -10,6 +10,14 @@ usersRecordsRouter.get('/', auth, async (req, res) => {
   try {
     const user = (req as RequestWitUser).user;
 
+    if (user.role === 'organizer') {
+      const usersList = await UserRecord.find().populate([
+        { path: 'event', select: 'title' },
+        { path: 'name', select: 'displayName' },
+      ]);
+      return res.send(usersList);
+    }
+
     const usersList = await UserRecord.find({ name: user.id }).populate([
       { path: 'event', select: 'title' },
       { path: 'name', select: 'displayName' },
