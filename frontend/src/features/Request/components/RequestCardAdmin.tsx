@@ -1,18 +1,21 @@
 import React from 'react';
 import { StyledTableCell, StyledTableRow } from '../../../constants';
-import { Button, ButtonGroup } from '@mui/material';
+import { Button, ButtonGroup, CircularProgress } from '@mui/material';
 import PublishIcon from '@mui/icons-material/Publish';
 import { RecordUserList } from '../../../types';
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { openModal } from '../../Event/eventSlice';
+import { selectPublishedLoading } from '../recordSlice';
 
 interface Props {
   list: RecordUserList;
   setIndex: () => void;
+  publishedRecord: React.MouseEventHandler;
 }
 
-const RequestCardAdmin: React.FC<Props> = ({ list, setIndex }) => {
+const RequestCardAdmin: React.FC<Props> = ({ list, setIndex, publishedRecord }) => {
   const dispatch = useAppDispatch();
+  const loading = useAppSelector(selectPublishedLoading);
 
   const openDescriptionModal = () => {
     dispatch(openModal());
@@ -31,9 +34,14 @@ const RequestCardAdmin: React.FC<Props> = ({ list, setIndex }) => {
         </StyledTableCell>
         <StyledTableCell align="center">{list.event.title}</StyledTableCell>
         <StyledTableCell align="right">
-          <ButtonGroup variant="contained" aria-label="outlined primary button group">
+          <ButtonGroup
+            onClick={publishedRecord}
+            disabled={loading}
+            variant="contained"
+            aria-label="outlined primary button group"
+          >
             <Button size="small" color="error">
-              <PublishIcon />
+              {!loading ? <PublishIcon /> : <CircularProgress />}
             </Button>
           </ButtonGroup>
         </StyledTableCell>

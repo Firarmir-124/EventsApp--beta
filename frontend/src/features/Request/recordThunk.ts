@@ -11,6 +11,10 @@ export const fetchRecordsUser = createAsyncThunk<RecordUserList[]>('record/fetch
   return response.data;
 });
 
+export const publishedRecordUser = createAsyncThunk<void, string>('record/publishedRecordUser', async (id) => {
+  await axiosApi.patch(`/userRecord/${id}/isPublished`);
+});
+
 export const removeRecordUser = createAsyncThunk<void, string>('record/removeRecordUser', async (id) => {
   await axiosApi.delete('/userRecord/' + id);
 });

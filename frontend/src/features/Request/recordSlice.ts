@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchRecordsUser, postRecordUser, removeRecordUser } from './recordThunk';
+import { fetchRecordsUser, postRecordUser, publishedRecordUser, removeRecordUser } from './recordThunk';
 import { RootState } from '../../app/store';
 import { RecordUserList } from '../../types';
 
@@ -8,6 +8,7 @@ interface initialStateType {
   listRecordsUser: RecordUserList[];
   fetchRecordsUserLoading: boolean;
   removeRecordUserLoading: boolean;
+  publishedLoading: boolean;
 }
 
 const initialState: initialStateType = {
@@ -15,6 +16,7 @@ const initialState: initialStateType = {
   listRecordsUser: [],
   fetchRecordsUserLoading: false,
   removeRecordUserLoading: false,
+  publishedLoading: false,
 };
 
 const recordSlice = createSlice({
@@ -43,6 +45,16 @@ const recordSlice = createSlice({
       state.fetchRecordsUserLoading = false;
     });
 
+    builder.addCase(publishedRecordUser.pending, (state) => {
+      state.publishedLoading = true;
+    });
+    builder.addCase(publishedRecordUser.fulfilled, (state) => {
+      state.publishedLoading = false;
+    });
+    builder.addCase(publishedRecordUser.rejected, (state) => {
+      state.publishedLoading = false;
+    });
+
     builder.addCase(removeRecordUser.pending, (state) => {
       state.removeRecordUserLoading = true;
     });
@@ -60,3 +72,4 @@ export const selectPostRecordUserLoading = (state: RootState) => state.record.po
 export const selectListRecordsUser = (state: RootState) => state.record.listRecordsUser;
 export const selectFetchRecordsUserLoading = (state: RootState) => state.record.fetchRecordsUserLoading;
 export const selectRemoveRecordUserLoading = (state: RootState) => state.record.removeRecordUserLoading;
+export const selectPublishedLoading = (state: RootState) => state.record.publishedLoading;

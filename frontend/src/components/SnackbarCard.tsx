@@ -33,6 +33,9 @@ const SnackbarCard = () => {
     case 'remove_card_user':
       txt += 'Запрос успешно удален';
       break;
+    case 'published':
+      txt += 'Запрос подтверждён';
+      break;
   }
 
   return (

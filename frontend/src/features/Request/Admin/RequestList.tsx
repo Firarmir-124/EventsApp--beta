@@ -18,8 +18,10 @@ import AddAlertIcon from '@mui/icons-material/AddAlert';
 import RequestCardAdmin from '../components/RequestCardAdmin';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectFetchRecordsUserLoading, selectListRecordsUser } from '../recordSlice';
-import { fetchRecordsUser } from '../recordThunk';
+import { fetchRecordsUser, publishedRecordUser } from '../recordThunk';
 import ModalCard from '../../../components/ModalCard';
+import { openSnackbar } from '../../Event/eventSlice';
+import SnackbarCard from '../../../components/SnackbarCard';
 
 const RequestList = () => {
   const dispatch = useAppDispatch();
@@ -30,6 +32,16 @@ const RequestList = () => {
   useEffect(() => {
     dispatch(fetchRecordsUser());
   }, [dispatch]);
+
+  const publishedRecord = async (id: string) => {
+    if (window.confirm('Вы действительно хотите подтвердить ?')) {
+      await dispatch(publishedRecordUser(id)).unwrap();
+      await dispatch(fetchRecordsUser()).unwrap();
+      dispatch(openSnackbar({ status: true, parameter: 'published' }));
+    } else {
+      return;
+    }
+  };
 
   return (
     <Container>
@@ -63,9 +75,16 @@ const RequestList = () => {
                 <TableBody>
                   {!loading ? (
                     requestList.length !== 0 ? (
-                      requestList.map((list, index) => (
-                        <RequestCardAdmin key={list._id} list={list} setIndex={() => setIndex(index)} />
-                      ))
+                      requestList
+                        .filter((item) => !item.status)
+                        .map((list, index) => (
+                          <RequestCardAdmin
+                            key={list._id}
+                            list={list}
+                            setIndex={() => setIndex(index)}
+                            publishedRecord={() => publishedRecord(list._id)}
+                          />
+                        ))
                     ) : (
                       <TableRow>
                         <StyledTableCell>
@@ -87,6 +106,7 @@ const RequestList = () => {
         </Box>
       </Container>
       <ModalCard>{requestList.length > 0 && requestList[index].description}</ModalCard>
+      <SnackbarCard />
     </Container>
   );
 };
