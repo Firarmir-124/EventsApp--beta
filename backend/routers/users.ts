@@ -59,6 +59,15 @@ usersRouter.post('/sessions', async (req, res, next) => {
   }
 });
 
+usersRouter.patch('/:id/viewed', auth, async (req, res) => {
+  try {
+    await User.updateOne({ _id: req.params.id }, { viewed: true });
+    return res.send({ viewed: true });
+  } catch (e) {
+    return res.sendStatus(500);
+  }
+});
+
 usersRouter.delete('/sessions', async (req, res, next) => {
   try {
     const token = req.get('Authorization');
