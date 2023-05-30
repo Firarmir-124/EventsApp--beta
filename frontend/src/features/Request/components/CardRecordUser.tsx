@@ -16,7 +16,7 @@ const CardRecordUser: React.FC<Props> = ({ record, removeCardRecord }) => {
       <TableCell component="th" scope="row">
         <Box
           sx={{
-            background: !record.status ? 'red' : 'green',
+            background: record.status === 'close' ? 'red' : record.status === 'true' ? 'green' : 'gold',
             width: '25px',
             height: '25px',
             borderRadius: '50%',

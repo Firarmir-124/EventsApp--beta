@@ -34,7 +34,7 @@ export interface RecordUserType {
   phone: string;
   description: string;
   event: Types.ObjectId;
-  status: boolean | string;
+  status: string;
 }
 
 export interface FavoritesType {

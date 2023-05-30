@@ -142,7 +142,7 @@ export interface RecordUserList {
     _id: string;
     title: string;
   };
-  status: boolean;
+  status: string;
 }
 
 export interface ListFavoritesType {

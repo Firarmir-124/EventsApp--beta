@@ -12,9 +12,10 @@ interface Props {
   list: RecordUserList;
   setIndex: () => void;
   publishedRecord: React.MouseEventHandler;
+  noPublishedRecord: React.MouseEventHandler;
 }
 
-const RequestCardAdmin: React.FC<Props> = ({ list, setIndex, publishedRecord }) => {
+const RequestCardAdmin: React.FC<Props> = ({ list, setIndex, publishedRecord, noPublishedRecord }) => {
   const dispatch = useAppDispatch();
   const loading = useAppSelector(selectPublishedLoading);
 
@@ -35,17 +36,12 @@ const RequestCardAdmin: React.FC<Props> = ({ list, setIndex, publishedRecord }) 
         </StyledTableCell>
         <StyledTableCell align="center">{list.event.title}</StyledTableCell>
         <StyledTableCell align="right">
-          <ButtonGroup
-            onClick={publishedRecord}
-            disabled={loading}
-            variant="contained"
-            aria-label="outlined primary button group"
-          >
-            <Button size="small" color="error">
+          <ButtonGroup disabled={loading} variant="contained" aria-label="outlined primary button group">
+            <Button onClick={publishedRecord} size="small" color="error">
               {!loading ? <PublishIcon /> : <CircularProgress />}
             </Button>
-            <Button size="small" color="error">
-              <DoNotDisturbIcon />
+            <Button onClick={noPublishedRecord} size="small" color="error">
+              {!loading ? <DoNotDisturbIcon /> : <CircularProgress />}
             </Button>
           </ButtonGroup>
         </StyledTableCell>

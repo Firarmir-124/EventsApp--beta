@@ -27,7 +27,7 @@ const RequestList = () => {
   const dispatch = useAppDispatch();
   const requestList = useAppSelector(selectListRecordsUser);
   const loading = useAppSelector(selectFetchRecordsUserLoading);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState('');
 
   useEffect(() => {
     dispatch(fetchRecordsUser());
@@ -35,13 +35,25 @@ const RequestList = () => {
 
   const publishedRecord = async (id: string) => {
     if (window.confirm('Вы действительно хотите подтвердить ?')) {
-      await dispatch(publishedRecordUser(id)).unwrap();
+      await dispatch(publishedRecordUser({ id, query: false })).unwrap();
       await dispatch(fetchRecordsUser()).unwrap();
       dispatch(openSnackbar({ status: true, parameter: 'published' }));
     } else {
       return;
     }
   };
+
+  const noPublishedRecord = async (id: string) => {
+    if (window.confirm('Вы действительно хотите подтвердить ?')) {
+      await dispatch(publishedRecordUser({ id, query: true })).unwrap();
+      await dispatch(fetchRecordsUser()).unwrap();
+      dispatch(openSnackbar({ status: true, parameter: 'published' }));
+    } else {
+      return;
+    }
+  };
+
+  const description = requestList.find((item) => item._id === index);
 
   return (
     <Container>
@@ -76,13 +88,14 @@ const RequestList = () => {
                   {!loading ? (
                     requestList.length !== 0 ? (
                       requestList
-                        .filter((item) => !item.status)
-                        .map((list, index) => (
+                        .filter((item) => item.status === 'false')
+                        .map((list) => (
                           <RequestCardAdmin
                             key={list._id}
                             list={list}
-                            setIndex={() => setIndex(index)}
+                            setIndex={() => setIndex(list._id)}
                             publishedRecord={() => publishedRecord(list._id)}
+                            noPublishedRecord={() => noPublishedRecord(list._id)}
                           />
                         ))
                     ) : (
@@ -105,7 +118,7 @@ const RequestList = () => {
           </Paper>
         </Box>
       </Container>
-      <ModalCard>{requestList.length > 0 && requestList[index].description}</ModalCard>
+      <ModalCard>{description ? description.description : null}</ModalCard>
       <SnackbarCard />
     </Container>
   );

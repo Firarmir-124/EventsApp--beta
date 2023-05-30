@@ -31,8 +31,9 @@ const RecordUserSchema = new Schema<RecordUserType>({
     },
   },
   status: {
-    type: Boolean,
-    default: false,
+    type: String,
+    default: 'false',
+    enum: ['close', 'true', 'false'],
   },
 });
 
