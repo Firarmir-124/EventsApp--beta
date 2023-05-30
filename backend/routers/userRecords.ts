@@ -4,6 +4,7 @@ import express from 'express';
 import UserRecord from '../models/UserRecord';
 import { RequestWitUser } from '../middleware/authAnonymous';
 import permit from '../middleware/permit';
+import User from '../models/User';
 
 const usersRecordsRouter = express.Router();
 
@@ -55,10 +56,21 @@ usersRecordsRouter.patch('/:id/isPublished', auth, permit('organizer'), async (r
 
     if (close) {
       await UserRecord.updateOne({ _id: req.params.id }, { status: 'close' });
+      await User.updateOne(
+        { _id: req.body.idUser },
+        { $push: { alert: { viewed: false, eventId: req.body.idEvent, status: false } } },
+      );
       return res.send({ published: req.params.id });
     }
 
     await UserRecord.updateOne({ _id: req.params.id }, { status: 'true' });
+
+    console.log(req.body);
+
+    await User.updateOne(
+      { _id: req.body.idUser },
+      { $push: { alert: { viewed: false, eventId: req.body.idEvent, status: true } } },
+    );
     return res.send({ published: req.params.id });
   } catch (e) {
     return res.sendStatus(500);

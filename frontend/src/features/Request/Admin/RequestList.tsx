@@ -33,9 +33,9 @@ const RequestList = () => {
     dispatch(fetchRecordsUser());
   }, [dispatch]);
 
-  const publishedRecord = async (id: string) => {
+  const publishedRecord = async (id: string, userId: string, eventId: string) => {
     if (window.confirm('Вы действительно хотите подтвердить ?')) {
-      await dispatch(publishedRecordUser({ id, query: false })).unwrap();
+      await dispatch(publishedRecordUser({ id, query: false, userId, eventId })).unwrap();
       await dispatch(fetchRecordsUser()).unwrap();
       dispatch(openSnackbar({ status: true, parameter: 'published' }));
     } else {
@@ -43,9 +43,9 @@ const RequestList = () => {
     }
   };
 
-  const noPublishedRecord = async (id: string) => {
+  const noPublishedRecord = async (id: string, userId: string, eventId: string) => {
     if (window.confirm('Вы действительно хотите подтвердить ?')) {
-      await dispatch(publishedRecordUser({ id, query: true })).unwrap();
+      await dispatch(publishedRecordUser({ id, query: true, userId, eventId })).unwrap();
       await dispatch(fetchRecordsUser()).unwrap();
       dispatch(openSnackbar({ status: true, parameter: 'published' }));
     } else {
@@ -94,8 +94,8 @@ const RequestList = () => {
                             key={list._id}
                             list={list}
                             setIndex={() => setIndex(list._id)}
-                            publishedRecord={() => publishedRecord(list._id)}
-                            noPublishedRecord={() => noPublishedRecord(list._id)}
+                            publishedRecord={() => publishedRecord(list._id, list.name._id, list.event._id)}
+                            noPublishedRecord={() => noPublishedRecord(list._id, list.name._id, list.event._id)}
                           />
                         ))
                     ) : (

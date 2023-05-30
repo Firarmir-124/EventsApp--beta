@@ -11,9 +11,11 @@ const run = async () => {
   const db = mongoose.connection;
 
   try {
+    await db.dropCollection('userrecords');
     await db.dropCollection('users');
     await db.dropCollection('eventplans');
     await db.dropCollection('hashtags');
+    await db.dropCollection('favorites');
   } catch (e) {
     console.log('Collections were not present, skipping drop...');
   }
@@ -24,6 +26,7 @@ const run = async () => {
     password: '123',
     token: crypto.randomUUID(),
     role: 'organizer',
+    alert: [],
   });
 
   const hashtag = await Hashtag.create({

@@ -14,6 +14,8 @@ export const fetchRecordsUser = createAsyncThunk<RecordUserList[]>('record/fetch
 interface publishedType {
   id: string;
   query: boolean;
+  userId: string;
+  eventId: string;
 }
 
 export const publishedRecordUser = createAsyncThunk<void, publishedType>('record/publishedRecordUser', async (arg) => {
@@ -23,7 +25,7 @@ export const publishedRecordUser = createAsyncThunk<void, publishedType>('record
     url = `/userRecord/${arg.id}/isPublished?close=${arg.query}`;
   }
 
-  await axiosApi.patch(url);
+  await axiosApi.patch(url, { idUser: arg.userId, idEvent: arg.eventId });
 });
 
 export const removeRecordUser = createAsyncThunk<void, string>('record/removeRecordUser', async (id) => {
