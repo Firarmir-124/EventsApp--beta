@@ -1,8 +1,19 @@
 import express from 'express';
 import User from '../models/User';
 import mongoose from 'mongoose';
+import auth, { RequestWithUser } from '../middleware/auth';
 
 const usersRouter = express.Router();
+
+usersRouter.get('/', auth, async (req, res) => {
+  const user = (req as RequestWithUser).user;
+  try {
+    const response = await User.findOne({ _id: user.id }).populate('alert.eventId', 'title');
+    return res.send(response);
+  } catch (e) {
+    return res.sendStatus(500);
+  }
+});
 
 usersRouter.post('/', async (req, res, next) => {
   try {
