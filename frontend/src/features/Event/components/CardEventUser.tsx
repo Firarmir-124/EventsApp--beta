@@ -10,6 +10,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import ru from 'dayjs/locale/ru';
 import Favorite from '@mui/icons-material/Favorite';
+import { useAppSelector } from '../../../app/hooks';
+import { selectUser } from '../../User/usersSlice';
 
 interface Props {
   event: EventList;
@@ -17,6 +19,7 @@ interface Props {
 }
 
 const CardEventUser: React.FC<Props> = ({ event, addEventFavorites }) => {
+  const user = useAppSelector(selectUser);
   let image = eventImage;
 
   if (event.image) {
@@ -43,13 +46,15 @@ const CardEventUser: React.FC<Props> = ({ event, addEventFavorites }) => {
                 color="primary"
               />
             </Grid>
-            <Grid item>
-              <Checkbox
-                onClick={addEventFavorites}
-                icon={<FavoriteIcon sx={{ color: '#fff' }} />}
-                checkedIcon={<Favorite sx={{ color: '#ff7300' }} />}
-              />
-            </Grid>
+            {user && (
+              <Grid item>
+                <Checkbox
+                  onClick={addEventFavorites}
+                  icon={<FavoriteIcon sx={{ color: '#fff' }} />}
+                  checkedIcon={<Favorite sx={{ color: '#ff7300' }} />}
+                />
+              </Grid>
+            )}
           </Grid>
         </Paper>
         <Link to={'/full_event/' + event._id}>

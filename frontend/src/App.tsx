@@ -14,27 +14,37 @@ import RecordListUser from './features/Request/User/RecordListUser';
 import Favorites from './features/Profile/Favorites/Favorites';
 import RequestList from './features/Request/Admin/RequestList';
 import AlertUser from './features/Profile/AlertUser/AlertUser';
+import Protected from './components/Protected';
+import { useAppSelector } from './app/hooks';
+import { selectUser } from './features/User/usersSlice';
 
 function App() {
+  const user = useAppSelector(selectUser);
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/profile" element={<Profile />}>
-        <Route path="favorite" element={<Favorites />} />
-        <Route path="request" element={<RecordListUser />} />
-        <Route path="alert" element={<AlertUser />} />
+      <Route element={<Protected userRole={user?.role} priority="user" />}>
+        <Route path="/profile" element={<Profile />}>
+          <Route path="favorite" element={<Favorites />} />
+          <Route path="request" element={<RecordListUser />} />
+          <Route path="alert" element={<AlertUser />} />
+        </Route>
       </Route>
       <Route path="/:id" element={<Home />} />
       <Route path="/full_event/:id" element={<FullEvent />}>
-        <Route path="record" element={<RecordCreate />} />
+        <Route element={<Protected userRole={user?.role} priority="user" />}>
+          <Route path="record" element={<RecordCreate />} />
+        </Route>
       </Route>
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/event" element={<Event />}>
-        <Route path="event_list" element={<EventList />} />
-        <Route path="event_create" element={<CreateEvent />} />
-        <Route path="hashtag_create" element={<HashtagCreate />} />
-        <Route path="list_request" element={<RequestList />} />
+      <Route element={<Protected userRole={user?.role} priority="organizer" />}>
+        <Route path="/event" element={<Event />}>
+          <Route path="event_list" element={<EventList />} />
+          <Route path="event_create" element={<CreateEvent />} />
+          <Route path="hashtag_create" element={<HashtagCreate />} />
+          <Route path="list_request" element={<RequestList />} />
+        </Route>
       </Route>
     </Routes>
   );

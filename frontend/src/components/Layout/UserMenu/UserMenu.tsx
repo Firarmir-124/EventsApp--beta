@@ -86,14 +86,16 @@ const UserMenu: React.FC<Props> = ({ user }) => {
           </MenuItem>
         </Link>
         <Divider sx={{ my: 1 }} />
-        <Link style={{ textDecoration: 'none', color: '#000' }} to="/event">
-          <MenuItem onClick={() => setAnchorEl(null)}>
-            <ListItemIcon>
-              <PersonAdd fontSize="small" />
-            </ListItemIcon>
-            Управление мероприятем
-          </MenuItem>
-        </Link>
+        {user.role === 'organizer' ? (
+          <Link style={{ textDecoration: 'none', color: '#000' }} to="/event">
+            <MenuItem onClick={() => setAnchorEl(null)}>
+              <ListItemIcon>
+                <PersonAdd fontSize="small" />
+              </ListItemIcon>
+              Управление мероприятем
+            </MenuItem>
+          </Link>
+        ) : null}
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />

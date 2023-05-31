@@ -7,9 +7,9 @@ interface Props {
 
 const Protected: React.FC<Props> = ({ userRole, priority }) => {
   if (
-    (userRole === priority && priority === 'admin') ||
+    (userRole === priority && priority === 'organizer') ||
     (priority === 'user' && userRole === 'user') ||
-    userRole === 'admin'
+    userRole === 'organizer'
   ) {
     return <Outlet />;
   } else {

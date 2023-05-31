@@ -35,6 +35,7 @@ import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import SnackbarCard from '../../../components/SnackbarCard';
 import { selectListRecordsUser } from '../../Request/recordSlice';
 import { fetchRecordsUser } from '../../Request/recordThunk';
+import { selectUser } from '../../User/usersSlice';
 
 const FullEvent = () => {
   const [dis, setDis] = useState(false);
@@ -45,6 +46,7 @@ const FullEvent = () => {
   const getLoadingEventOne = useAppSelector(selectEventOneLoading);
   const listRecordsUser = useAppSelector(selectListRecordsUser);
   const navigate = useNavigate();
+  const user = useAppSelector(selectUser);
 
   let image = eventImage;
 
@@ -60,9 +62,9 @@ const FullEvent = () => {
   useEffect(() => {
     if (id) {
       dispatch(fetchOneEvent(id));
-      dispatch(fetchRecordsUser());
+      if (user) dispatch(fetchRecordsUser());
     }
-  }, [dispatch, id]);
+  }, [dispatch, id, user]);
 
   useEffect(() => {
     if (id) {
@@ -148,15 +150,17 @@ const FullEvent = () => {
                         </MenuItem>
                       </MenuList>
 
-                      <Button
-                        disabled={dis}
-                        onClick={openModalRecord}
-                        sx={{ mt: 5 }}
-                        variant="contained"
-                        endIcon={<CheckIcon />}
-                      >
-                        {!dis ? 'Участвовать' : 'Отправлено'}
-                      </Button>
+                      {user && (
+                        <Button
+                          disabled={dis}
+                          onClick={openModalRecord}
+                          sx={{ mt: 5 }}
+                          variant="contained"
+                          endIcon={<CheckIcon />}
+                        >
+                          {!dis ? 'Участвовать' : 'Отправлено'}
+                        </Button>
+                      )}
                     </Box>
                   </CardContent>
                 </Box>
