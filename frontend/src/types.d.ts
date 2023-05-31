@@ -104,7 +104,7 @@ export interface EventOne {
   user: string;
   viewsCount: number;
   address: string;
-  quest: GuestType[];
+  guest: GuestType[];
 }
 
 export interface EventMutation {

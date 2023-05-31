@@ -36,6 +36,7 @@ import SnackbarCard from '../../../components/SnackbarCard';
 import { selectListRecordsUser } from '../../Request/recordSlice';
 import { fetchRecordsUser } from '../../Request/recordThunk';
 import { selectUser } from '../../User/usersSlice';
+import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 
 const FullEvent = () => {
   const [dis, setDis] = useState(false);
@@ -146,6 +147,14 @@ const FullEvent = () => {
                           </ListItemIcon>
                           <Typography variant="body2" color="text.secondary">
                             {eventOne.viewsCount}
+                          </Typography>
+                        </MenuItem>
+                        <MenuItem sx={{ pl: 0 }}>
+                          <ListItemIcon>
+                            <AccessibilityNewIcon />
+                          </ListItemIcon>
+                          <Typography variant="body2" color="text.secondary">
+                            Список гостей: {eventOne.guest.length}
                           </Typography>
                         </MenuItem>
                       </MenuList>
