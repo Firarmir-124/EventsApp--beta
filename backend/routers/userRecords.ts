@@ -9,10 +9,11 @@ import User from '../models/User';
 const usersRecordsRouter = express.Router();
 
 usersRecordsRouter.get('/', auth, async (req, res) => {
-  try {
-    const user = (req as RequestWitUser).user;
+  const allRecordUsers = req.query.allRecordUsers;
+  const user = (req as RequestWitUser).user;
 
-    if (user.role === 'organizer') {
+  try {
+    if (allRecordUsers) {
       const usersList = await UserRecord.find().populate([
         { path: 'event', select: 'title' },
         { path: 'name', select: 'displayName' },

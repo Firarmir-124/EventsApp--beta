@@ -30,7 +30,7 @@ const RequestList = () => {
   const [index, setIndex] = useState('');
 
   useEffect(() => {
-    dispatch(fetchRecordsUser());
+    dispatch(fetchRecordsUser('true'));
   }, [dispatch]);
 
   const publishedRecord = async (id: string, userId: string, eventId: string) => {
@@ -46,7 +46,7 @@ const RequestList = () => {
   const noPublishedRecord = async (id: string, userId: string, eventId: string) => {
     if (window.confirm('Вы действительно хотите подтвердить ?')) {
       await dispatch(publishedRecordUser({ id, query: true, userId, eventId })).unwrap();
-      await dispatch(fetchRecordsUser()).unwrap();
+      await dispatch(fetchRecordsUser('true')).unwrap();
       dispatch(openSnackbar({ status: true, parameter: 'published' }));
     } else {
       return;

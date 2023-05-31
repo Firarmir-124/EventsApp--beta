@@ -6,10 +6,13 @@ export const postRecordUser = createAsyncThunk<void, RecordUser>('record/postRec
   await axiosApi.post('/userRecord', recordMutation);
 });
 
-export const fetchRecordsUser = createAsyncThunk<RecordUserList[]>('record/fetchRecordsUser', async () => {
-  const response = await axiosApi.get<RecordUserList[]>('/userRecord');
-  return response.data;
-});
+export const fetchRecordsUser = createAsyncThunk<RecordUserList[], string | undefined>(
+  'record/fetchRecordsUser',
+  async (query) => {
+    const response = await axiosApi.get<RecordUserList[]>(query ? '/userRecord?allRecordUsers=true' : '/userRecord');
+    return response.data;
+  },
+);
 
 interface publishedType {
   id: string;
