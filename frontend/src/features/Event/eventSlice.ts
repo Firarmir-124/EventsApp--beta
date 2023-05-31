@@ -73,7 +73,7 @@ const initialState: EventType = {
     {
       id: '3',
       name: 'Гости',
-      fullName: 'null',
+      fullName: 'guest',
       show: true,
     },
     {

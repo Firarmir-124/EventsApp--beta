@@ -48,6 +48,15 @@ export interface GlobalError {
   error: string;
 }
 
+export interface GuestType {
+  _id: string;
+  phone: string;
+  name: {
+    _id: string;
+    displayName: string;
+  };
+}
+
 export interface EventList {
   _id: string;
   title: string;
@@ -65,13 +74,7 @@ export interface EventList {
   user: string;
   viewsCount: number;
   address: string;
-  quest: {
-    _id: string;
-    name: {
-      _id: string;
-      displayName: string;
-    };
-  }[];
+  guest: GuestType[];
 }
 
 export interface TitleEventsType {
@@ -101,6 +104,7 @@ export interface EventOne {
   user: string;
   viewsCount: number;
   address: string;
+  quest: GuestType[];
 }
 
 export interface EventMutation {

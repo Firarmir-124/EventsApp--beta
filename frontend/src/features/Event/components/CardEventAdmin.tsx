@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyledTableCell, StyledTableRow } from '../../../constants';
-import { Button, ButtonGroup, CircularProgress } from '@mui/material';
+import { Box, Button, ButtonGroup, CircularProgress, Tooltip, Typography } from '@mui/material';
 import { EventList } from '../../../types';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useAppSelector } from '../../../app/hooks';
 import { selectCellTable, selectRemoveEventLoading } from '../eventSlice';
+import Divider from '@mui/material/Divider';
 
 interface Props {
   event: EventList;
@@ -27,8 +28,39 @@ const CardEventAdmin: React.FC<Props> = ({ event, removeCardEvent, openModalEven
               <StyledTableCell key={name.id} align="left">
                 {name.fullName === 'time' && event.time}
                 {name.fullName === 'title' && event.title}
-                {name.fullName === 'null' && '0'}
-                {name.fullName === 'speaker' && event.speaker.length}
+                <Tooltip
+                  title={
+                    event.guest.length !== 0 ? (
+                      event.guest.map((guestItem) => (
+                        <>
+                          <Typography color="inherit">{guestItem.name.displayName}</Typography>
+                          <Divider />
+                        </>
+                      ))
+                    ) : (
+                      <Typography color="inherit">Гостей нет !</Typography>
+                    )
+                  }
+                >
+                  <Box sx={{ cursor: 'pointer' }}> {name.fullName === 'guest' && event.guest.length}</Box>
+                </Tooltip>
+                <Tooltip
+                  title={
+                    event.speaker.length > 0 ? (
+                      event.speaker.map((speckItem) => (
+                        <>
+                          <Typography color="inherit">{speckItem.name}</Typography>
+                          <Divider />
+                        </>
+                      ))
+                    ) : (
+                      <Typography color="inherit">Гостей нет !</Typography>
+                    )
+                  }
+                >
+                  <Box sx={{ cursor: 'pointer' }}>{name.fullName === 'speaker' && event.speaker.length}</Box>
+                </Tooltip>
+
                 {name.fullName === 'hashtag' && event.hashtag.name}
               </StyledTableCell>
             );

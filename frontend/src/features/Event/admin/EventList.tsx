@@ -28,8 +28,6 @@ import {
 import { fetchEventList, fetchOneEvent, removeEvent, updateEvent } from '../eventThunk';
 import { StyledTableCell } from '../../../constants';
 import CardEventAdmin from '../components/CardEventAdmin';
-import { Navigate } from 'react-router-dom';
-import { selectUser } from '../../User/usersSlice';
 import SnackbarCard from '../../../components/SnackbarCard';
 import { EventMutation } from '../../../types';
 import ModalCard from '../../../components/ModalCard';
@@ -40,7 +38,6 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 const EventList = () => {
   const filter = localStorage.getItem('filter' || null);
-  const user = useAppSelector(selectUser);
   const [page, setPage] = useState(1);
   const dispatch = useAppDispatch();
   const eventList = useAppSelector(selectEventList);
@@ -94,10 +91,6 @@ const EventList = () => {
     localStorage.removeItem('filter');
     await dispatch(fetchEventList({ page: 0, perPage: 0 }));
   };
-
-  if (user?.role !== 'organizer') {
-    return <Navigate to="/login" />;
-  }
 
   return (
     <Container sx={{ mt: '20px' }}>

@@ -13,7 +13,6 @@ const getEvents = async (page: number, perPage: number, filter: any | null) => {
   const eventPlanList = await EventPlan.find(filter)
     .skip((page - 1) * perPage)
     .limit(perPage)
-    .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user', 'viewsCount', 'address', 'createDate'])
     .sort({ createDate: -1 })
     .populate('hashtag')
     .populate({
