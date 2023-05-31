@@ -24,7 +24,6 @@ import {
   selectEventLoading,
   selectEventOne,
   selectPerPage,
-  selectSettingsLocal,
 } from '../eventSlice';
 import { fetchEventList, fetchOneEvent, removeEvent, updateEvent } from '../eventThunk';
 import { StyledTableCell } from '../../../constants';
@@ -50,7 +49,6 @@ const EventList = () => {
   const eventOne = useAppSelector(selectEventOne);
   const cellTablesGlobal = useAppSelector(selectCellTable);
   const perPage = useAppSelector(selectPerPage);
-  const cellTablesLocal = useAppSelector(selectSettingsLocal);
 
   useEffect(() => {
     if (page) {
@@ -116,21 +114,13 @@ const EventList = () => {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                {cellTablesLocal.length !== 0
-                  ? cellTablesLocal
-                      .filter((item) => item.show)
-                      .map((name) => (
-                        <StyledTableCell key={name.id} align="left">
-                          {name.name}
-                        </StyledTableCell>
-                      ))
-                  : cellTablesGlobal
-                      .filter((item) => item.show)
-                      .map((name) => (
-                        <StyledTableCell key={name.id} align="left">
-                          {name.name}
-                        </StyledTableCell>
-                      ))}
+                {cellTablesGlobal
+                  .filter((item) => item.show)
+                  .map((name) => (
+                    <StyledTableCell key={name.id} align="left">
+                      {name.name}
+                    </StyledTableCell>
+                  ))}
                 <StyledTableCell align="right">Управление</StyledTableCell>
               </TableRow>
             </TableHead>

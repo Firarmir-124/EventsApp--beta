@@ -65,6 +65,13 @@ export interface EventList {
   user: string;
   viewsCount: number;
   address: string;
+  quest: {
+    _id: string;
+    name: {
+      _id: string;
+      displayName: string;
+    };
+  }[];
 }
 
 export interface TitleEventsType {

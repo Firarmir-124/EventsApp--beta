@@ -1,4 +1,4 @@
-import { EventListFull, EventOne, TypesCallTable, ValidationError, TitleEventsType } from '../../types';
+import { EventListFull, EventOne, ValidationError, TitleEventsType } from '../../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import {
@@ -33,7 +33,6 @@ interface EventType {
   drawerState: boolean;
   idHashtag: string;
   perPage: number;
-  localSettings: TypesCallTable[];
   localSettingsLoading: boolean;
   titleEvents: TitleEventsType[];
   titleEventsLoading: boolean;
@@ -93,7 +92,6 @@ const initialState: EventType = {
   drawerState: false,
   idHashtag: '',
   perPage: 0,
-  localSettings: [],
   localSettingsLoading: false,
   titleEvents: [],
   titleEventsLoading: false,
@@ -113,13 +111,8 @@ const eventSlice = createSlice({
       state.modal = false;
     },
     toggleShowCellTable: (state, { payload: id }: PayloadAction<string>) => {
-      if (state.localSettings.length !== 0) {
-        const index = state.localSettings.findIndex((item) => item.id === id);
-        state.localSettings[index].show = state.localSettings[index].show !== true;
-      } else {
-        const index = state.cellTable.findIndex((item) => item.id === id);
-        state.cellTable[index].show = state.cellTable[index].show !== true;
-      }
+      const index = state.cellTable.findIndex((item) => item.id === id);
+      state.cellTable[index].show = state.cellTable[index].show !== true;
     },
     openDrawer: (state) => {
       state.drawerState = true;
@@ -213,7 +206,6 @@ export const selectCellTable = (state: RootState) => state.event.cellTable;
 export const selectDrawerState = (state: RootState) => state.event.drawerState;
 export const selectIdHashtag = (state: RootState) => state.event.idHashtag;
 export const selectPerPage = (state: RootState) => state.event.perPage;
-export const selectSettingsLocal = (state: RootState) => state.event.localSettings;
 export const selectSettingsLocalLoading = (state: RootState) => state.event.localSettingsLoading;
 export const selectEventTitleLoading = (state: RootState) => state.event.titleEventsLoading;
 export const selectEventTitle = (state: RootState) => state.event.titleEvents;

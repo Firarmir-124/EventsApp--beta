@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Checkbox, Drawer, FormControlLabel, FormGroup, Grid, MenuItem, TextField, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import {
-  closeDrawer,
-  createPerPage,
-  selectCellTable,
-  selectDrawerState,
-  selectSettingsLocal,
-  toggleShowCellTable,
-} from '../eventSlice';
+import { closeDrawer, createPerPage, selectCellTable, selectDrawerState, toggleShowCellTable } from '../eventSlice';
 import FilterCard from '../FilterCard/FilterCard';
 import Divider from '@mui/material/Divider';
 
@@ -16,7 +9,6 @@ const DrawerCard = () => {
   const dispatch = useAppDispatch();
   const stateDrawer = useAppSelector(selectDrawerState);
   const cellTablesGlobal = useAppSelector(selectCellTable);
-  const cellTablesLocal = useAppSelector(selectSettingsLocal);
   const [perPage, setPerPage] = useState('');
 
   const toggleShowCell = (id: string) => {
@@ -45,21 +37,13 @@ const DrawerCard = () => {
           </Typography>
           <Divider sx={{ my: 2 }} light />
           <FormGroup>
-            {cellTablesLocal.length !== 0
-              ? cellTablesLocal.map((item) => (
-                  <FormControlLabel
-                    key={item.id}
-                    control={<Checkbox onClick={() => toggleShowCell(item.id)} checked={item.show} />}
-                    label={item.name}
-                  />
-                ))
-              : cellTablesGlobal.map((item) => (
-                  <FormControlLabel
-                    key={item.id}
-                    control={<Checkbox onClick={() => toggleShowCell(item.id)} checked={item.show} />}
-                    label={item.name}
-                  />
-                ))}
+            {cellTablesGlobal.map((item) => (
+              <FormControlLabel
+                key={item.id}
+                control={<Checkbox onClick={() => toggleShowCell(item.id)} checked={item.show} />}
+                label={item.name}
+              />
+            ))}
           </FormGroup>
         </Grid>
         <Grid xs={12} item>
