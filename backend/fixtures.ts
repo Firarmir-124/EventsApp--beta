@@ -93,6 +93,7 @@ const run = async () => {
       user: user._id,
       createDate: new Date().toISOString(),
       address: 'Мой адресс',
+      guest: [],
     });
   }
 

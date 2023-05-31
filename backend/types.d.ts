@@ -30,6 +30,7 @@ export interface EventType {
   createDate: string;
   viewsCount: number;
   address: string;
+  guest: Types.ObjectId[];
 }
 
 export interface HashtagType {

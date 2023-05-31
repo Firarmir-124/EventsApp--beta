@@ -48,6 +48,10 @@ const EventSchema = new Schema<EventType>({
     type: String,
     required: true,
   },
+  guest: {
+    type: [Schema.Types.ObjectId],
+    ref: 'UserRecord',
+  },
 });
 
 const EventPlan = model('EventPlan', EventSchema);

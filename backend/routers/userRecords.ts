@@ -5,6 +5,7 @@ import UserRecord from '../models/UserRecord';
 import { RequestWitUser } from '../middleware/authAnonymous';
 import permit from '../middleware/permit';
 import User from '../models/User';
+import EventPlan from '../models/EventPlan';
 
 const usersRecordsRouter = express.Router();
 
@@ -65,9 +66,7 @@ usersRecordsRouter.patch('/:id/isPublished', auth, permit('organizer'), async (r
     }
 
     await UserRecord.updateOne({ _id: req.params.id }, { status: 'true' });
-
-    console.log(req.body);
-
+    await EventPlan.updateOne({ _id: req.body.idEvent }, { $push: { guest: req.params.id } });
     await User.updateOne(
       { _id: req.body.idUser },
       { $push: { alert: { viewed: false, eventId: req.body.idEvent, status: true } } },

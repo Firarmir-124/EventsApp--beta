@@ -15,7 +15,15 @@ const getEvents = async (page: number, perPage: number, filter: any | null) => {
     .limit(perPage)
     .select(['title', 'speaker', 'time', 'image', 'hashtag', 'user', 'viewsCount', 'address', 'createDate'])
     .sort({ createDate: -1 })
-    .populate('hashtag');
+    .populate('hashtag')
+    .populate({
+      path: 'guest',
+      select: ['name', 'phone'],
+      populate: {
+        path: 'name',
+        select: 'displayName',
+      },
+    });
   return {
     length: eventLength,
     list: eventPlanList,
