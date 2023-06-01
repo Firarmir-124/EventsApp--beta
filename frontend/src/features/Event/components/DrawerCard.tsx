@@ -24,13 +24,13 @@ const DrawerCard = () => {
   return (
     <Drawer
       PaperProps={{
-        sx: { p: '10px', maxWidth: '350px' },
+        sx: { p: '10px', maxWidth: '380px' },
       }}
       anchor="left"
       open={stateDrawer}
       onClose={() => dispatch(closeDrawer())}
     >
-      <Grid spacing={3} container>
+      <Grid spacing={2} container>
         <Grid xs={12} item>
           <Typography component="p" variant="h6">
             Панель колнок

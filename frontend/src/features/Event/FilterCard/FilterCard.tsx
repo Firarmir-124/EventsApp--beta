@@ -21,6 +21,9 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import Divider from '@mui/material/Divider';
 import { selectHashtagList } from '../../Hashtag/hashtagSlice';
 import { fetchHashtagList } from '../../Hashtag/hashtagThunk';
+import { DateRange } from 'react-date-range';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -31,8 +34,14 @@ const FilterCard = () => {
   const [value, setValue] = useState<Filter>({
     titleEvent: [],
     titleHashtag: '',
-    dateTimeEvent: '',
   });
+  const [dateRange, setDateRange] = useState([
+    {
+      startDate: new Date(),
+      endDate: undefined,
+      key: 'selection',
+    },
+  ]);
   const hashtags = useAppSelector(selectHashtagList);
   const titleEvent = useAppSelector(selectEventTitle);
   const loadingEventTitle = useAppSelector(selectEventTitleLoading);
@@ -54,10 +63,14 @@ const FilterCard = () => {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const dates = dateRange.map((item) => {
+      return { startDate: item.startDate, endDate: item.endDate };
+    })[0];
+
     const obj: FilterMutation = {
       title: value.titleEvent.length > 0 ? { $in: value.titleEvent.map((item) => item.title) } : null,
       hashtag: value.titleHashtag.length > 0 ? value.titleHashtag : null,
-      time: value.dateTimeEvent.length > 0 ? value.dateTimeEvent : null,
+      time: dateRange[0].endDate ? { $gte: dates.startDate, $lte: dates.endDate } : null,
     };
 
     const keys = Object.keys(obj) as (keyof FilterMutation)[];
@@ -77,12 +90,18 @@ const FilterCard = () => {
     setValue({
       titleEvent: [],
       titleHashtag: '',
-      dateTimeEvent: '',
     });
+    setDateRange([
+      {
+        startDate: new Date(),
+        endDate: undefined,
+        key: 'selection',
+      },
+    ]);
   };
 
   return (
-    <Box component="form" onSubmit={onSubmit} sx={{ width: '300px' }}>
+    <Box component="form" onSubmit={onSubmit} sx={{ width: '350px' }}>
       <Grid spacing={2} container>
         <Grid xs={12} item>
           <Typography component="p" variant="h5">
@@ -135,21 +154,16 @@ const FilterCard = () => {
           </TextField>
         </Grid>
 
-        <Grid xs={12} item>
+        <Grid xs item>
           <Typography component="p" variant="h5">
-            Искать по дате
+            Искать по датам
           </Typography>
           <Divider sx={{ my: 2 }} />
-          <TextField
-            name="dateTimeEvent"
-            id="datetime-local"
-            label="Выбрать дату и время"
-            type="datetime-local"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            value={value.dateTimeEvent}
-            onChange={onChange}
+          <DateRange
+            editableDateInputs={true}
+            onChange={(item) => setDateRange([item.selection] as never)}
+            moveRangeOnFirstSelection={false}
+            ranges={dateRange}
           />
         </Grid>
 

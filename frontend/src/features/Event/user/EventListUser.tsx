@@ -55,7 +55,7 @@ const EventListUser = () => {
               <CircularProgress />
             )}
           </Grid>
-          <Paper elevation={3} sx={{ width: '300px', p: '10px', ml: '10px' }}>
+          <Paper elevation={3} sx={{ width: '350px', p: '10px', ml: '10px' }}>
             <FilterCard />
           </Paper>
         </Box>

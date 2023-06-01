@@ -138,13 +138,12 @@ export interface TypesCallTable {
 export interface Filter {
   titleEvent: TitleEventsType[];
   titleHashtag: string;
-  dateTimeEvent: string;
 }
 
 export interface FilterMutation {
   title: { $in: string[] } | null;
   hashtag: string | null;
-  time: string | null;
+  time: { $gte: Date; $lte: Date | undefined } | null;
 }
 
 export interface RecordUser {
