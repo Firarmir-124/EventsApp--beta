@@ -7,6 +7,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useAppSelector } from '../../../app/hooks';
 import { selectCellTable, selectRemoveEventLoading } from '../eventSlice';
 import Divider from '@mui/material/Divider';
+import dayjs from 'dayjs';
+import ru from 'dayjs/locale/ru';
 
 interface Props {
   event: EventList;
@@ -26,7 +28,7 @@ const CardEventAdmin: React.FC<Props> = ({ event, removeCardEvent, openModalEven
           if (name.fullName)
             return (
               <StyledTableCell key={name.id} align="left">
-                {name.fullName === 'time' && event.time}
+                {name.fullName === 'time' && <> {dayjs(event.time).locale(ru).format('dddd, MMMM D, YYYY h:mm A')}</>}
                 {name.fullName === 'title' && event.title}
                 <Tooltip
                   title={
