@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
-import { Box, Button, CircularProgress, Grid, TextField } from '@mui/material';
+import { Box, CircularProgress, Grid, IconButton, TextField } from '@mui/material';
 import { HashtagMutation } from '../../../types';
 import { useAppSelector } from '../../../app/hooks';
-import { selectCreateHashtagLoading } from '../hashtagSlice';
+import { selectCreateHashtagLoading, selectEditHashtagLoading } from '../hashtagSlice';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import EditIcon from '@mui/icons-material/Edit';
 
 interface Props {
   onSubmit: (hashtag: HashtagMutation) => void;
   hashtag?: HashtagMutation;
+  isEdit?: boolean;
 }
 
-const FormHashtag: React.FC<Props> = ({ onSubmit, hashtag }) => {
+const FormHashtag: React.FC<Props> = ({ onSubmit, hashtag, isEdit }) => {
   const [value, setValue] = useState(hashtag ? hashtag.name : '');
   const createLoading = useAppSelector(selectCreateHashtagLoading);
+  const loadingEdit = useAppSelector(selectEditHashtagLoading);
 
   const onFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,8 +25,8 @@ const FormHashtag: React.FC<Props> = ({ onSubmit, hashtag }) => {
 
   return (
     <Box component="form" sx={{ mt: 3 }} onSubmit={onFormSubmit}>
-      <Grid container sx={{ flexDirection: 'column' }} spacing={2}>
-        <Grid item xs={12}>
+      <Grid alignItems="center" container>
+        <Grid item xs={9}>
           <TextField
             label="Название хэштега"
             name="hashtag"
@@ -33,10 +37,16 @@ const FormHashtag: React.FC<Props> = ({ onSubmit, hashtag }) => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
           />
         </Grid>
-        <Grid item>
-          <Button disabled={createLoading} type="submit" variant="contained">
-            {!createLoading ? 'Создать хэштег' : <CircularProgress size={20} />}
-          </Button>
+        <Grid xs={3} item>
+          {isEdit ? (
+            <IconButton type="submit" disabled={loadingEdit}>
+              {!loadingEdit ? <EditIcon sx={{ fontSize: '40px' }} /> : <CircularProgress size={40} />}
+            </IconButton>
+          ) : (
+            <IconButton type="submit" disabled={createLoading}>
+              {!createLoading ? <AddCircleOutlineIcon sx={{ fontSize: '40px' }} /> : <CircularProgress size={40} />}
+            </IconButton>
+          )}
         </Grid>
       </Grid>
     </Box>

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, CircularProgress, Snackbar } from '@mui/material';
+import { Alert, Box, Skeleton, Snackbar } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import {
   selectHashtagErrorError,
   selectHashtagList,
   selectHashtagListLoading,
   selectHashtagOne,
+  selectHashtagOneLoading,
 } from '../hashtagSlice';
 import { deleteHashtag, editHashtag, fetchHashtagList, fetchOneHashtag } from '../hashtagThunk';
 import CardHashtagAdmin from '../components/CardHashtagAdmin';
@@ -14,6 +15,7 @@ import FormHashtag from '../components/FormHashtag';
 import SnackbarCard from '../../../components/SnackbarCard';
 import ModalCard from '../../../components/ModalCard';
 import { closeModal, openModal } from '../../Event/eventSlice';
+import useConfirm from '../../../components/Dialogs/Confirm/useConfirm';
 
 const HashtagListAdmin = () => {
   const [id, setId] = useState('');
@@ -22,7 +24,10 @@ const HashtagListAdmin = () => {
   const listHashtag = useAppSelector(selectHashtagList);
   const loadingListHashtag = useAppSelector(selectHashtagListLoading);
   const hashtagOne = useAppSelector(selectHashtagOne);
+  const loadingHashtagOne = useAppSelector(selectHashtagOneLoading);
   const removeError = useAppSelector(selectHashtagErrorError);
+  const { confirm } = useConfirm();
+  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     dispatch(fetchHashtagList());
@@ -35,7 +40,7 @@ const HashtagListAdmin = () => {
   }, [dispatch, id]);
 
   const removeHashtagCard = async (id: string) => {
-    if (window.confirm('Вы действительно хотите удалить ?')) {
+    if (await confirm('Уведомление', 'Вы действительно хотите удалить ?')) {
       await dispatch(deleteHashtag(id)).unwrap();
       await dispatch(fetchHashtagList()).unwrap();
       setOpen(true);
@@ -47,11 +52,13 @@ const HashtagListAdmin = () => {
   const setOpenModal = (id: string) => {
     dispatch(openModal());
     setId(id);
+    setIsEdit(true);
   };
 
   const onSubmit = async (hashtag: HashtagMutation) => {
     if (id) {
       await dispatch(editHashtag({ hashtag, id })).unwrap();
+      setIsEdit(false);
     }
     await dispatch(fetchHashtagList()).unwrap();
     setId('');
@@ -61,21 +68,25 @@ const HashtagListAdmin = () => {
   return (
     <>
       {removeError && <Alert severity="error">{removeError.error}</Alert>}
-      {!loadingListHashtag ? (
-        listHashtag.length !== 0 ? (
-          listHashtag.map((hashtag) => (
+      {listHashtag.length !== 0 ? (
+        listHashtag.map((hashtag) =>
+          !loadingListHashtag ? (
             <CardHashtagAdmin
               setOpenModal={() => setOpenModal(hashtag._id)}
               removeHashtagCard={() => removeHashtagCard(hashtag._id)}
               key={hashtag._id}
               hashtag={hashtag}
             />
-          ))
-        ) : (
-          <Alert severity="info">В данный момент хэштегов нет</Alert>
+          ) : (
+            <Box key={hashtag._id} sx={{ mt: 2 }}>
+              <Skeleton sx={{ mb: 2 }} variant="rectangular" height={50} />
+            </Box>
+          ),
         )
       ) : (
-        <CircularProgress />
+        <Alert sx={{ mt: 2 }} severity="info">
+          В данный момент список пуст
+        </Alert>
       )}
 
       <Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)}>
@@ -85,7 +96,14 @@ const HashtagListAdmin = () => {
       </Snackbar>
 
       <SnackbarCard />
-      <ModalCard>{hashtagOne && <FormHashtag onSubmit={onSubmit} hashtag={hashtagOne} />}</ModalCard>
+      <ModalCard>
+        {hashtagOne &&
+          (!loadingHashtagOne ? (
+            <FormHashtag onSubmit={onSubmit} hashtag={hashtagOne} isEdit={isEdit} />
+          ) : (
+            <Skeleton variant="rectangular" width={210} height={60} />
+          ))}
+      </ModalCard>
     </>
   );
 };

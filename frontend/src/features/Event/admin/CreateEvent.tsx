@@ -1,6 +1,5 @@
 import React from 'react';
 import { Avatar, Box, Container, Typography } from '@mui/material';
-import LockOpenIcon from '@mui/icons-material/LockOpen';
 import 'easymde/dist/easymde.min.css';
 import FormEvent from '../components/FormEvent';
 import { EventMutation } from '../../../types';
@@ -9,6 +8,7 @@ import { createEvent } from '../eventThunk';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { selectUser } from '../../User/usersSlice';
 import { openSnackbar } from '../eventSlice';
+import AddIcon from '@mui/icons-material/Add';
 
 const CreateEvent = () => {
   const user = useAppSelector(selectUser);
@@ -36,7 +36,7 @@ const CreateEvent = () => {
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOpenIcon />
+          <AddIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Создать мероприятие

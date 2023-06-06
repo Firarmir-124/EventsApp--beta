@@ -1,12 +1,12 @@
 import React from 'react';
 import { Avatar, Box, Container, Typography } from '@mui/material';
-import LockOpenIcon from '@mui/icons-material/LockOpen';
 import HashtagListAdmin from './HashtagListAdmin';
 import FormHashtag from '../components/FormHashtag';
 import { useAppDispatch } from '../../../app/hooks';
 import { createHashtag, fetchHashtagList } from '../hashtagThunk';
 import { HashtagMutation } from '../../../types';
 import { openSnackbar } from '../../Event/eventSlice';
+import TagIcon from '@mui/icons-material/Tag';
 
 const HashtagCreate = () => {
   const dispatch = useAppDispatch();
@@ -29,7 +29,7 @@ const HashtagCreate = () => {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOpenIcon />
+            <TagIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Создать хэштег
