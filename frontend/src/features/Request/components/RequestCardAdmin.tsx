@@ -5,7 +5,7 @@ import PublishIcon from '@mui/icons-material/Publish';
 import { RecordUserList } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { openModal } from '../../Event/eventSlice';
-import { selectPublishedLoading } from '../recordSlice';
+import { selectPublishedLoading, selectRemoveRecordUserLoading } from '../recordSlice';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 
 interface Props {
@@ -18,6 +18,7 @@ interface Props {
 const RequestCardAdmin: React.FC<Props> = ({ list, setIndex, publishedRecord, noPublishedRecord }) => {
   const dispatch = useAppDispatch();
   const loading = useAppSelector(selectPublishedLoading);
+  const loadingRemove = useAppSelector(selectRemoveRecordUserLoading);
 
   const openDescriptionModal = () => {
     dispatch(openModal());
@@ -37,11 +38,11 @@ const RequestCardAdmin: React.FC<Props> = ({ list, setIndex, publishedRecord, no
         <StyledTableCell align="center">{list.event.title}</StyledTableCell>
         <StyledTableCell align="right">
           <ButtonGroup disabled={loading} variant="contained" aria-label="outlined primary button group">
-            <Button onClick={publishedRecord} size="small" color="error">
+            <Button disabled={loading} onClick={publishedRecord} size="small" color="error">
               {!loading ? <PublishIcon /> : <CircularProgress />}
             </Button>
-            <Button onClick={noPublishedRecord} size="small" color="error">
-              {!loading ? <DoNotDisturbIcon /> : <CircularProgress />}
+            <Button disabled={loadingRemove} onClick={noPublishedRecord} size="small" color="error">
+              {!loadingRemove ? <DoNotDisturbIcon /> : <CircularProgress />}
             </Button>
           </ButtonGroup>
         </StyledTableCell>

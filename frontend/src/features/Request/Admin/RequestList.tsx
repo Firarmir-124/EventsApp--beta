@@ -3,11 +3,11 @@ import {
   Alert,
   Avatar,
   Box,
-  CircularProgress,
   Container,
   Paper,
   Table,
   TableBody,
+  TableCell,
   TableContainer,
   TableHead,
   TableRow,
@@ -22,19 +22,22 @@ import { fetchRecordsUser, publishedRecordUser } from '../recordThunk';
 import ModalCard from '../../../components/ModalCard';
 import { openSnackbar } from '../../Event/eventSlice';
 import SnackbarCard from '../../../components/SnackbarCard';
+import SkeletonCardReqAdmin from '../components/SkeletonCardReqAdmin';
+import useConfirm from '../../../components/Dialogs/Confirm/useConfirm';
 
 const RequestList = () => {
   const dispatch = useAppDispatch();
   const requestList = useAppSelector(selectListRecordsUser);
   const loading = useAppSelector(selectFetchRecordsUserLoading);
   const [index, setIndex] = useState('');
+  const { confirm } = useConfirm();
 
   useEffect(() => {
     dispatch(fetchRecordsUser('true'));
   }, [dispatch]);
 
   const publishedRecord = async (id: string, userId: string, eventId: string) => {
-    if (window.confirm('Вы действительно хотите подтвердить ?')) {
+    if (await confirm('Уведомление', 'Вы действительно хотите опубликовать ?')) {
       await dispatch(publishedRecordUser({ id, query: false, userId, eventId })).unwrap();
       await dispatch(fetchRecordsUser()).unwrap();
       dispatch(openSnackbar({ status: true, parameter: 'published' }));
@@ -44,7 +47,7 @@ const RequestList = () => {
   };
 
   const noPublishedRecord = async (id: string, userId: string, eventId: string) => {
-    if (window.confirm('Вы действительно хотите подтвердить ?')) {
+    if (await confirm('Уведомление', 'Вы действительно хотите запретить ?')) {
       await dispatch(publishedRecordUser({ id, query: true, userId, eventId })).unwrap();
       await dispatch(fetchRecordsUser('true')).unwrap();
       dispatch(openSnackbar({ status: true, parameter: 'published' }));
@@ -85,11 +88,11 @@ const RequestList = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {!loading ? (
-                    requestList.length !== 0 ? (
-                      requestList
-                        .filter((item) => item.status === 'false')
-                        .map((list) => (
+                  {requestList.length !== 0 ? (
+                    requestList
+                      .filter((item) => item.status === 'false')
+                      .map((list) =>
+                        !loading ? (
                           <RequestCardAdmin
                             key={list._id}
                             list={list}
@@ -97,19 +100,15 @@ const RequestList = () => {
                             publishedRecord={() => publishedRecord(list._id, list.name._id, list.event._id)}
                             noPublishedRecord={() => noPublishedRecord(list._id, list.name._id, list.event._id)}
                           />
-                        ))
-                    ) : (
-                      <TableRow>
-                        <StyledTableCell>
-                          <Alert>Список пуст</Alert>
-                        </StyledTableCell>
-                      </TableRow>
-                    )
+                        ) : (
+                          <SkeletonCardReqAdmin key={list._id} />
+                        ),
+                      )
                   ) : (
                     <TableRow>
-                      <StyledTableCell>
-                        <CircularProgress />
-                      </StyledTableCell>
+                      <TableCell>
+                        <Alert severity="info">Список в данный момент список пуст</Alert>
+                      </TableCell>
                     </TableRow>
                   )}
                 </TableBody>
