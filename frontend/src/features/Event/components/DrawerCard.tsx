@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Checkbox, Drawer, FormControlLabel, FormGroup, Grid, MenuItem, TextField, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { closeDrawer, createPerPage, selectCellTable, selectDrawerState, toggleShowCellTable } from '../eventSlice';
-import FilterCard from '../FilterCard/FilterCard';
+import FilterCard from './FilterCard';
 import Divider from '@mui/material/Divider';
 
 const DrawerCard = () => {

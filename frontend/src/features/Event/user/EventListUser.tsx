@@ -6,7 +6,7 @@ import { openSnackbar, selectEventList, selectEventLoading } from '../eventSlice
 import { fetchEventList } from '../eventThunk';
 import { useParams } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
-import FilterCard from '../FilterCard/FilterCard';
+import FilterCard from '../components/FilterCard';
 import { addFavorites } from '../../Profile/profileThunk';
 import SnackbarCard from '../../../components/SnackbarCard';
 

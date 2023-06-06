@@ -21,7 +21,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { fetchHashtagList } from '../../Hashtag/hashtagThunk';
 import { selectHashtagList, selectHashtagListLoading } from '../../Hashtag/hashtagSlice';
 import Divider from '@mui/material/Divider';
-import { selectCreateEventLoading, selectEventError } from '../eventSlice';
+import { selectCreateEventLoading, selectEditLoading, selectEventError } from '../eventSlice';
 import TitleIcon from '@mui/icons-material/Title';
 import { green } from '@mui/material/colors';
 import SubtitlesIcon from '@mui/icons-material/Subtitles';
@@ -35,12 +35,14 @@ import { socket } from '../../../socket';
 interface Props {
   onSubmit: (event: EventMutation) => void;
   event?: EventMutation;
+  isEdit?: boolean;
 }
 
-const FormEvent: React.FC<Props> = ({ onSubmit, event }) => {
+const FormEvent: React.FC<Props> = ({ onSubmit, event, isEdit }) => {
   const [position, setPosition] = useState<PositionType>({ x: 0, y: 0, name: '' });
   const [usePosition, setUserPosition] = useState<PositionType>({ x: 0, y: 0, name: '' });
   const user = useAppSelector(selectUser);
+  const loadingEdit = useAppSelector(selectEditLoading);
 
   const dispatch = useAppDispatch();
   const [speaker, setSpeaker] = useState(
@@ -365,9 +367,15 @@ const FormEvent: React.FC<Props> = ({ onSubmit, event }) => {
           </Grid>
         </Grid>
         <Divider />
-        <Button disabled={createLoading} type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-          {!createLoading ? 'Создать' : <CircularProgress />}
-        </Button>
+        {isEdit ? (
+          <Button disabled={loadingEdit} type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+            {!loadingEdit ? 'Редактировать' : <CircularProgress />}
+          </Button>
+        ) : (
+          <Button disabled={createLoading} type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+            {!createLoading ? 'Создать' : <CircularProgress />}
+          </Button>
+        )}
       </Box>
     </Box>
   );

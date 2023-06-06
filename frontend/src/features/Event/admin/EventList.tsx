@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
-  CircularProgress,
   Container,
   IconButton,
   Pagination,
@@ -23,6 +22,7 @@ import {
   selectEventList,
   selectEventLoading,
   selectEventOne,
+  selectEventOneLoading,
   selectPerPage,
 } from '../eventSlice';
 import { fetchEventList, fetchOneEvent, removeEvent, updateEvent } from '../eventThunk';
@@ -35,6 +35,9 @@ import FormEvent from '../components/FormEvent';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DrawerCard from '../components/DrawerCard';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import SkeletonCardAdmin from '../components/SkeletonCardAdmin';
+import useConfirm from '../../../components/Dialogs/Confirm/useConfirm';
+import SkeletonCardEdit from '../components/SkeletonCardEdit';
 
 const EventList = () => {
   const filter = localStorage.getItem('filter' || null);
@@ -44,8 +47,11 @@ const EventList = () => {
   const loadingEventList = useAppSelector(selectEventLoading);
   const [idEvent, setIdEvent] = useState('');
   const eventOne = useAppSelector(selectEventOne);
+  const eventOneLoading = useAppSelector(selectEventOneLoading);
   const cellTablesGlobal = useAppSelector(selectCellTable);
   const perPage = useAppSelector(selectPerPage);
+  const { confirm } = useConfirm();
+  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     if (page) {
@@ -60,7 +66,7 @@ const EventList = () => {
   }, [dispatch, idEvent]);
 
   const removeCardEvent = async (id: string) => {
-    if (window.confirm('Вы действительно хотите удалить ?')) {
+    if (await confirm('Уведомление', 'Вы действительно хотите удалить ?')) {
       await dispatch(removeEvent(id)).unwrap();
       if (page) {
         await dispatch(fetchEventList({ page, perPage: eventList.perPage })).unwrap();
@@ -74,11 +80,13 @@ const EventList = () => {
   const openModalEvent = (id: string) => {
     dispatch(openModal());
     setIdEvent(id);
+    setIsEdit(true);
   };
 
   const onSubmit = async (event: EventMutation) => {
     if (idEvent) {
       await dispatch(updateEvent({ event, id: idEvent })).unwrap();
+      setIsEdit(false);
     }
     if (page) {
       await dispatch(fetchEventList({ page, perPage: eventList.perPage })).unwrap();
@@ -118,27 +126,23 @@ const EventList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {!loadingEventList ? (
-                eventList.eventList.length !== 0 ? (
-                  eventList.eventList.map((event) => (
+              {eventList.eventList.length !== 0 ? (
+                eventList.eventList.map((event) =>
+                  !loadingEventList ? (
                     <CardEventAdmin
                       openModalEvent={() => openModalEvent(event._id)}
                       removeCardEvent={() => removeCardEvent(event._id)}
                       key={event._id}
                       event={event}
                     />
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell>
-                      <Alert severity="info">Список пуст</Alert>
-                    </TableCell>
-                  </TableRow>
+                  ) : (
+                    <SkeletonCardAdmin key={event._id} />
+                  ),
                 )
               ) : (
                 <TableRow>
                   <TableCell>
-                    <CircularProgress />
+                    <Alert severity="info">Список в данный момент пуст</Alert>
                   </TableCell>
                 </TableRow>
               )}
@@ -153,7 +157,17 @@ const EventList = () => {
         onChange={(event: React.ChangeEvent<unknown>, value: number) => setPage(value)}
       />
       <SnackbarCard />
-      <ModalCard>{eventOne && <FormEvent onSubmit={onSubmit} event={eventOne} />}</ModalCard>
+      <ModalCard>
+        {!eventOneLoading ? (
+          eventOne ? (
+            <FormEvent onSubmit={onSubmit} event={eventOne} isEdit={isEdit} />
+          ) : (
+            <Alert severity="info">Евент не загрузился</Alert>
+          )
+        ) : (
+          <SkeletonCardEdit />
+        )}
+      </ModalCard>
       <DrawerCard />
     </Container>
   );
