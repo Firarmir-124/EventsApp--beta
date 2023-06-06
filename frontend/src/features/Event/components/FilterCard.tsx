@@ -4,12 +4,12 @@ import {
   Box,
   Button,
   Checkbox,
+  Chip,
   Grid,
   IconButton,
   MenuItem,
   Skeleton,
   TextField,
-  Typography,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { fetchEventList, fetchEventListFilter, fetchEventTitle } from '../eventThunk';
@@ -104,9 +104,7 @@ const FilterCard = () => {
     <Box component="form" onSubmit={onSubmit} sx={{ width: '350px' }}>
       <Grid spacing={2} container>
         <Grid xs={12} item>
-          <Typography component="p" variant="h5">
-            Искать по названию
-          </Typography>
+          <Chip label="Искать по названию" variant="outlined" />
           <Divider sx={{ my: 2 }} />
           {!loadingEventTitle ? (
             <Autocomplete
@@ -131,9 +129,7 @@ const FilterCard = () => {
         </Grid>
 
         <Grid xs={12} item>
-          <Typography component="p" variant="h5">
-            Искать по хэштегам
-          </Typography>
+          <Chip label="Искать по хэштегам" variant="outlined" />
           <Divider sx={{ my: 2 }} />
           <TextField
             value={value.titleHashtag}
@@ -155,9 +151,7 @@ const FilterCard = () => {
         </Grid>
 
         <Grid xs item>
-          <Typography component="p" variant="h5">
-            Искать по датам
-          </Typography>
+          <Chip label="Искать по датам" variant="outlined" />
           <Divider sx={{ my: 2 }} />
           <DateRange
             editableDateInputs={true}

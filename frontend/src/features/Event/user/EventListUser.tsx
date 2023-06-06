@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Box, CircularProgress, Container, Grid, Pagination, Paper, Typography } from '@mui/material';
+import { Alert, Box, Container, Grid, Pagination, Paper, Typography } from '@mui/material';
 import CardEventUser from '../components/CardEventUser';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { openSnackbar, selectEventList, selectEventLoading } from '../eventSlice';
@@ -9,6 +9,7 @@ import Divider from '@mui/material/Divider';
 import FilterCard from '../components/FilterCard';
 import { addFavorites } from '../../Profile/profileThunk';
 import SnackbarCard from '../../../components/SnackbarCard';
+import SkeletonCardUser from '../components/SkeletonCardUser';
 
 const EventListUser = () => {
   const { id } = useParams();
@@ -43,23 +44,25 @@ const EventListUser = () => {
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-            {!loadingEventList ? (
-              events.eventList.length !== 0 ? (
-                events.eventList.map((event) => (
+            {events.eventList.length !== 0 ? (
+              events.eventList.map((event) =>
+                !loadingEventList ? (
                   <CardEventUser addEventFavorites={() => addEventFavorites(event._id)} key={event._id} event={event} />
-                ))
-              ) : (
-                <Alert severity="info">Списка нет</Alert>
+                ) : (
+                  <SkeletonCardUser key={event._id} />
+                ),
               )
             ) : (
-              <CircularProgress />
+              <Grid item xs={12}>
+                <Alert severity="info">В данный момент список пуст</Alert>
+              </Grid>
             )}
           </Grid>
           <Paper elevation={3} sx={{ width: '350px', p: '10px', ml: '10px' }}>
             <FilterCard />
           </Paper>
         </Box>
-        <Pagination sx={{ mt: '20px' }} count={events.pages} page={page} onChange={handleChange} />
+        <Pagination shape="rounded" sx={{ mt: '20px' }} count={events.pages} page={page} onChange={handleChange} />
       </Container>
       <SnackbarCard />
     </>

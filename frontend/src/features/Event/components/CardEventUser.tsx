@@ -28,7 +28,7 @@ const CardEventUser: React.FC<Props> = ({ event, addEventFavorites }) => {
 
   return (
     <Grid item xs={2} sm={4} md={4}>
-      <Card sx={{ position: 'relative', pb: 1 }}>
+      <Card elevation={3} sx={{ position: 'relative', pb: 1 }}>
         <Paper
           sx={{
             background: 'rgb(0 0 0 / 54%)',
