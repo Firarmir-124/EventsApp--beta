@@ -190,3 +190,22 @@ export interface OnlineType {
   name: string;
   status: boolean;
 }
+
+export interface CommercialLinkTypeMutation {
+  event: string[];
+  description: string | null;
+  title: string;
+}
+
+export interface CommercialLinkType {
+  _id: string;
+  event: string[];
+  shortUrl: string;
+  fullLink: string;
+  title: string;
+  description: string;
+}
+
+export interface Link {
+  fullLink: string | null;
+}

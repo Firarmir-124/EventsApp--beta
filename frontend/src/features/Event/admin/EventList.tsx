@@ -46,6 +46,7 @@ import useConfirm from '../../../components/Dialogs/Confirm/useConfirm';
 import SkeletonCardEdit from '../components/SkeletonCardEdit';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import CloseIcon from '@mui/icons-material/Close';
+import { Link } from 'react-router-dom';
 
 const EventList = () => {
   const filter = localStorage.getItem('filter' || null);
@@ -137,7 +138,13 @@ const EventList = () => {
           <RestartAltIcon />
         </IconButton>
       )}
-      <Button disabled={listEventId.length <= 0} size="large" variant="contained">
+      <Button
+        component={Link}
+        disabled={listEventId.length <= 0}
+        size="large"
+        variant="contained"
+        to={'constructor_link'}
+      >
         Создать ссылку
       </Button>
       {eventList.eventList.filter((item) => item.checked).length > 1 && (

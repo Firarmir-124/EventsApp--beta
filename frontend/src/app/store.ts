@@ -7,6 +7,7 @@ import { eventReducer } from '../features/Event/eventSlice';
 import { hashtagReducer } from '../features/Hashtag/hashtagSlice';
 import { recordReducer } from '../features/Request/recordSlice';
 import { profileReducer } from '../features/Profile/profileSlice';
+import { commercialLinkReducer } from '../features/CommercialLink/commercialLinkSlice';
 
 const usersPersistConfig = {
   key: 'petProject:users',
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   hashtag: hashtagReducer,
   record: recordReducer,
   profile: profileReducer,
+  commercialLink: commercialLinkReducer,
 });
 
 export const store = configureStore({

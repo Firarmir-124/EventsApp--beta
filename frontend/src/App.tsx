@@ -17,6 +17,7 @@ import AlertUser from './features/Profile/AlertUser/AlertUser';
 import Protected from './components/Protected';
 import { useAppSelector } from './app/hooks';
 import { selectUser } from './features/User/usersSlice';
+import ConstructorLink from './features/CommercialLink/ConstructorLink';
 
 function App() {
   const user = useAppSelector(selectUser);
@@ -44,6 +45,7 @@ function App() {
           <Route path="event_create" element={<CreateEvent />} />
           <Route path="hashtag_create" element={<HashtagCreate />} />
           <Route path="list_request" element={<RequestList />} />
+          <Route path="constructor_link" element={<ConstructorLink />} />
         </Route>
       </Route>
     </Routes>
