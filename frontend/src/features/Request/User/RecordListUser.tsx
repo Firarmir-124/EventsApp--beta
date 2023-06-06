@@ -6,18 +6,20 @@ import { Alert, CircularProgress, Table, TableBody, TableCell, TableHead, TableR
 import { openSnackbar } from '../../Event/eventSlice';
 import CardRecordUser from '../components/CardRecordUser';
 import SnackbarCard from '../../../components/SnackbarCard';
+import useConfirm from '../../../components/Dialogs/Confirm/useConfirm';
 
 const RecordListUser = () => {
   const dispatch = useAppDispatch();
   const loading = useAppSelector(selectFetchRecordsUserLoading);
   const listRecordsUser = useAppSelector(selectListRecordsUser);
+  const { confirm } = useConfirm();
 
   useEffect(() => {
     dispatch(fetchRecordsUser());
   }, [dispatch]);
 
   const removeCardRecord = async (id: string) => {
-    if (window.confirm('Вы действительно хотите удалить ?')) {
+    if (await confirm('Уведомление', 'Вы действительно хотите удалить ?')) {
       await dispatch(removeRecordUser(id)).unwrap();
       await dispatch(fetchRecordsUser()).unwrap();
       dispatch(openSnackbar({ status: true, parameter: 'remove_card_user' }));
