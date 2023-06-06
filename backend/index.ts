@@ -9,6 +9,7 @@ import usersRecordsRouter from './routers/userRecords';
 import favoritesRouter from './routers/favorites';
 import * as http from 'http';
 import { Server } from 'socket.io';
+import commercialLinksRouter from './routers/commercialLinks';
 
 export const app = express();
 const server = http.createServer(app);
@@ -22,6 +23,7 @@ app.use('/hashtag', hashtagsRoutes);
 app.use('/eventPlan', eventsRouter);
 app.use('/userRecord', usersRecordsRouter);
 app.use('/favorites', favoritesRouter);
+app.use('/link', commercialLinksRouter);
 
 const io = new Server(server, {
   cors: {

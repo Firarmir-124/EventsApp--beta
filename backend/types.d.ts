@@ -51,11 +51,10 @@ export interface RecordUserType {
   status: string;
 }
 
-export interface FavoritesType {
-  user: string;
-  event: {
-    list: Types.ObjectId;
-    show: boolean;
-    _id: Types.ObjectId;
-  };
+export interface CommercialLinkType {
+  event: string[];
+  description: string;
+  shortUrl: string;
+  fullLink: string;
+  title: string;
 }
