@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { User } from '../../../types';
 import { logout } from '../../../features/User/usersThunk';
 import { useAppDispatch } from '../../../app/hooks';
+import { socket } from '../../../socket';
 
 interface Props {
   user: User;
@@ -24,6 +25,7 @@ const UserMenu: React.FC<Props> = ({ user }) => {
   const handleLogout = () => {
     dispatch(logout());
     setAnchorEl(null);
+    socket.emit('ExitUser');
   };
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {

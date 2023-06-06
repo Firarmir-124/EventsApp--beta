@@ -183,3 +183,16 @@ export interface FavoritesType {
   event: EventFavoritesType[];
   user: string;
 }
+
+export interface PositionType {
+  x: number;
+  y: number;
+  name: string | null;
+}
+
+export interface OnlineType {
+  userId: string;
+  socketId: string;
+  name: string;
+  status: boolean;
+}

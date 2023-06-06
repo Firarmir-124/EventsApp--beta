@@ -27,6 +27,7 @@ const run = async () => {
     token: crypto.randomUUID(),
     role: 'organizer',
     alert: [],
+    online: false,
   });
 
   const hashtag = await Hashtag.create({

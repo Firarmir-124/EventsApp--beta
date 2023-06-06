@@ -64,6 +64,10 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>({
       },
     ],
   },
+  online: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 UserSchema.pre('save', async function (next) {

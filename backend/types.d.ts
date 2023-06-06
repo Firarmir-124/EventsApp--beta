@@ -13,6 +13,11 @@ export interface IUser {
   role: string;
   displayName: string;
   alert: AlertType[];
+  online: boolean;
+}
+
+export interface IUserId extends IUser {
+  _id: string;
 }
 
 export interface EventType {

@@ -1,4 +1,4 @@
-import { EventListFull, EventOne, ValidationError, TitleEventsType } from '../../types';
+import { EventListFull, EventOne, ValidationError, TitleEventsType, OnlineType } from '../../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import {
@@ -11,6 +11,8 @@ import {
 } from './eventThunk';
 
 interface EventType {
+  listOnline: OnlineType[];
+  inviteStatus: boolean;
   eventList: EventListFull;
   eventListLoading: boolean;
   eventCreateLoading: boolean;
@@ -39,6 +41,8 @@ interface EventType {
 }
 
 const initialState: EventType = {
+  listOnline: [],
+  inviteStatus: false,
   eventList: {
     length: 0,
     perPage: 8,
@@ -126,6 +130,12 @@ const eventSlice = createSlice({
     createPerPage: (state, { payload: perPage }: PayloadAction<number>) => {
       state.perPage = perPage;
     },
+    addInvite: (state, { payload: type }: PayloadAction<boolean>) => {
+      state.inviteStatus = type;
+    },
+    addUserOnline: (state, { payload: type }: PayloadAction<OnlineType[]>) => {
+      state.listOnline = type;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchEventListFilter.fulfilled, (state, { payload: eventList }) => {
@@ -189,8 +199,17 @@ const eventSlice = createSlice({
 });
 
 export const eventReducer = eventSlice.reducer;
-export const { openSnackbar, openModal, closeModal, toggleShowCellTable, openDrawer, closeDrawer, createPerPage } =
-  eventSlice.actions;
+export const {
+  openSnackbar,
+  openModal,
+  closeModal,
+  toggleShowCellTable,
+  openDrawer,
+  closeDrawer,
+  createPerPage,
+  addInvite,
+  addUserOnline,
+} = eventSlice.actions;
 
 export const selectEventList = (state: RootState) => state.event.eventList;
 export const selectCreateEventLoading = (state: RootState) => state.event.eventCreateLoading;
@@ -209,3 +228,5 @@ export const selectPerPage = (state: RootState) => state.event.perPage;
 export const selectSettingsLocalLoading = (state: RootState) => state.event.localSettingsLoading;
 export const selectEventTitleLoading = (state: RootState) => state.event.titleEventsLoading;
 export const selectEventTitle = (state: RootState) => state.event.titleEvents;
+export const selectInviteStatus = (state: RootState) => state.event.inviteStatus;
+export const selectListOnline = (state: RootState) => state.event.listOnline;
