@@ -26,4 +26,17 @@ commercialLinksRouter.post('/', auth, async (req, res, next) => {
   }
 });
 
+commercialLinksRouter.get('/:shortUrl', async (req, res, next) => {
+  try {
+    const commLink = await CommercialLink.findOne({ shortUrl: req.params.shortUrl });
+
+    if (!commLink) {
+      return res.status(404).send({ message: 'Ссылка недествительна !' });
+    }
+    return res.status(302).redirect(`http://localhost:3000/link/${commLink._id}`);
+  } catch (e) {
+    return next(e);
+  }
+});
+
 export default commercialLinksRouter;

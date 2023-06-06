@@ -36,6 +36,9 @@ const SnackbarCard = () => {
     case 'published':
       txt += 'Запрос подтверждён';
       break;
+    case 'copy_link':
+      txt += 'Ссылка скопированна';
+      break;
   }
 
   return (

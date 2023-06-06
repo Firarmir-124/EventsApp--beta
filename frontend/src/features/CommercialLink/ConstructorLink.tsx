@@ -1,5 +1,20 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Avatar, Box, Chip, Container, Grid, TextField, Button } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Chip,
+  Container,
+  Grid,
+  TextField,
+  Button,
+  Paper,
+  Link,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  CircularProgress,
+} from '@mui/material';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { green } from '@mui/material/colors';
@@ -9,7 +24,9 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import 'easymde/dist/easymde.min.css';
 import { createCommLink } from './CommercialLinkThunk';
 import useConfirm from '../../components/Dialogs/Confirm/useConfirm';
-import { selectSelectedEventId } from '../Event/eventSlice';
+import { openSnackbar, resetEventId, selectSelectedEventId } from '../Event/eventSlice';
+import { selectCreateLinkLoading, selectUrl } from './commercialLinkSlice';
+import { checkedEvent } from '../Event/eventThunk';
 
 const ConstructorLink = () => {
   const dispatch = useAppDispatch();
@@ -19,6 +36,9 @@ const ConstructorLink = () => {
   });
   const { confirm } = useConfirm();
   const listEventId = useAppSelector(selectSelectedEventId);
+  const link = useAppSelector(selectUrl);
+  const [open, setOpen] = useState(false);
+  const loading = useAppSelector(selectCreateLinkLoading);
 
   const options = useMemo(() => {
     return {
@@ -52,12 +72,27 @@ const ConstructorLink = () => {
         description: value.description ? value.description : null,
       };
       await dispatch(createCommLink(obj)).unwrap();
+      setOpen(true);
       setValue({
         description: '',
         title: '',
       });
     } else {
       return;
+    }
+  };
+
+  const handleCopy = async () => {
+    try {
+      if (link) {
+        await dispatch(checkedEvent({ id: undefined, allChecked: true })).unwrap();
+        dispatch(resetEventId());
+        await navigator.clipboard.writeText(link.fullLink as string);
+        dispatch(openSnackbar({ status: true, parameter: 'copy_link' }));
+        setOpen(false);
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -90,7 +125,7 @@ const ConstructorLink = () => {
                       <TitleIcon />
                     </Avatar>
                     <TextField
-                      label="Название организации"
+                      label="Имя админа"
                       name="title"
                       type="text"
                       autoComplete="current-password"
@@ -116,14 +151,33 @@ const ConstructorLink = () => {
               </Grid>
 
               <Grid item xs={12}>
-                <Button type="submit" variant="contained" sx={{ mt: 3 }}>
-                  Создать предложение
+                <Button disabled={loading} type="submit" variant="contained" sx={{ mt: 3 }}>
+                  {!loading ? 'Создать предложение' : <CircularProgress />}
                 </Button>
               </Grid>
             </Box>
           </Grid>
         </Grid>
       </Box>
+      <Dialog open={open} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+        <DialogTitle id="alert-dialog-title">Ваша ссылка</DialogTitle>
+        <DialogContent>
+          <Grid container>
+            <Grid item xs={12}>
+              <Paper sx={{ p: 1 }} elevation={3}>
+                <Link target="_blank" href={link?.fullLink || ''} underline="none">
+                  {link ? link.fullLink : 'Ссылка'}
+                </Link>
+              </Paper>
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCopy} variant="outlined">
+            Скопировать
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };
