@@ -2,6 +2,7 @@ import { EventListFull, EventOne, ValidationError, TitleEventsType, OnlineType }
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import {
+  checkedEvent,
   createEvent,
   fetchEventList,
   fetchEventListFilter,
@@ -38,6 +39,8 @@ interface EventType {
   localSettingsLoading: boolean;
   titleEvents: TitleEventsType[];
   titleEventsLoading: boolean;
+  selectedEventId: string[];
+  checkedEventLoading: boolean | string;
 }
 
 const initialState: EventType = {
@@ -99,6 +102,8 @@ const initialState: EventType = {
   localSettingsLoading: false,
   titleEvents: [],
   titleEventsLoading: false,
+  selectedEventId: [],
+  checkedEventLoading: false,
 };
 
 const eventSlice = createSlice({
@@ -136,8 +141,32 @@ const eventSlice = createSlice({
     addUserOnline: (state, { payload: type }: PayloadAction<OnlineType[]>) => {
       state.listOnline = type;
     },
+    addEventId: (state) => {
+      state.eventList.eventList.filter((item) => {
+        if (item.checked === true) {
+          const index = state.selectedEventId.indexOf(item._id);
+          if (index === -1) state.selectedEventId.push(item._id);
+        } else if (item.checked === false) {
+          const index = state.selectedEventId.indexOf(item._id);
+          if (index > -1) state.selectedEventId.splice(index, 1);
+        }
+      });
+    },
+    resetEventId: (state) => {
+      state.selectedEventId = [];
+    },
   },
   extraReducers: (builder) => {
+    builder.addCase(checkedEvent.pending, (state, { meta: { arg: id } }) => {
+      state.checkedEventLoading = id.id ? id.id : '';
+    });
+    builder.addCase(checkedEvent.fulfilled, (state) => {
+      state.checkedEventLoading = false;
+    });
+    builder.addCase(checkedEvent.rejected, (state) => {
+      state.checkedEventLoading = false;
+    });
+
     builder.addCase(fetchEventListFilter.fulfilled, (state, { payload: eventList }) => {
       state.eventList = eventList;
     });
@@ -209,6 +238,8 @@ export const {
   createPerPage,
   addInvite,
   addUserOnline,
+  addEventId,
+  resetEventId,
 } = eventSlice.actions;
 
 export const selectEventList = (state: RootState) => state.event.eventList;
@@ -230,3 +261,5 @@ export const selectEventTitleLoading = (state: RootState) => state.event.titleEv
 export const selectEventTitle = (state: RootState) => state.event.titleEvents;
 export const selectInviteStatus = (state: RootState) => state.event.inviteStatus;
 export const selectListOnline = (state: RootState) => state.event.listOnline;
+export const selectSelectedEventId = (state: RootState) => state.event.selectedEventId;
+export const selectCheckedEventLoading = (state: RootState) => state.event.checkedEventLoading;

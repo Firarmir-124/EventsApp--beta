@@ -75,6 +75,7 @@ export interface EventList {
   viewsCount: number;
   address: string;
   guest: GuestType[];
+  checked: boolean;
 }
 
 export interface TitleEventsType {
@@ -126,13 +127,6 @@ export interface HashtagListType {
 
 export interface HashtagMutation {
   name: string;
-}
-
-export interface TypesCallTable {
-  id: string;
-  name: string;
-  fullName: string;
-  show: boolean;
 }
 
 export interface Filter {

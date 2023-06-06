@@ -52,6 +52,10 @@ const EventSchema = new Schema<EventType>({
     type: [Schema.Types.ObjectId],
     ref: 'UserRecord',
   },
+  checked: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const EventPlan = model('EventPlan', EventSchema);

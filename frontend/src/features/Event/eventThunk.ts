@@ -101,6 +101,23 @@ export const fetchOneEvent = createAsyncThunk<EventOne | null, string>('event/fe
   return response.data;
 });
 
+interface CheckedEventType {
+  id: string | undefined;
+  allChecked: boolean;
+}
+
+export const checkedEvent = createAsyncThunk<void, CheckedEventType>('event/checkedEvent', async (arg) => {
+  let url = '/';
+
+  if (arg.id) {
+    url = `/eventPlan/checked?checked=${arg.id}`;
+  } else if (arg.allChecked) {
+    url = `/eventPlan/checked?allChecked=true`;
+  }
+
+  await axiosApi.patch(url, { checked: true });
+});
+
 export const removeEvent = createAsyncThunk<void, string>('event/remove_event', async (id) => {
   await axiosApi.delete('/eventPlan/' + id);
 });

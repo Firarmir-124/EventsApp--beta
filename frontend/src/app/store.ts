@@ -17,7 +17,7 @@ const usersPersistConfig = {
 const settingsPersistConfig = {
   key: 'petProject:settings',
   storage,
-  whitelist: ['cellTable', 'perPage'],
+  whitelist: ['cellTable', 'perPage', 'selectedEventId'],
 };
 
 const rootReducer = combineReducers({

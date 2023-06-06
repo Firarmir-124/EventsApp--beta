@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyledTableCell, StyledTableRow } from '../../../constants';
-import { Box, Button, ButtonGroup, CircularProgress, Tooltip, Typography } from '@mui/material';
+import { Box, Button, ButtonGroup, CircularProgress, Paper, Switch, Tooltip, Typography } from '@mui/material';
 import { EventList } from '../../../types';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useAppSelector } from '../../../app/hooks';
-import { selectCellTable, selectRemoveEventLoading } from '../eventSlice';
+import { selectCellTable, selectCheckedEventLoading, selectRemoveEventLoading } from '../eventSlice';
 import Divider from '@mui/material/Divider';
 import dayjs from 'dayjs';
 import ru from 'dayjs/locale/ru';
@@ -14,11 +14,14 @@ interface Props {
   event: EventList;
   removeCardEvent: React.MouseEventHandler;
   openModalEvent: React.MouseEventHandler;
+  checkedCardEvent: React.MouseEventHandler;
+  open: boolean;
 }
 
-const CardEventAdmin: React.FC<Props> = ({ event, removeCardEvent, openModalEvent }) => {
+const CardEventAdmin: React.FC<Props> = ({ event, removeCardEvent, openModalEvent, checkedCardEvent, open }) => {
   const removeLoading = useAppSelector(selectRemoveEventLoading);
   const cellTablesGlobal = useAppSelector(selectCellTable);
+  const loadingPatch = useAppSelector(selectCheckedEventLoading);
 
   return (
     <StyledTableRow key={event._id}>
@@ -75,6 +78,15 @@ const CardEventAdmin: React.FC<Props> = ({ event, removeCardEvent, openModalEven
           <Button onClick={openModalEvent} size="small" color="success">
             <EditIcon />
           </Button>
+          {open && (
+            <Paper sx={{ ml: 1 }} elevation={3}>
+              <Switch
+                disabled={loadingPatch ? loadingPatch === event._id : false}
+                onClick={checkedCardEvent}
+                checked={event.checked}
+              />
+            </Paper>
+          )}
         </ButtonGroup>
       </StyledTableCell>
     </StyledTableRow>

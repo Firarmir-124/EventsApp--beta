@@ -36,6 +36,7 @@ export interface EventType {
   viewsCount: number;
   address: string;
   guest: Types.ObjectId[];
+  checked: boolean;
 }
 
 export interface HashtagType {

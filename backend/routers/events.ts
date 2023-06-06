@@ -108,6 +108,32 @@ eventsRouter.get('/:id', async (req, res) => {
   }
 });
 
+eventsRouter.patch('/checked', auth, async (req, res, next) => {
+  try {
+    if (req.query.allChecked !== undefined) {
+      await EventPlan.updateMany({ checked: false });
+      return res.send({ patch: false });
+    } else if (req.query.checked !== undefined) {
+      const EventOne = await EventPlan.findOne({ _id: req.query.checked });
+
+      if (!EventOne) {
+        return res.status(404).send({ error: 'Евента не существует в базе.' });
+      }
+
+      if (!EventOne.checked) {
+        EventOne.checked = req.body.checked;
+      } else {
+        EventOne.checked = !req.body.checked;
+      }
+
+      await EventOne.save();
+      return res.send(EventOne.checked);
+    }
+  } catch (e) {
+    return next(e);
+  }
+});
+
 eventsRouter.put('/:id', imagesUpload.single('image'), auth, permit('organizer'), async (req, res, next) => {
   try {
     const newEventPlan = {
