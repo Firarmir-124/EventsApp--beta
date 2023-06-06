@@ -197,13 +197,10 @@ export interface CommercialLinkTypeMutation {
   title: string;
 }
 
-export interface CommercialLinkType {
-  _id: string;
-  event: string[];
-  shortUrl: string;
-  fullLink: string;
-  title: string;
+export interface contentLinkType {
+  event: EventList[];
   description: string;
+  title: string;
 }
 
 export interface Link {

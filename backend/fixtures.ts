@@ -16,6 +16,7 @@ const run = async () => {
     await db.dropCollection('eventplans');
     await db.dropCollection('hashtags');
     await db.dropCollection('favorites');
+    await db.dropCollection('commerciallinks');
   } catch (e) {
     console.log('Collections were not present, skipping drop...');
   }
@@ -52,6 +53,8 @@ const run = async () => {
       user: user._id,
       createDate: new Date().toISOString(),
       address: 'Мой адресс',
+      guest: [],
+      checked: false,
     });
   }
 
@@ -73,6 +76,8 @@ const run = async () => {
       user: user._id,
       createDate: new Date().toISOString(),
       address: 'Мой адресс',
+      guest: [],
+      checked: false,
     });
   }
 
@@ -95,6 +100,7 @@ const run = async () => {
       createDate: new Date().toISOString(),
       address: 'Мой адресс',
       guest: [],
+      checked: false,
     });
   }
 

@@ -18,6 +18,7 @@ import Protected from './components/Protected';
 import { useAppSelector } from './app/hooks';
 import { selectUser } from './features/User/usersSlice';
 import ConstructorLink from './features/CommercialLink/ConstructorLink';
+import CommercialLink from './features/CommercialLink/CommercialLink';
 
 function App() {
   const user = useAppSelector(selectUser);
@@ -47,6 +48,9 @@ function App() {
           <Route path="list_request" element={<RequestList />} />
           <Route path="constructor_link" element={<ConstructorLink />} />
         </Route>
+      </Route>
+      <Route element={<Protected userRole={user?.role} priority="organizer" />}>
+        <Route path="/link/:id" element={<CommercialLink />} />
       </Route>
     </Routes>
   );

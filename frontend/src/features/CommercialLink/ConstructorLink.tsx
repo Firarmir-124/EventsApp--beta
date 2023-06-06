@@ -27,6 +27,7 @@ import useConfirm from '../../components/Dialogs/Confirm/useConfirm';
 import { openSnackbar, resetEventId, selectSelectedEventId } from '../Event/eventSlice';
 import { selectCreateLinkLoading, selectUrl } from './commercialLinkSlice';
 import { checkedEvent } from '../Event/eventThunk';
+import { useNavigate } from 'react-router-dom';
 
 const ConstructorLink = () => {
   const dispatch = useAppDispatch();
@@ -39,6 +40,7 @@ const ConstructorLink = () => {
   const link = useAppSelector(selectUrl);
   const [open, setOpen] = useState(false);
   const loading = useAppSelector(selectCreateLinkLoading);
+  const navigate = useNavigate();
 
   const options = useMemo(() => {
     return {
@@ -90,6 +92,7 @@ const ConstructorLink = () => {
         await navigator.clipboard.writeText(link.fullLink as string);
         dispatch(openSnackbar({ status: true, parameter: 'copy_link' }));
         setOpen(false);
+        navigate('/event');
       }
     } catch (e) {
       console.log(e);
@@ -152,7 +155,7 @@ const ConstructorLink = () => {
 
               <Grid item xs={12}>
                 <Button disabled={loading} type="submit" variant="contained" sx={{ mt: 3 }}>
-                  {!loading ? 'Создать предложение' : <CircularProgress />}
+                  {!loading ? 'Создать ссылку' : <CircularProgress />}
                 </Button>
               </Grid>
             </Box>
