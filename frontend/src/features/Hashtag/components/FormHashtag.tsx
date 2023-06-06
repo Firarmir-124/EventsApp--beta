@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, CircularProgress, Grid, IconButton, TextField } from '@mui/material';
 import { HashtagMutation } from '../../../types';
 import { useAppSelector } from '../../../app/hooks';
-import { selectCreateHashtagLoading, selectEditHashtagLoading } from '../hashtagSlice';
+import { selectCreateHashtagLoading, selectEditHashtagLoading, selectHashtagError } from '../hashtagSlice';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
 
@@ -16,11 +16,20 @@ const FormHashtag: React.FC<Props> = ({ onSubmit, hashtag, isEdit }) => {
   const [value, setValue] = useState(hashtag ? hashtag.name : '');
   const createLoading = useAppSelector(selectCreateHashtagLoading);
   const loadingEdit = useAppSelector(selectEditHashtagLoading);
+  const error = useAppSelector(selectHashtagError);
 
   const onFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit({ name: value });
     setValue('');
+  };
+
+  const getFieldError = (fieldName: string) => {
+    try {
+      return error?.errors[fieldName].message;
+    } catch {
+      return undefined;
+    }
   };
 
   return (
@@ -35,6 +44,8 @@ const FormHashtag: React.FC<Props> = ({ onSubmit, hashtag, isEdit }) => {
             fullWidth
             value={value}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
+            error={Boolean(getFieldError('hashtag'))}
+            helperText={getFieldError('hashtag')}
           />
         </Grid>
         <Grid xs={3} item>
