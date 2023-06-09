@@ -5,7 +5,6 @@ import {
   Chip,
   Container,
   Grid,
-  TextField,
   Button,
   Paper,
   Link,
@@ -18,7 +17,6 @@ import {
 import ConstructionIcon from '@mui/icons-material/Construction';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { green } from '@mui/material/colors';
-import TitleIcon from '@mui/icons-material/Title';
 import SimpleMdeReact from 'react-simplemde-editor';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import 'easymde/dist/easymde.min.css';
@@ -59,17 +57,11 @@ const ConstructorLink = () => {
     setValue((prev) => ({ ...prev, description: value }));
   }, []);
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setValue((prev) => ({ ...prev, [name]: value }));
-  };
-
   const createCommercialLink = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (await confirm('Уведомление', 'Подвердите создание коммерческого предложения')) {
       const obj = {
-        title: value.title,
         event: listEventId,
         description: value.description ? value.description : null,
       };
@@ -122,24 +114,6 @@ const ConstructorLink = () => {
             />
             <Box component="form" sx={{ mt: 3, width: '100%' }} onSubmit={createCommercialLink}>
               <Grid container sx={{ flexDirection: 'column' }} spacing={3}>
-                <Grid item xs={12}>
-                  <Box sx={{ display: 'flex' }}>
-                    <Avatar sx={{ bgcolor: green[500], mr: 3, mb: 'auto' }}>
-                      <TitleIcon />
-                    </Avatar>
-                    <TextField
-                      label="Имя админа"
-                      name="title"
-                      type="text"
-                      autoComplete="current-password"
-                      fullWidth
-                      variant="outlined"
-                      required
-                      onChange={onChange}
-                      value={value.title}
-                    />
-                  </Box>
-                </Grid>
                 <Grid item xs={12} display="flex">
                   <Avatar sx={{ bgcolor: green[500], mr: 3, mb: 'auto' }}>
                     <ChatBubbleOutlineIcon />

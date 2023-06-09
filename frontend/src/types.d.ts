@@ -194,13 +194,15 @@ export interface OnlineType {
 export interface CommercialLinkTypeMutation {
   event: string[];
   description: string | null;
-  title: string;
 }
 
 export interface contentLinkType {
   event: EventList[];
   description: string;
-  title: string;
+  user: {
+    _id: string;
+    displayName: string;
+  };
 }
 
 export interface Link {

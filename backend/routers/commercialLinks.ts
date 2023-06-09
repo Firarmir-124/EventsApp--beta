@@ -5,10 +5,13 @@ import mongoose from 'mongoose';
 import auth from '../middleware/auth';
 import { CommercialLinkType } from '../types';
 import EventPlan from '../models/EventPlan';
+import { RequestWitUser } from '../middleware/authAnonymous';
 
 const commercialLinksRouter = express.Router();
 
 commercialLinksRouter.post('/', auth, async (req, res, next) => {
+  const user = (req as RequestWitUser).user;
+
   const randomShortUrl = crypto.randomUUID();
   try {
     const newCommLink = await CommercialLink.create({
@@ -16,7 +19,7 @@ commercialLinksRouter.post('/', auth, async (req, res, next) => {
       description: req.body.description,
       shortUrl: randomShortUrl,
       fullLink: `http://localhost:8000/link/${randomShortUrl}`,
-      title: req.body.title,
+      user: user.id,
     });
 
     return res.send(newCommLink);
@@ -43,7 +46,10 @@ commercialLinksRouter.get('/:shortUrl', async (req, res, next) => {
 
 commercialLinksRouter.get('/event/:id', async (req, res, next) => {
   try {
-    const commLink: CommercialLinkType | null = await CommercialLink.findOne({ _id: req.params.id });
+    const commLink: CommercialLinkType | null = await CommercialLink.findOne({ _id: req.params.id }).populate(
+      'user',
+      'displayName',
+    );
 
     if (!commLink) return res.status(404).send({ error: 'Ссылка недействительна !' });
 
@@ -61,7 +67,7 @@ commercialLinksRouter.get('/event/:id', async (req, res, next) => {
     return res.send({
       event: events,
       description: commLink.description,
-      title: commLink.title,
+      user: commLink.user,
     });
   } catch (e) {
     return next(e);

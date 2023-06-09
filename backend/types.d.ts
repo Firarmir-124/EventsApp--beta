@@ -56,5 +56,5 @@ export interface CommercialLinkType {
   description: string;
   shortUrl: string;
   fullLink: string;
-  title: string;
+  user: Types.ObjectId;
 }

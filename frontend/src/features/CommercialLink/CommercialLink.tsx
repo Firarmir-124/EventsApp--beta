@@ -20,6 +20,7 @@ import { useParams } from 'react-router-dom';
 import { StyledTableCell } from '../../constants';
 import SkeletonCardAdmin from '../Event/components/SkeletonCardAdmin';
 import CardEventLink from './components/CardEventLink';
+import ReactMarkdown from 'react-markdown';
 
 const CommercialLink = () => {
   const { id } = useParams();
@@ -35,9 +36,16 @@ const CommercialLink = () => {
 
   return (
     <Container>
+      <Paper sx={{ p: 1 }}>
+        <Typography sx={{ my: 2, mr: 1 }} component="h1" variant="h4">
+          Информация
+        </Typography>
+
+        <ReactMarkdown>{listLocationLink.description}</ReactMarkdown>
+      </Paper>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Typography sx={{ my: 2, mr: 1 }} component="h1" variant="h4">
-          Отчёт для {listLocationLink.title}
+          Отчёт от {listLocationLink.user.displayName}
           <Divider light sx={{ mt: 1, background: '#ff6300' }} />
         </Typography>
       </Box>

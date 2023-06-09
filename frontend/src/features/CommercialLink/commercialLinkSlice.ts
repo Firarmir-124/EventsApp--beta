@@ -17,7 +17,10 @@ const initialState: commercialLinkType = {
   listEventLink: {
     event: [],
     description: '',
-    title: '',
+    user: {
+      _id: '',
+      displayName: '',
+    },
   },
 };
 
