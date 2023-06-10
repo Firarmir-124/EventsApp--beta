@@ -29,7 +29,7 @@ const Layout: React.FC<Props> = ({ children }) => {
             to="/"
             sx={{ flexGrow: 1 }}
           >
-            Сайт
+            Тикет
           </Typography>
           <Grid item>{user ? <UserMenu user={user} /> : <AnonymousMenu />}</Grid>
         </Toolbar>

@@ -32,6 +32,7 @@ const io = new Server(server, {
 });
 
 let onlineUsers: { userId: string; socketId: string; name: string; status: boolean }[] = [];
+const onlineRoormOnline: { userId: string; socketId: string; name: string; status: boolean }[] = [];
 
 io.on('connection', async (socket) => {
   socket.join('rtd');
@@ -51,6 +52,17 @@ io.on('connection', async (socket) => {
     io.sockets.in('rtd').emit('get-users', onlineUsers);
   });
 
+  socket.on('exitTheRoom', (date) => {
+    const index = onlineRoormOnline.indexOf(date.userId);
+
+    console.log(onlineRoormOnline);
+
+    if (index === -1) {
+      onlineRoormOnline.splice(index, 1);
+      io.emit('onlineRoom', onlineRoormOnline);
+    }
+  });
+
   socket.on('offline', () => {
     onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);
     io.emit('get-users', onlineUsers);
@@ -68,6 +80,17 @@ io.on('connection', async (socket) => {
   socket.on('entered-the-room', (date) => {
     onlineUsers = onlineUsers.map((n) => (n.userId === date.userId ? { ...n, status: true } : n));
     io.emit('get-users', onlineUsers);
+    const user = onlineUsers.find((item) => item.userId === date.userId);
+    if (user) {
+      const index = onlineRoormOnline.findIndex((item) => item.userId === user.userId);
+      if (index !== -1) {
+        onlineRoormOnline.splice(index, 1);
+      } else {
+        user.status = false;
+        onlineRoormOnline.push(user);
+        io.emit('onlineRoom', onlineRoormOnline);
+      }
+    }
   });
 
   socket.on('position', (msg) => {

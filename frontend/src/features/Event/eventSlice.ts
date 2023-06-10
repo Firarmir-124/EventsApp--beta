@@ -12,6 +12,7 @@ import {
 } from './eventThunk';
 
 interface EventType {
+  listOnlineRoom: OnlineType[];
   listOnline: OnlineType[];
   inviteStatus: boolean;
   eventList: EventListFull;
@@ -104,6 +105,7 @@ const initialState: EventType = {
   titleEventsLoading: false,
   selectedEventId: [],
   checkedEventLoading: false,
+  listOnlineRoom: [],
 };
 
 const eventSlice = createSlice({
@@ -140,6 +142,9 @@ const eventSlice = createSlice({
     },
     addUserOnline: (state, { payload: type }: PayloadAction<OnlineType[]>) => {
       state.listOnline = type;
+    },
+    addUserOnlineRoom: (state, { payload: type }: PayloadAction<OnlineType[]>) => {
+      state.listOnlineRoom = type;
     },
     addEventId: (state) => {
       state.eventList.eventList.filter((item) => {
@@ -240,6 +245,7 @@ export const {
   addUserOnline,
   addEventId,
   resetEventId,
+  addUserOnlineRoom,
 } = eventSlice.actions;
 
 export const selectEventList = (state: RootState) => state.event.eventList;
@@ -263,3 +269,4 @@ export const selectInviteStatus = (state: RootState) => state.event.inviteStatus
 export const selectListOnline = (state: RootState) => state.event.listOnline;
 export const selectSelectedEventId = (state: RootState) => state.event.selectedEventId;
 export const selectCheckedEventLoading = (state: RootState) => state.event.checkedEventLoading;
+export const selectListOnlineRoomUser = (state: RootState) => state.event.listOnlineRoom;

@@ -4,6 +4,7 @@ import {
   Avatar,
   Box,
   Button,
+  Chip,
   CircularProgress,
   Grid,
   IconButton,
@@ -21,9 +22,9 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { fetchHashtagList } from '../../Hashtag/hashtagThunk';
 import { selectHashtagList, selectHashtagListLoading } from '../../Hashtag/hashtagSlice';
 import Divider from '@mui/material/Divider';
-import { selectCreateEventLoading, selectEditLoading, selectEventError } from '../eventSlice';
+import { selectCreateEventLoading, selectEditLoading, selectEventError, selectListOnlineRoomUser } from '../eventSlice';
 import TitleIcon from '@mui/icons-material/Title';
-import { green } from '@mui/material/colors';
+import { blue, green } from '@mui/material/colors';
 import SubtitlesIcon from '@mui/icons-material/Subtitles';
 import SpeakerGroupIcon from '@mui/icons-material/SpeakerGroup';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -31,6 +32,7 @@ import AddLocationIcon from '@mui/icons-material/AddLocation';
 import { selectUser } from '../../User/usersSlice';
 import CursorUser from './CursorUser';
 import { socket } from '../../../socket';
+import { StyledBadge } from '../../../constants';
 
 interface Props {
   onSubmit: (event: EventMutation) => void;
@@ -43,6 +45,7 @@ const FormEvent: React.FC<Props> = ({ onSubmit, event, isEdit }) => {
   const [usePosition, setUserPosition] = useState<PositionType>({ x: 0, y: 0, name: '' });
   const user = useAppSelector(selectUser);
   const loadingEdit = useAppSelector(selectEditLoading);
+  const onlineRoom = useAppSelector(selectListOnlineRoomUser);
 
   const dispatch = useAppDispatch();
   const [speaker, setSpeaker] = useState(
@@ -218,6 +221,26 @@ const FormEvent: React.FC<Props> = ({ onSubmit, event, isEdit }) => {
 
   return (
     <Box component="div" onMouseMove={handleOnMouse}>
+      <Paper sx={{ p: 1, display: 'flex', alignItems: 'center' }}>
+        <Chip sx={{ mr: 3 }} label="Онлайн команаты" variant="outlined" />
+        {onlineRoom.length !== 0 ? (
+          onlineRoom.map((item) => (
+            <StyledBadge
+              overlap="circular"
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              variant="dot"
+              sx={{ mr: 2 }}
+              key={item.socketId}
+            >
+              <Avatar sx={{ bgcolor: blue[500] }} alt="Remy Sharp" src="/broken-image.jpg">
+                {item.name[0]}
+              </Avatar>
+            </StyledBadge>
+          ))
+        ) : (
+          <Alert severity="info">Пользователей нет в сети !</Alert>
+        )}
+      </Paper>
       <CursorUser userPosition={usePosition} />
       <Box component="form" sx={{ mt: 3, width: '100%' }} onSubmit={onFormSubmit}>
         <Grid container sx={{ flexDirection: 'column' }} spacing={3}>

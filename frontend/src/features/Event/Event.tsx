@@ -8,12 +8,13 @@ import AddIcon from '@mui/icons-material/Add';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AddAlertIcon from '@mui/icons-material/AddAlert';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { addInvite, addUserOnline, selectInviteStatus, selectListOnline } from './eventSlice';
+import { addInvite, addUserOnline, addUserOnlineRoom, selectInviteStatus, selectListOnline } from './eventSlice';
 import { socket } from '../../socket';
 import { selectUser } from '../User/usersSlice';
 import UserOnline from './components/UserOnline';
 
 const Event = () => {
+  const [pressed, setPressed] = useState(true);
   const [confirmedStatus, setConfirmedStatus] = useState(false);
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
@@ -35,12 +36,20 @@ const Event = () => {
     });
 
     if (location.pathname !== '/event/event_create') {
-      if (user) socket.emit('new-user-add', { id: user._id, name: user.displayName });
+      setPressed(true);
+      if (user) {
+        socket.emit('new-user-add', { id: user._id, name: user.displayName });
+        socket.emit('exitTheRoom', { userId: user._id });
+      }
 
       socket.on('get-users', (users) => {
         dispatch(addUserOnline(users));
       });
     }
+
+    socket.on('onlineRoom', (msg) => {
+      dispatch(addUserOnlineRoom(msg));
+    });
 
     socket.on('add', (msg) => {
       dispatch(addInvite(msg.status));
@@ -78,6 +87,9 @@ const Event = () => {
     socket.emit('confirmed', { socketId: id });
     user && socket.emit('entered-the-room', { userId: user._id });
     navigate('event_create');
+    socket.on('onlineRoom', (msg) => {
+      dispatch(addUserOnlineRoom(msg));
+    });
     dispatch(addInvite(false));
   };
 
@@ -86,7 +98,10 @@ const Event = () => {
   };
 
   const enteredTheRoom = () => {
-    user && socket.emit('entered-the-room', { userId: user._id });
+    setPressed(false);
+    if (pressed) {
+      user && socket.emit('entered-the-room', { userId: user._id });
+    }
   };
 
   return (
@@ -101,7 +116,7 @@ const Event = () => {
               <UserOnline key={item.socketId} online={item} addOnline={() => addOnline(item.socketId, item.userId)} />
             ))
         ) : (
-          <Alert>Пользователей нет в сети !</Alert>
+          <Alert severity="info">Пользователей нет в сети !</Alert>
         )}
       </Paper>
       <Paper sx={{ p: 1, mt: '10px' }} elevation={3}>
