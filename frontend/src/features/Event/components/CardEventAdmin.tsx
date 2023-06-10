@@ -37,10 +37,10 @@ const CardEventAdmin: React.FC<Props> = ({ event, removeCardEvent, openModalEven
                   title={
                     event.guest.length !== 0 ? (
                       event.guest.map((guestItem) => (
-                        <>
+                        <Box key={guestItem._id}>
                           <Typography color="inherit">{guestItem.name.displayName}</Typography>
                           <Divider />
-                        </>
+                        </Box>
                       ))
                     ) : (
                       <Typography color="inherit">Гостей нет !</Typography>
@@ -53,10 +53,10 @@ const CardEventAdmin: React.FC<Props> = ({ event, removeCardEvent, openModalEven
                   title={
                     event.speaker.length > 0 ? (
                       event.speaker.map((speckItem) => (
-                        <>
+                        <Box key={speckItem.name}>
                           <Typography color="inherit">{speckItem.name}</Typography>
                           <Divider />
-                        </>
+                        </Box>
                       ))
                     ) : (
                       <Typography color="inherit">Гостей нет !</Typography>
